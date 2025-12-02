@@ -10,6 +10,7 @@ import Footer from "@/components/layout/Footer";
 // Pages
 import HomePage from "./pages/HomePage";
 import ResourcesPage from "./pages/ResourcesPage";
+import ResourceDetailPage from "./pages/ResourceDetailPage";
 import BlogPage from "./pages/BlogPage";
 import AboutPage from "./pages/AboutPage";
 import DonatePage from "./pages/DonatePage";
@@ -30,6 +31,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/resources" element={<ResourcesPage />} />
+                <Route path="/resources/:id" element={<ResourceDetailPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/donate" element={<DonatePage />} />
