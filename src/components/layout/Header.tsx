@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { Menu, X, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "Resources", href: "#resources" },
-    { name: "Blog", href: "#blog" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: "/" },
+    { name: "Resources", href: "/resources" },
+    { name: "Blog", href: "/blog" },
+    { name: "About", href: "/about" },
+    { name: "Contact", href: "/contact" },
   ];
+
+  const isActive = (path: string) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm border-b border-border shadow-sm">
@@ -29,23 +38,31 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
+                to={link.href}
+                className={cn(
+                  "text-sm font-medium transition-colors duration-300 relative",
+                  isActive(link.href)
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-primary"
+                )}
               >
                 {link.name}
-              </a>
+                {isActive(link.href) && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full" />
+                )}
+              </NavLink>
             ))}
           </nav>
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
             <Button variant="outline" size="default" asChild>
-              <a href="#resources">Get Help</a>
+              <Link to="/resources">Get Help</Link>
             </Button>
             <Button variant="hero" size="default" asChild>
-              <a href="#donate">Donate</a>
+              <Link to="/donate">Donate</Link>
             </Button>
           </div>
 
@@ -69,21 +86,26 @@ const Header = () => {
         <div className="md:hidden border-t border-border bg-background">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.name}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-foreground hover:bg-accent rounded-lg transition-colors"
+                to={link.href}
+                className={cn(
+                  "px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+                  isActive(link.href)
+                    ? "bg-primary/10 text-primary"
+                    : "text-foreground hover:bg-accent"
+                )}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.name}
-              </a>
+              </NavLink>
             ))}
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
               <Button variant="outline" size="default" asChild className="w-full">
-                <a href="#resources">Get Help</a>
+                <Link to="/resources">Get Help</Link>
               </Button>
               <Button variant="hero" size="default" asChild className="w-full">
-                <a href="#donate">Donate</a>
+                <Link to="/donate">Donate</Link>
               </Button>
             </div>
           </nav>
