@@ -31,7 +31,7 @@ const resourceTypes: { value: ResourceType; label: string }[] = [
   { value: 'helpline', label: 'Helplines' },
 ];
 
-export const ResourceFilters = ({
+export const ServiceFilters = ({
   filters,
   onFiltersChange,
   resultCount,

@@ -51,10 +51,10 @@ const ContactPage = () => {
               <CardContent>
                 <p className="text-muted-foreground mb-2">General Inquiries</p>
                 <a
-                  href="mailto:support@mindcare.org"
+                  href="mailto:support@ocslaa.org"
                   className="text-lg font-semibold text-primary hover:underline break-all"
                 >
-                  support@mindcare.org
+                  support@ocslaa.org
                 </a>
               </CardContent>
             </Card>

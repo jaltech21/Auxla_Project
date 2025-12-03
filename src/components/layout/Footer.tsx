@@ -12,10 +12,13 @@ const Footer = () => {
               <div className="p-2 bg-primary-light rounded-lg">
                 <Heart className="h-6 w-6 text-primary" fill="currentColor" />
               </div>
-              <span className="text-xl font-bold text-foreground">MindCare</span>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-foreground leading-tight">OCSLAA</span>
+                <span className="text-xs text-muted-foreground leading-tight">Our Concern Sierra Leone Alliance</span>
+              </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Supporting mental health awareness and providing resources for those in need. You're not alone.
+              Supporting mental health awareness in Sierra Leone and providing resources for those in need. You're not alone.
             </p>
             <div className="flex gap-3">
               <Button variant="ghost" size="icon" className="hover:text-primary">
@@ -83,10 +86,10 @@ const Footer = () => {
               <li className="flex items-start gap-2">
                 <Mail className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <a
-                  href="mailto:support@mindcare.org"
+                  href="mailto:support@ocslaa.org"
                   className="text-sm text-muted-foreground hover:text-primary"
                 >
-                  support@mindcare.org
+                  support@ocslaa.org
                 </a>
               </li>
               <li className="flex items-start gap-2">
@@ -104,7 +107,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              © {new Date().getFullYear()} MindCare NGO. All rights reserved.
+              © {new Date().getFullYear()} OCSLAA - Our Concern Sierra Leone Alliance. All rights reserved.
             </p>
             <div className="flex gap-6">
               <a href="#privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">

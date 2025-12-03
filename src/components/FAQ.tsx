@@ -4,12 +4,12 @@ import { HelpCircle } from "lucide-react";
 const FAQ = () => {
   const faqs = [
     {
-      question: "What services does MindCare provide?",
+      question: "What services does OCSLAA provide?",
       answer:
-        "MindCare provides comprehensive mental health resources including educational materials, support group connections, crisis helpline information, self-help tools, and community programs. We offer both online and in-person support options.",
+        "OCSLAA provides comprehensive mental health resources including educational materials, support group connections, crisis helpline information, self-help tools, and community programs. We offer both online and in-person support options tailored for Sierra Leone communities.",
     },
     {
-      question: "Is MindCare's support confidential?",
+      question: "Is OCSLAA's support confidential?",
       answer:
         "Yes, absolutely. We take privacy and confidentiality very seriously. All our services maintain strict confidentiality protocols. Your information is never shared without your explicit consent, except in cases where there is imminent risk of harm.",
     },
@@ -21,12 +21,12 @@ const FAQ = () => {
     {
       question: "Do you offer professional counseling?",
       answer:
-        "While MindCare provides support and resources, we connect individuals with licensed mental health professionals. We maintain a network of qualified therapists and counselors and can help you find the right professional for your needs.",
+        "While OCSLAA provides support and resources, we connect individuals with licensed mental health professionals. We maintain a network of qualified therapists and counselors and can help you find the right professional for your needs.",
     },
     {
-      question: "How can I support MindCare's mission?",
+      question: "How can I support OCSLAA's mission?",
       answer:
-        "There are many ways to support us: make a donation, volunteer your time, share our resources with others, or participate in our awareness campaigns. Every contribution, big or small, helps us reach more people in need.",
+        "There are many ways to support us: make a donation, volunteer your time, share our resources with others, or participate in our awareness campaigns. Every contribution, big or small, helps us reach more people in need across Sierra Leone.",
     },
     {
       question: "What should I do if I'm in crisis?",
@@ -76,7 +76,7 @@ const FAQ = () => {
               Our team is here to help. Reach out and we'll get back to you as soon as possible.
             </p>
             <a
-              href="mailto:support@mindcare.org"
+              href="mailto:support@ocslaa.org"
               className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
             >
               Contact Support →

@@ -50,7 +50,7 @@ const About = () => {
   ];
 
   const milestones = [
-    { year: "2018", event: "MindCare Founded", description: "Started with a vision to make mental health care accessible" },
+    { year: "2018", event: "OCSLAA Founded", description: "Started with a vision to make mental health care accessible in Sierra Leone" },
     { year: "2019", event: "10K Lives Touched", description: "Reached our first major milestone of helping 10,000 people" },
     { year: "2021", event: "National Recognition", description: "Awarded for excellence in community mental health services" },
     { year: "2024", event: "50K+ Community", description: "Growing community with presence in 15 states" },
@@ -64,9 +64,9 @@ const About = () => {
           <div className="space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">Our Mission</h2>
             <p className="text-lg text-muted-foreground">
-              At MindCare, we believe that mental health is just as important as physical health. Our mission is to
+              At OCSLAA (Our Concern Sierra Leone Alliance for Mental Health), we believe that mental health is just as important as physical health. Our mission is to
               break down barriers, reduce stigma, and provide accessible resources to support everyone on their mental
-              health journey.
+              health journey in Sierra Leone and beyond.
             </p>
             <p className="text-lg text-muted-foreground">
               Through education, community support, and evidence-based resources, we're creating a world where seeking
@@ -92,7 +92,7 @@ const About = () => {
             />
             <div className="absolute -bottom-6 -left-6 bg-card p-6 rounded-xl shadow-lg border border-border max-w-xs">
               <p className="text-sm font-medium text-foreground">
-                "MindCare helped me find the support I needed when I felt most alone. The community here is incredible."
+                "OCSLAA helped me find the support I needed when I felt most alone. The community here is incredible."
               </p>
               <p className="text-xs text-muted-foreground mt-2">- Sarah M.</p>
             </div>
@@ -104,7 +104,7 @@ const About = () => {
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Core Values</h2>
             <p className="text-lg text-muted-foreground">
-              The principles that guide everything we do at MindCare
+              The principles that guide everything we do at OCSLAA
             </p>
           </div>
 

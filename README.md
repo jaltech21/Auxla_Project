@@ -1,4 +1,6 @@
-# Welcome to your Lovable project
+# OCSLAA - Our Concern Sierra Leone Alliance for Mental Health
+
+A comprehensive mental health awareness and support platform serving Sierra Leone.
 
 ## Project info
 

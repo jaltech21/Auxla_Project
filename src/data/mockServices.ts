@@ -1,6 +1,6 @@
 import { Resource } from '@/types';
 
-export const mockResources: Resource[] = [
+export const mockServices: Resource[] = [
   // Anxiety Resources
   {
     id: '1',

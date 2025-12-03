@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export const ResourceCardSkeleton = () => {
+export const ServiceCardSkeleton = () => {
   return (
     <Card>
       <Skeleton className="h-48 w-full rounded-b-none" />
@@ -31,11 +31,11 @@ export const ResourceCardSkeleton = () => {
   );
 };
 
-export const ResourceListSkeleton = ({ count = 6 }: { count?: number }) => {
+export const ServiceListSkeleton = ({ count = 6 }: { count?: number }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: count }).map((_, index) => (
-        <ResourceCardSkeleton key={index} />
+        <ServiceCardSkeleton key={index} />
       ))}
     </div>
   );

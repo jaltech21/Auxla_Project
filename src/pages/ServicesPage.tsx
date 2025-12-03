@@ -3,33 +3,33 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BookOpen, Search, AlertCircle, Phone } from 'lucide-react';
-import { useResources } from '@/hooks/useResources';
+import { useServices } from '@/hooks/useServices';
 import { useDebounce } from '@/hooks/useDebounce';
-import { ResourceFilters as IResourceFilters } from '@/types';
-import { ResourceCard } from '@/components/features/ResourceCard';
-import { ResourceListSkeleton } from '@/components/features/ResourceCardSkeleton';
-import { ResourceFilters, ActiveFilters } from '@/components/features/ResourceFilters';
+import { ServiceFilters as IServiceFilters } from '@/types';
+import { ServiceCard } from '@/components/features/ServiceCard';
+import { ServiceListSkeleton } from '@/components/features/ServiceCardSkeleton';
+import { ServiceFilters, ActiveFilters } from '@/components/features/ServiceFilters';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { CRISIS_HOTLINES } from '@/constants';
 
-const ResourcesPage = () => {
+const ServicesPage = () => {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState<IResourceFilters>({});
+  const [filters, setFilters] = useState<IServiceFilters>({});
 
   // Debounce search query
   const debouncedSearch = useDebounce(searchQuery, 500);
 
   // Build filters with search
-  const activeFilters: IResourceFilters = {
+  const activeFilters: IServiceFilters = {
     ...filters,
     ...(debouncedSearch && { search: debouncedSearch }),
   };
 
-  // Fetch resources
-  const { data, isLoading, isError, error } = useResources(page, 12, activeFilters);
+  // Fetch services
+  const { data, isLoading, isError, error } = useServices(page, 12, activeFilters);
 
-  const handleRemoveFilter = (key: keyof IResourceFilters) => {
+  const handleRemoveFilter = (key: keyof IServiceFilters) => {
     setFilters((prev) => {
       const newFilters = { ...prev };
       delete newFilters[key];
@@ -38,7 +38,7 @@ const ResourcesPage = () => {
     setPage(1);
   };
 
-  const handleFiltersChange = (newFilters: IResourceFilters) => {
+  const handleFiltersChange = (newFilters: IServiceFilters) => {
     setFilters(newFilters);
     setPage(1);
   };
@@ -51,13 +51,13 @@ const ResourcesPage = () => {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 mb-6">
               <BookOpen className="h-4 w-4" />
-              <span className="text-sm font-medium">Mental Health Resources</span>
+              <span className="text-sm font-medium">Our Services</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Find the Support You Need
             </h1>
             <p className="text-xl text-primary-foreground/90">
-              Access our comprehensive library of mental health resources, guides, and tools
+              Access our comprehensive range of mental health services, guides, and tools
             </p>
           </div>
         </div>
@@ -73,7 +73,7 @@ const ResourcesPage = () => {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="text"
-                    placeholder="Search resources by title, description, or tags..."
+                    placeholder="Search services by title, description, or tags..."
                     value={searchQuery}
                     onChange={(e) => {
                       setSearchQuery(e.target.value);
@@ -82,7 +82,7 @@ const ResourcesPage = () => {
                     className="pl-10 h-12"
                   />
                 </div>
-                <ResourceFilters
+                <ServiceFilters
                   filters={filters}
                   onFiltersChange={handleFiltersChange}
                   resultCount={data?.meta.totalItems}
@@ -119,7 +119,7 @@ const ResourcesPage = () => {
             <p className="text-muted-foreground">
               Showing <span className="font-semibold text-foreground">{data.data.length}</span> of{' '}
               <span className="font-semibold text-foreground">{data.meta.totalItems}</span>{' '}
-              resources
+              services
               {debouncedSearch && (
                 <>
                   {' '}
@@ -131,15 +131,15 @@ const ResourcesPage = () => {
         )}
 
         {/* Loading State */}
-        {isLoading && <ResourceListSkeleton count={12} />}
+        {isLoading && <ServiceListSkeleton count={12} />}
 
         {/* Error State */}
         {isError && (
           <Alert variant="destructive" className="my-8">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error Loading Resources</AlertTitle>
+            <AlertTitle>Error Loading Services</AlertTitle>
             <AlertDescription>
-              {error instanceof Error ? error.message : 'Failed to load resources. Please try again.'}
+              {error instanceof Error ? error.message : 'Failed to load services. Please try again.'}
             </AlertDescription>
           </Alert>
         )}
@@ -150,7 +150,7 @@ const ResourcesPage = () => {
             {data.data.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 {data.data.map((resource) => (
-                  <ResourceCard key={resource.id} resource={resource} />
+                  <ServiceCard key={resource.id} resource={resource} />
                 ))}
               </div>
             ) : (
@@ -158,7 +158,7 @@ const ResourcesPage = () => {
                 <div className="mx-auto mb-4 p-4 bg-muted rounded-full w-fit">
                   <Search className="h-12 w-12 text-muted-foreground" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-2">No Resources Found</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-2">No Services Found</h3>
                 <p className="text-muted-foreground mb-6">
                   Try adjusting your search or filters to find what you're looking for
                 </p>
@@ -206,4 +206,4 @@ const ResourcesPage = () => {
   );
 };
 
-export default ResourcesPage;
+export default ServicesPage;

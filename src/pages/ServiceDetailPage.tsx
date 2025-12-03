@@ -16,18 +16,18 @@ import {
   AlertCircle,
   Loader2,
 } from 'lucide-react';
-import { useResource, useRelatedResources, useMarkResourceHelpful } from '@/hooks/useResources';
-import { ResourceCard } from '@/components/features/ResourceCard';
-import { ResourceListSkeleton } from '@/components/features/ResourceCardSkeleton';
+import { useService, useRelatedServices, useMarkServiceHelpful } from '@/hooks/useServices';
+import { ServiceCard } from '@/components/features/ServiceCard';
+import { ServiceListSkeleton } from '@/components/features/ServiceCardSkeleton';
 import { formatDate } from '@/lib/utils';
 
-const ResourceDetailPage = () => {
+const ServiceDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: resource, isLoading, isError } = useResource(id!);
-  const { data: relatedResources } = useRelatedResources(id!);
-  const markHelpfulMutation = useMarkResourceHelpful();
+  const { data: resource, isLoading, isError } = useService(id!);
+  const { data: relatedServices } = useRelatedServices(id!);
+  const markHelpfulMutation = useMarkServiceHelpful();
 
   const handleMarkHelpful = () => {
     if (resource) {
@@ -68,9 +68,9 @@ const ResourceDetailPage = () => {
               </AlertDescription>
             </Alert>
             <div className="mt-6">
-              <Button variant="outline" onClick={() => navigate('/resources')}>
+              <Button variant="outline" onClick={() => navigate('/services')}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Resources
+                Back to Services
               </Button>
             </div>
           </div>
@@ -87,10 +87,10 @@ const ResourceDetailPage = () => {
           <Button
             variant="ghost"
             className="mb-6"
-            onClick={() => navigate('/resources')}
+            onClick={() => navigate('/services')}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Resources
+            Back to Services
           </Button>
 
           {/* Main Content Card */}
@@ -223,11 +223,11 @@ const ResourceDetailPage = () => {
           </Card>
 
           {/* Related Resources */}
-          {relatedResources && relatedResources.length > 0 && (
+          {relatedServices && relatedServices.length > 0 && (
             <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold">Related Resources</h2>
-                <Link to="/resources">
+                <h2 className="text-2xl font-bold">Related Services</h2>
+                <Link to="/services">
                   <Button variant="ghost" size="sm">
                     View All
                   </Button>
@@ -235,8 +235,8 @@ const ResourceDetailPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedResources.map((relatedResource) => (
-                  <ResourceCard key={relatedResource.id} resource={relatedResource} />
+                {relatedServices.map((relatedService) => (
+                  <ServiceCard key={relatedService.id} resource={relatedService} />
                 ))}
               </div>
             </div>
@@ -247,4 +247,4 @@ const ResourceDetailPage = () => {
   );
 };
 
-export default ResourceDetailPage;
+export default ServiceDetailPage;

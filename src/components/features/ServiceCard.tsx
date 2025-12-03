@@ -67,7 +67,7 @@ const getCategoryColor = (category: Resource['category']) => {
   return colors[category] || colors.general;
 };
 
-export const ResourceCard = ({ resource, className }: ResourceCardProps) => {
+export const ServiceCard = ({ resource, className }: ResourceCardProps) => {
   return (
     <Card
       className={cn(

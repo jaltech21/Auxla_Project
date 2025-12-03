@@ -10,10 +10,10 @@ const Header = () => {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Resources", href: "/resources" },
+    { name: "About Us", href: "/about" },
+    { name: "Our Services", href: "/services" },
     { name: "Blog", href: "/blog" },
-    { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    { name: "Contact Us", href: "/contact" },
   ];
 
   const isActive = (path: string) => {
@@ -32,7 +32,10 @@ const Header = () => {
             <div className="p-2 bg-primary-light rounded-lg transition-transform duration-300 group-hover:scale-110">
               <Heart className="h-6 w-6 text-primary" fill="currentColor" />
             </div>
-            <span className="text-xl font-bold text-foreground">MindCare</span>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-foreground leading-tight">OCSLAA</span>
+              <span className="text-[10px] text-muted-foreground leading-tight hidden md:block">Our Concern Sierra Leone Alliance</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -59,10 +62,10 @@ const Header = () => {
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
             <Button variant="outline" size="default" asChild>
-              <Link to="/resources">Get Help</Link>
+              <Link to="/services?category=crisis">Get Help Now</Link>
             </Button>
             <Button variant="hero" size="default" asChild>
-              <Link to="/donate">Donate</Link>
+              <Link to="/donate">Donate Now</Link>
             </Button>
           </div>
 
@@ -102,10 +105,10 @@ const Header = () => {
             ))}
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
               <Button variant="outline" size="default" asChild className="w-full">
-                <Link to="/resources">Get Help</Link>
+                <Link to="/services?category=crisis">Get Help Now</Link>
               </Button>
               <Button variant="hero" size="default" asChild className="w-full">
-                <Link to="/donate">Donate</Link>
+                <Link to="/donate">Donate Now</Link>
               </Button>
             </div>
           </nav>
