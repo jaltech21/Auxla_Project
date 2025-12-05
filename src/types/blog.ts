@@ -17,6 +17,7 @@ export interface Author {
   avatar: string;
   credentials?: string[];
   socialLinks?: {
+    email?: string;
     twitter?: string;
     linkedin?: string;
   };
