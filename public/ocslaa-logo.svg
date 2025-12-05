@@ -1,0 +1,26 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#0D9488"/>
+  
+  <!-- Heart shape representing care and mental health -->
+  <path d="M256 400C256 400 120 310 120 210C120 170 145 140 175 140C200 140 225 155 256 185C287 155 312 140 337 140C367 140 392 170 392 210C392 310 256 400 256 400Z" 
+        fill="white" 
+        stroke="white" 
+        stroke-width="8"/>
+  
+  <!-- Brain wave/pulse line overlay -->
+  <path d="M180 240 L200 240 L210 220 L220 260 L230 220 L240 240 L332 240" 
+        stroke="#F59E0B" 
+        stroke-width="6" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        fill="none"/>
+  
+  <!-- Initials OCSLAA at bottom -->
+  <text x="256" y="460" 
+        font-family="Arial, sans-serif" 
+        font-size="48" 
+        font-weight="bold" 
+        fill="white" 
+        text-anchor="middle">OCSLAA</text>
+</svg>

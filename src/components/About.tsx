@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Target, Eye, Award } from "lucide-react";
-import communityImage from "@/assets/community.jpg";
+import communityImage from "@/assets/awareness-campaign.jpg";
 
 const About = () => {
   const values = [
