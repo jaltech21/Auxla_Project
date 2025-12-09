@@ -16,8 +16,13 @@ import BlogPage from "./pages/BlogPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import AboutPage from "./pages/AboutPage";
 import DonatePage from "./pages/DonatePage";
+import DonationPage from "./pages/DonationPage";
+import DonationSuccessPage from "./pages/DonationSuccessPage";
 import ContactPage from "./pages/ContactPage";
 import SupportFinderPage from "./pages/SupportFinderPage";
+import ConfirmSubscriptionPage from "./pages/ConfirmSubscriptionPage";
+import UnsubscribePage from "./pages/UnsubscribePage";
+import PreferencesPage from "./pages/PreferencesPage";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -38,9 +43,13 @@ const App = () => (
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogDetailPage />} />
                 <Route path="/about" element={<AboutPage />} />
-                <Route path="/donate" element={<DonatePage />} />
+                <Route path="/donate" element={<DonationPage />} />
+                <Route path="/donation/success" element={<DonationSuccessPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/support-finder" element={<SupportFinderPage />} />
+                <Route path="/newsletter/confirm" element={<ConfirmSubscriptionPage />} />
+                <Route path="/newsletter/unsubscribe" element={<UnsubscribePage />} />
+                <Route path="/newsletter/preferences" element={<PreferencesPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -1,23 +1,50 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, CheckCircle } from "lucide-react";
-import { toast } from "sonner";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Mail, CheckCircle, Loader2 } from "lucide-react";
+import { useSubscribeNewsletter } from "@/hooks/useNewsletter";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  
+  const { mutate: subscribe, isPending } = useSubscribeNewsletter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setIsSubscribed(true);
-      toast.success("Successfully subscribed!", {
-        description: "Thank you for joining our community. Check your email for confirmation.",
-      });
-      setEmail("");
-      setTimeout(() => setIsSubscribed(false), 5000);
+    
+    if (!email) {
+      return;
     }
+
+    if (!consent) {
+      return;
+    }
+
+    subscribe(
+      {
+        email,
+        consent,
+        preferences: {
+          weeklyUpdates: true,
+          monthlyNewsletter: true,
+          eventNotifications: false,
+          resourceAlerts: true,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          if (data.success) {
+            setIsSubscribed(true);
+            setEmail("");
+            setConsent(false);
+            setTimeout(() => setIsSubscribed(false), 7000);
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -45,18 +72,47 @@ const Newsletter = () => {
                 journey.
               </p>
 
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-                <Input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="h-12 bg-primary-foreground text-foreground border-0 flex-1"
-                />
-                <Button type="submit" variant="secondary" size="lg" className="h-12 px-8 flex-shrink-0">
-                  Subscribe
-                </Button>
+              <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto">
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Input
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={isPending}
+                    className="h-12 bg-primary-foreground text-foreground border-0 flex-1"
+                  />
+                  <Button 
+                    type="submit" 
+                    variant="secondary" 
+                    size="lg" 
+                    className="h-12 px-8 flex-shrink-0"
+                    disabled={isPending || !consent}
+                  >
+                    {isPending ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        Subscribing...
+                      </>
+                    ) : (
+                      'Subscribe'
+                    )}
+                  </Button>
+                </div>
+
+                <div className="flex items-start gap-2 text-left">
+                  <Checkbox
+                    id="consent"
+                    checked={consent}
+                    onCheckedChange={(checked) => setConsent(checked as boolean)}
+                    className="mt-1 border-primary-foreground/40 data-[state=checked]:bg-primary-foreground data-[state=checked]:text-primary"
+                  />
+                  <label htmlFor="consent" className="text-sm text-primary-foreground/80 cursor-pointer">
+                    I agree to receive emails from OCSLAA and understand I can unsubscribe at any time. 
+                    View our <a href="/privacy" className="underline hover:text-primary-foreground">Privacy Policy</a>.
+                  </label>
+                </div>
               </form>
 
               <p className="text-sm text-primary-foreground/70">
