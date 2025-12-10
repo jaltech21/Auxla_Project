@@ -5,6 +5,9 @@ import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise, stripeAppearance } from '@/lib/stripe';
 import { CheckoutForm } from '@/components/features/CheckoutForm';
 import { StepIndicator } from '@/components/features/StepIndicator';
+import PaymentMethodSelector from '@/components/features/PaymentMethodSelector';
+import BankTransferDetails from '@/components/features/BankTransferDetails';
+import PayPalButton from '@/components/features/PayPalButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,22 +16,26 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCreatePaymentIntent, useConfirmDonation, useDonationStats } from '@/hooks/useDonation';
-import { DonationForm, DonationType } from '@/types/donation';
+import { DonationForm, DonationType, PaymentMethod } from '@/types/donation';
+import { submitBankTransfer } from '@/services/bankTransferService';
 import { Heart, Users, BookOpen, Shield, ArrowLeft, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const DonationPage = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<'details' | 'payment'>('details');
+  const [step, setStep] = useState<'details' | 'method' | 'payment'>('details');
   
   const steps = [
     { title: 'Donation Details', description: 'Amount & Info' },
-    { title: 'Payment', description: 'Secure Checkout' },
-    { title: 'Confirmation', description: 'Complete' },
+    { title: 'Payment Method', description: 'Choose Option' },
+    { title: 'Payment', description: 'Complete' },
+    { title: 'Confirmation', description: 'Done' },
   ];
   
-  const currentStepNumber = step === 'details' ? 1 : 2;
+  const currentStepNumber = step === 'details' ? 1 : step === 'method' ? 2 : 3;
   const [clientSecret, setClientSecret] = useState<string>('');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('stripe');
+  const [bankTransferProof, setBankTransferProof] = useState<string | undefined>();
   
   // Form state
   const [amount, setAmount] = useState<number>(50);
@@ -76,14 +83,19 @@ const DonationPage = () => {
     },
   ];
 
-  const handleProceedToPayment = () => {
+  const handleProceedToMethod = () => {
     if (!email || (!isAnonymous && (!firstName || !lastName))) {
+      toast.error('Please fill in all required fields');
       return;
     }
+    setStep('method');
+  };
 
+  const handleProceedToPayment = () => {
     const donationForm: DonationForm = {
       amount: selectedAmount,
       type,
+      paymentMethod,
       firstName: isAnonymous ? undefined : firstName,
       lastName: isAnonymous ? undefined : lastName,
       email,
@@ -91,20 +103,31 @@ const DonationPage = () => {
       anonymous: isAnonymous,
       dedicatedTo: dedicatedTo || undefined,
       message: message || undefined,
+      coverFees
     };
 
-    createIntent(donationForm, {
-      onSuccess: (paymentIntent) => {
-        setClientSecret(paymentIntent.clientSecret);
-        setStep('payment');
-      },
-    });
+    // Only create Stripe payment intent if Stripe is selected
+    if (paymentMethod === 'stripe') {
+      createIntent(donationForm, {
+        onSuccess: (paymentIntent) => {
+          setClientSecret(paymentIntent.clientSecret);
+          setStep('payment');
+        },
+        onError: () => {
+          toast.error('Failed to initialize payment. Please try again.');
+        }
+      });
+    } else {
+      // For PayPal and Bank Transfer, go directly to payment step
+      setStep('payment');
+    }
   };
 
   const handlePaymentSuccess = () => {
     const donationForm: DonationForm = {
       amount: selectedAmount,
       type,
+      paymentMethod,
       firstName: isAnonymous ? undefined : firstName,
       lastName: isAnonymous ? undefined : lastName,
       email,
@@ -112,16 +135,69 @@ const DonationPage = () => {
       anonymous: isAnonymous,
       dedicatedTo: dedicatedTo || undefined,
       message: message || undefined,
+      coverFees
     };
 
     confirmDonation(
       { paymentIntentId: clientSecret.split('_secret_')[0], donationForm },
       {
-        onSuccess: () => {
-          navigate('/donation/success');
+        onSuccess: (response) => {
+          if (response.data) {
+            const donation = response.data;
+            navigate('/donation/success', {
+              state: {
+                donationId: donation.id,
+                amount: donation.amount,
+                paymentMethod: donation.paymentMethod,
+                donationType: donation.type,
+                donorName: donation.donor.anonymous 
+                  ? 'Anonymous' 
+                  : `${donation.donor.firstName} ${donation.donor.lastName}`,
+                email: donation.donor.email
+              }
+            });
+          }
         },
       }
     );
+  };
+
+  const handleBankTransferSubmit = async () => {
+    try {
+      const donationForm: DonationForm = {
+        amount: selectedAmount,
+        type,
+        paymentMethod: 'bank-transfer',
+        firstName: isAnonymous ? undefined : firstName,
+        lastName: isAnonymous ? undefined : lastName,
+        email,
+        phone,
+        anonymous: isAnonymous,
+        dedicatedTo: dedicatedTo || undefined,
+        message: message || undefined,
+        coverFees
+      };
+
+      const donation = await submitBankTransfer(donationForm, bankTransferProof);
+      
+      toast.success('Donation submitted! Awaiting verification.');
+      
+      navigate('/donation/success', {
+        state: {
+          donationId: donation.id,
+          amount: donation.amount,
+          paymentMethod: 'bank-transfer',
+          donationType: donation.type,
+          donorName: donation.donor.anonymous 
+            ? 'Anonymous' 
+            : `${donation.donor.firstName} ${donation.donor.lastName}`,
+          email: donation.donor.email,
+          pending: true
+        }
+      });
+    } catch (error) {
+      toast.error('Failed to submit donation. Please try again.');
+    }
   };
 
   return (
@@ -198,11 +274,17 @@ const DonationPage = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    {step === 'details' ? 'Donation Details' : 'Payment Information'}
+                    {step === 'details' 
+                      ? 'Donation Details' 
+                      : step === 'method' 
+                      ? 'Payment Method' 
+                      : 'Payment Information'}
                   </CardTitle>
                   <CardDescription>
                     {step === 'details'
                       ? 'Choose your donation amount and provide your information'
+                      : step === 'method'
+                      ? 'Select how you would like to donate'
                       : 'Complete your secure payment'}
                   </CardDescription>
                 </CardHeader>
@@ -362,9 +444,8 @@ const DonationPage = () => {
                       </div>
 
                       <Button
-                        onClick={handleProceedToPayment}
+                        onClick={handleProceedToMethod}
                         disabled={
-                          isCreatingIntent ||
                           !email ||
                           (!isAnonymous && (!firstName || !lastName)) ||
                           selectedAmount < 1
@@ -372,35 +453,117 @@ const DonationPage = () => {
                         size="lg"
                         className="w-full"
                       >
-                        {isCreatingIntent ? (
-                          <>
-                            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                            Processing...
-                          </>
-                        ) : (
-                          `Proceed to Payment - $${totalAmount.toFixed(2)}`
-                        )}
+                        Continue to Payment Method
                       </Button>
                     </div>
+                  ) : step === 'method' ? (
+                    <div className="space-y-6">
+                      <PaymentMethodSelector
+                        selected={paymentMethod}
+                        onChange={setPaymentMethod}
+                      />
+
+                      <div className="flex gap-3">
+                        <Button
+                          variant="outline"
+                          onClick={() => setStep('details')}
+                          className="flex-1"
+                        >
+                          <ArrowLeft className="mr-2 h-4 w-4" />
+                          Back
+                        </Button>
+                        <Button
+                          onClick={handleProceedToPayment}
+                          disabled={isCreatingIntent}
+                          size="lg"
+                          className="flex-1"
+                        >
+                          {isCreatingIntent ? (
+                            <>
+                              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            `Continue - $${totalAmount.toFixed(2)}`
+                          )}
+                        </Button>
+                      </div>
+                    </div>
                   ) : (
-                    clientSecret && (
-                      <Elements
-                        stripe={stripePromise}
-                        options={{
-                          clientSecret,
-                          appearance: stripeAppearance,
-                        }}
-                      >
-                        <CheckoutForm
-                          amount={Math.round(totalAmount * 100)}
-                          onSuccess={handlePaymentSuccess}
-                          onError={(error) => {
-                            console.error(error);
-                            setStep('details');
+                    <div className="space-y-6">
+                      {/* Stripe Payment */}
+                      {paymentMethod === 'stripe' && clientSecret && (
+                        <Elements
+                          stripe={stripePromise}
+                          options={{
+                            clientSecret,
+                            appearance: stripeAppearance,
+                          }}
+                        >
+                          <CheckoutForm
+                            amount={Math.round(totalAmount * 100)}
+                            onSuccess={handlePaymentSuccess}
+                            onError={(error) => {
+                              console.error(error);
+                              toast.error('Payment failed. Please try again.');
+                              setStep('method');
+                            }}
+                          />
+                        </Elements>
+                      )}
+
+                      {/* PayPal Payment */}
+                      {paymentMethod === 'paypal' && (
+                        <PayPalButton
+                          amount={totalAmount}
+                          donationData={{
+                            amount: selectedAmount,
+                            type,
+                            paymentMethod: 'paypal',
+                            firstName: isAnonymous ? undefined : firstName,
+                            lastName: isAnonymous ? undefined : lastName,
+                            email,
+                            phone,
+                            anonymous: isAnonymous,
+                            dedicatedTo: dedicatedTo || undefined,
+                            message: message || undefined,
+                            coverFees
                           }}
                         />
-                      </Elements>
-                    )
+                      )}
+
+                      {/* Bank Transfer */}
+                      {paymentMethod === 'bank-transfer' && (
+                        <BankTransferDetails
+                          donationData={{
+                            amount: selectedAmount,
+                            type,
+                            paymentMethod: 'bank-transfer',
+                            firstName: isAnonymous ? undefined : firstName,
+                            lastName: isAnonymous ? undefined : lastName,
+                            email,
+                            phone,
+                            anonymous: isAnonymous,
+                            dedicatedTo: dedicatedTo || undefined,
+                            message: message || undefined,
+                            coverFees
+                          }}
+                          onProofUploaded={setBankTransferProof}
+                          onSubmit={handleBankTransferSubmit}
+                        />
+                      )}
+
+                      {paymentMethod !== 'bank-transfer' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => setStep('method')}
+                          className="w-full"
+                        >
+                          <ArrowLeft className="mr-2 h-4 w-4" />
+                          Change Payment Method
+                        </Button>
+                      )}
+                    </div>
                   )}
                 </CardContent>
               </Card>

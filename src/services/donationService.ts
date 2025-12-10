@@ -10,11 +10,16 @@ import {
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 /**
- * Create a payment intent for donation
+ * Create a payment intent for donation (Stripe only)
  */
 export async function createPaymentIntent(
   donationForm: DonationForm
 ): Promise<PaymentIntent> {
+  // Only create payment intent for Stripe payments
+  if (donationForm.paymentMethod !== 'stripe') {
+    throw new Error('Payment intent is only for Stripe payments');
+  }
+
   try {
     // TODO: Replace with actual API call
     const response = await mockCreatePaymentIntent(donationForm);
@@ -153,7 +158,7 @@ async function mockConfirmDonation(
       email: donationForm.email,
       anonymous: donationForm.anonymous || false,
     },
-    paymentMethod: 'card',
+    paymentMethod: donationForm.paymentMethod || 'stripe',
     stripePaymentIntentId: paymentIntentId,
     dedicatedTo: donationForm.dedicatedTo,
     message: donationForm.message,

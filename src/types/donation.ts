@@ -2,11 +2,14 @@
 
 export type DonationType = 'one-time' | 'monthly';
 
+export type PaymentMethod = 'stripe' | 'paypal' | 'bank-transfer';
+
 export type DonationAmount = 25 | 50 | 100 | 250;
 
 export interface DonationForm {
   amount: number;
   type: DonationType;
+  paymentMethod: PaymentMethod;
   firstName?: string;
   lastName?: string;
   email: string;
@@ -28,8 +31,13 @@ export interface Donation {
     email: string;
     anonymous: boolean;
   };
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
   stripePaymentIntentId?: string;
+  paypalOrderId?: string;
+  paymentProofUrl?: string;
+  verificationStatus?: 'pending' | 'verified' | 'rejected';
+  verifiedAt?: string;
+  verifiedBy?: string;
   dedicatedTo?: string;
   message?: string;
   createdAt: string;
@@ -61,7 +69,7 @@ export interface PaymentIntent {
 export interface DonationAPIResponse {
   success: boolean;
   message: string;
-  data?: any;
+  data?: Donation;
 }
 
 export interface DonationReceipt {
@@ -77,5 +85,28 @@ export interface DonationReceipt {
 export interface PaymentIntent {
   clientSecret: string;
   paymentIntentId: string;
+  amount: number;
+}
+
+export interface BankTransferDetails {
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+  routingNumber?: string;
+  swiftCode?: string;
+  reference: string;
+}
+
+export interface PaymentProof {
+  donationId: string;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: string;
+  verified: boolean;
+}
+
+export interface PayPalOrder {
+  orderId: string;
+  approveUrl: string;
   amount: number;
 }
