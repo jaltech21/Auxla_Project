@@ -1,6 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Target, Eye, Award } from "lucide-react";
 import communityImage from "@/assets/awareness-campaign.jpg";
+import TeamSection from "./TeamSection";
+import Partners from "./Partners";
+import WhyChooseSection from "./WhyChooseSection";
 
 const About = () => {
   const values = [
@@ -26,28 +29,7 @@ const About = () => {
     },
   ];
 
-  const team = [
-    {
-      name: "Dr. Sarah Johnson",
-      role: "Clinical Director",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
-    },
-    {
-      name: "Dr. Michael Chen",
-      role: "Research Lead",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
-    },
-    {
-      name: "Emma Rodriguez",
-      role: "Community Manager",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
-    },
-    {
-      name: "James Williams",
-      role: "Program Coordinator",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
-    },
-  ];
+
 
   const milestones = [
     { year: "2018", event: "OCSLAA Founded", description: "Started with a vision to make mental health care accessible in Sierra Leone" },
@@ -90,12 +72,6 @@ const About = () => {
               alt="Community support"
               className="rounded-2xl shadow-card w-full h-[500px] object-cover"
             />
-            <div className="absolute -bottom-6 -left-6 bg-card p-6 rounded-xl shadow-lg border border-border max-w-xs">
-              <p className="text-sm font-medium text-foreground">
-                "OCSLAA helped me find the support I needed when I felt most alone. The community here is incredible."
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">- Sarah M.</p>
-            </div>
           </div>
         </div>
 
@@ -161,32 +137,14 @@ const About = () => {
           </div>
         </div>
 
-        {/* Team */}
-        <div>
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Meet Our Team</h2>
-            <p className="text-lg text-muted-foreground">
-              Dedicated professionals committed to your mental wellness
-            </p>
-          </div>
+        {/* Why Choose OCSLAA */}
+        <WhyChooseSection />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <div key={index} className="group text-center">
-                <div className="relative mb-4 overflow-hidden rounded-2xl">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-1">{member.name}</h3>
-                <p className="text-sm text-muted-foreground">{member.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Team */}
+        <TeamSection />
+
+        {/* Partners */}
+        <Partners />
       </div>
     </section>
   );

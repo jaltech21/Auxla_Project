@@ -39,44 +39,59 @@ const Hero = () => {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Button variant="hero" size="lg" asChild>
-              <a href="#resources" className="group">
-                Get Support Now
+              <a href="/support-finder" className="group">
+                Find Support Now
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               </a>
             </Button>
-            <Button variant="outline" size="lg" asChild>
-              <a href="#about">Learn More</a>
+            <Button variant="outline" size="lg" asChild className="border-2">
+              <a href="#about">Learn More About Us</a>
             </Button>
           </div>
 
+          {/* Trust Indicator */}
+          <div className="flex items-center gap-2 pt-2">
+            <div className="flex -space-x-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="w-8 h-8 rounded-full bg-secondary-light border-2 border-background"
+                />
+              ))}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Trusted by <span className="font-semibold text-foreground">52,000+</span> Sierra Leoneans
+            </p>
+          </div>
+
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-6 pt-8">
-            <div className="space-y-1">
+          <div className="grid grid-cols-3 gap-4 md:gap-6 pt-8">
+            <div className="space-y-2 group">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-secondary-light rounded-lg">
-                  <Users className="h-5 w-5 text-secondary" />
+                <div className="p-2.5 bg-primary-light rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <Users className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                 </div>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-foreground">50K+</p>
-              <p className="text-sm text-muted-foreground">People Helped</p>
+              <p className="text-2xl md:text-3xl font-bold text-foreground">52K+</p>
+              <p className="text-xs md:text-sm text-muted-foreground">People Supported</p>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-2 group">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-secondary-light rounded-lg">
-                  <BookOpen className="h-5 w-5 text-secondary" />
+                <div className="p-2.5 bg-secondary-light rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <BookOpen className="h-5 w-5 md:h-6 md:w-6 text-secondary" />
                 </div>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-foreground">200+</p>
-              <p className="text-sm text-muted-foreground">Resources</p>
+              <p className="text-2xl md:text-3xl font-bold text-foreground">235+</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Resources</p>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-2 group">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-secondary-light rounded-lg">
-                  <Heart className="h-5 w-5 text-secondary" fill="currentColor" />
+                <div className="p-2.5 bg-accent/10 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                  <Heart className="h-5 w-5 md:h-6 md:w-6 text-accent" fill="currentColor" />
                 </div>
               </div>
-              <p className="text-2xl md:text-3xl font-bold text-foreground">24/7</p>
-              <p className="text-sm text-muted-foreground">Support</p>
+              <p className="text-2xl md:text-3xl font-bold text-foreground">15</p>
+              <p className="text-xs md:text-sm text-muted-foreground">Districts Reached</p>
             </div>
           </div>
         </div>

@@ -14,11 +14,13 @@ import ServicesPage from "./pages/ServicesPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import BlogPage from "./pages/BlogPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
+import AuthorPage from "./pages/AuthorPage";
 import AboutPage from "./pages/AboutPage";
 import DonatePage from "./pages/DonatePage";
 import DonationPage from "./pages/DonationPage";
 import DonationSuccessPage from "./pages/DonationSuccessPage";
 import ContactPage from "./pages/ContactPage";
+import ContactSuccessPage from "./pages/ContactSuccessPage";
 import SupportFinderPage from "./pages/SupportFinderPage";
 import ConfirmSubscriptionPage from "./pages/ConfirmSubscriptionPage";
 import UnsubscribePage from "./pages/UnsubscribePage";
@@ -42,10 +44,12 @@ const App = () => (
                 <Route path="/services/:id" element={<ServiceDetailPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogDetailPage />} />
+                <Route path="/blog/author/:authorId" element={<AuthorPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/donate" element={<DonationPage />} />
                 <Route path="/donation/success" element={<DonationSuccessPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/contact/success" element={<ContactSuccessPage />} />
                 <Route path="/support-finder" element={<SupportFinderPage />} />
                 <Route path="/newsletter/confirm" element={<ConfirmSubscriptionPage />} />
                 <Route path="/newsletter/unsubscribe" element={<UnsubscribePage />} />

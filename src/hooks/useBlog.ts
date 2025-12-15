@@ -117,6 +117,9 @@ export const usePostsByAuthor = (authorId: string, limit?: number) => {
   });
 };
 
+// Alias for consistency with component naming
+export const useBlogPostsByAuthor = usePostsByAuthor;
+
 // Fetch posts by tag
 export const usePostsByTag = (tag: string, limit?: number) => {
   return useQuery({

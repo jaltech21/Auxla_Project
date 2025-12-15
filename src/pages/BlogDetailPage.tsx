@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import AuthorCard from "@/components/features/AuthorCard";
 import BlogCard from "@/components/features/BlogCard";
+import TableOfContents from "@/components/features/TableOfContents";
 import {
   Calendar,
   Clock,
@@ -143,126 +144,134 @@ const BlogDetailPage = () => {
 
         {/* Article Header */}
         <article className="container mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <div className="max-w-4xl mx-auto">
-            {/* Category & Featured Badge */}
-            <div className="flex items-center gap-3 mb-6">
-              <Badge variant="outline" className={getCategoryColor(post.category)}>
-                {formatCategoryName(post.category)}
-              </Badge>
-              {post.featured && (
-                <Badge className="bg-primary text-primary-foreground">Featured</Badge>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Main Content Column */}
+            <div className="lg:col-span-8">
+              {/* Category & Featured Badge */}
+              <div className="flex items-center gap-3 mb-6">
+                <Badge variant="outline" className={getCategoryColor(post.category)}>
+                  {formatCategoryName(post.category)}
+                </Badge>
+                {post.featured && (
+                  <Badge className="bg-primary text-primary-foreground">Featured</Badge>
+                )}
+              </div>
+
+              {/* Title */}
+              <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">{post.title}</h1>
+
+              {/* Excerpt */}
+              <p className="text-xl text-muted-foreground mb-8">{post.excerpt}</p>
+
+              {/* Meta Info */}
+              <div className="flex flex-wrap items-center gap-6 mb-8 pb-8 border-b">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  <span>{formatDistanceToNow(new Date(post.publishedAt), { addSuffix: true })}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span>{post.readTime} min read</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Eye className="h-4 w-4" />
+                  <span>{post.viewCount} views</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Heart className="h-4 w-4" />
+                  <span>{post.likeCount} likes</span>
+                </div>
+              </div>
+
+              {/* Featured Image */}
+              <img
+                src={post.coverImage}
+                alt={post.title}
+                className="w-full aspect-video object-cover rounded-2xl mb-12"
+              />
+
+              {/* Article Content */}
+              <div className="prose prose-lg max-w-none mb-12">
+                {post.content.split("\n").map((paragraph, index) => (
+                  <p key={index} className="mb-4 text-foreground leading-relaxed">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b">
+                {post.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+
+              {/* Engagement Actions */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12 pb-12 border-b">
+                <Button
+                  onClick={handleLike}
+                  variant={hasLiked ? "default" : "outline"}
+                  className="gap-2"
+                  disabled={hasLiked}
+                >
+                  <Heart className={`h-4 w-4 ${hasLiked ? "fill-current" : ""}`} />
+                  {hasLiked ? "Liked" : "Like this article"}
+                </Button>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground mr-2">Share:</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("twitter")}
+                    aria-label="Share on Twitter"
+                  >
+                    <Twitter className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("facebook")}
+                    aria-label="Share on Facebook"
+                  >
+                    <Facebook className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleShare("linkedin")}
+                    aria-label="Share on LinkedIn"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Author Info */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-foreground mb-6">About the Author</h3>
+                <AuthorCard author={post.author} />
+              </div>
+
+              {/* Related Posts */}
+              {relatedPosts && relatedPosts.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground mb-6">Related Articles</h3>
+                  <div className="grid grid-cols-1 gap-6">
+                    {relatedPosts.map((relatedPost) => (
+                      <BlogCard key={relatedPost.id} post={relatedPost} />
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
 
-            {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">{post.title}</h1>
-
-            {/* Excerpt */}
-            <p className="text-xl text-muted-foreground mb-8">{post.excerpt}</p>
-
-            {/* Meta Info */}
-            <div className="flex flex-wrap items-center gap-6 mb-8 pb-8 border-b">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                <span>{formatDistanceToNow(new Date(post.publishedAt), { addSuffix: true })}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{post.readTime} min read</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Eye className="h-4 w-4" />
-                <span>{post.viewCount} views</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Heart className="h-4 w-4" />
-                <span>{post.likeCount} likes</span>
-              </div>
-            </div>
-
-            {/* Featured Image */}
-            <img
-              src={post.coverImage}
-              alt={post.title}
-              className="w-full aspect-video object-cover rounded-2xl mb-12"
-            />
-
-            {/* Article Content */}
-            <div className="prose prose-lg max-w-none mb-12">
-              {post.content.split("\n").map((paragraph, index) => (
-                <p key={index} className="mb-4 text-foreground leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-
-            {/* Engagement Actions */}
-            <div className="flex items-center justify-between mb-12 pb-12 border-b">
-              <Button
-                onClick={handleLike}
-                variant={hasLiked ? "default" : "outline"}
-                className="gap-2"
-                disabled={hasLiked}
-              >
-                <Heart className={`h-4 w-4 ${hasLiked ? "fill-current" : ""}`} />
-                {hasLiked ? "Liked" : "Like this article"}
-              </Button>
-
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground mr-2">Share:</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleShare("twitter")}
-                  aria-label="Share on Twitter"
-                >
-                  <Twitter className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleShare("facebook")}
-                  aria-label="Share on Facebook"
-                >
-                  <Facebook className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => handleShare("linkedin")}
-                  aria-label="Share on LinkedIn"
-                >
-                  <Linkedin className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Author Info */}
-            <div className="mb-16">
-              <h3 className="text-2xl font-bold text-foreground mb-6">About the Author</h3>
-              <AuthorCard author={post.author} />
-            </div>
-
-            {/* Related Posts */}
-            {relatedPosts && relatedPosts.length > 0 && (
-              <div>
-                <h3 className="text-2xl font-bold text-foreground mb-6">Related Articles</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {relatedPosts.map((relatedPost) => (
-                    <BlogCard key={relatedPost.id} post={relatedPost} />
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Sidebar Column - Table of Contents */}
+            <aside className="lg:col-span-4 hidden lg:block">
+              <TableOfContents content={post.content} />
+            </aside>
           </div>
         </article>
       </div>

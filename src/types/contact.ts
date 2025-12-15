@@ -63,3 +63,54 @@ export interface PartnershipInquiry {
   description: string;
   proposedBenefit?: string;
 }
+
+export interface MediaInquiry {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  outlet: string;
+  role: string;
+  subject: string;
+  message: string;
+  deadline?: string;
+  interviewRequest?: boolean;
+}
+
+export interface ContactInfo {
+  type: 'email' | 'phone' | 'address' | 'social';
+  label: string;
+  value: string;
+  icon: string;
+  href?: string;
+}
+
+export interface OfficeHours {
+  day: string;
+  hours: string;
+  isOpen: boolean;
+}
+
+export interface FAQVote {
+  faqId: string;
+  helpful: boolean;
+  userId?: string;
+  timestamp: string;
+}
+
+export interface FAQWithVotes {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+  helpfulCount: number;
+  notHelpfulCount: number;
+  userVote?: boolean;
+}
+
+export interface ContactSubmissionResponse {
+  success: boolean;
+  message: string;
+  submissionId?: string;
+  data?: ContactInquiry;
+}
