@@ -169,7 +169,7 @@ export default async function handler(req, res) {
 
 **3. Add environment variable in Vercel dashboard:**
 ```
-RESEND_API_KEY=re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv
+RESEND_API_KEY=REPLACE_WITH_RESEND_API_KEY
 ```
 
 **4. Deploy:**

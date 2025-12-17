@@ -43,7 +43,7 @@ Create a `.env` file in the project root:
 
 ```env
 # Resend Email Service
-VITE_RESEND_API_KEY=re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv
+VITE_RESEND_API_KEY=REPLACE_WITH_RESEND_API_KEY
 VITE_EMAIL_FROM=OCSLAA <onboarding@resend.dev>
 VITE_EMAIL_REPLY_TO=info@ocslaa.org
 
@@ -268,8 +268,8 @@ Sanitizes user input to prevent XSS in emails
 
 1. **Set Environment to Production**:
    ```env
-   VITE_ENV=production
-   VITE_RESEND_API_KEY=re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv
+  VITE_ENV=production
+  VITE_RESEND_API_KEY=REPLACE_WITH_RESEND_API_KEY
    ```
 
 2. **Submit a Test Form**: Use real email address

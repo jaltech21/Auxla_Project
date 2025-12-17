@@ -47,7 +47,7 @@ In the Vercel dashboard (https://vercel.com):
 2. Click **Settings** → **Environment Variables**
 3. Add:
    - **Name**: `RESEND_API_KEY`
-   - **Value**: `re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv`
+   - **Value**: `REPLACE_WITH_RESEND_API_KEY` (do NOT commit this)
    - **Environment**: All (Production, Preview, Development)
 4. Click **Save**
 
@@ -126,7 +126,7 @@ export async function sendResendEmail(options: EmailOptions): Promise<SendEmailR
 Update `.env`:
 ```env
 # Remove or comment out - not needed anymore!
-# VITE_RESEND_API_KEY=re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv
+# VITE_RESEND_API_KEY=REPLACE_WITH_RESEND_API_KEY (DELETE THIS - moved to backend)
 
 # Add your Vercel API URL
 VITE_API_URL=https://YOUR-URL.vercel.app
@@ -230,7 +230,7 @@ netlify deploy --prod
 ### Step 5: Add Environment Variable
 
 ```bash
-netlify env:set RESEND_API_KEY re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv
+netlify env:set RESEND_API_KEY REPLACE_WITH_RESEND_API_KEY
 ```
 
 You'll get a URL like: `https://ocslaa.netlify.app/.netlify/functions/send-email`
@@ -290,7 +290,7 @@ app.listen(port, () => {
 3. Click **New Project** → **Deploy from GitHub**
 4. Connect your repo
 5. Add environment variables:
-   - `RESEND_API_KEY=re_YTkwVok8_FyL9dPKb6CgMzPEj9jUdrXiv`
+  - `RESEND_API_KEY=REPLACE_WITH_RESEND_API_KEY`
    - `PORT=3000`
 6. Deploy!
 
