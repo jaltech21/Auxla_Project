@@ -1,0 +1,14 @@
+# Repo-level .gitignore for auxla workspace
+# Ignore local env files
+*.env
+/backend/.env
+
+# Node
+node_modules/
+
+# Build outputs
+dist/
+
+# Editor
+.vscode/
+.DS_Store

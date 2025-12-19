@@ -3,6 +3,7 @@ import cors from 'cors';
 import { Resend } from 'resend';
 import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
+import Stripe from 'stripe';
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_ANON_KEY
 );
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 
 // Middleware
 app.use(express.json());
@@ -325,6 +327,190 @@ app.post('/api/newsletter/send', async (req, res) => {
   }
 });
 
+// Create Stripe payment intent for donations
+app.post('/api/donations/create-payment-intent', async (req, res) => {
+  try {
+    const { amount, currency, donorEmail, donorName, designation, isAnonymous, message } = req.body;
+
+    if (!amount || amount < 1) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Amount must be at least $1' 
+      });
+    }
+
+    console.log(`💰 Creating payment intent for $${amount} from ${donorEmail}`);
+
+    // Create payment intent with Stripe
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(amount * 100), // Convert to cents
+      currency: currency || 'usd',
+      metadata: {
+        donorEmail: donorEmail || 'anonymous',
+        donorName: donorName || 'Anonymous',
+        designation: designation || 'general',
+        isAnonymous: isAnonymous ? 'true' : 'false',
+        message: message || ''
+      },
+      receipt_email: donorEmail || undefined,
+    });
+
+    console.log(`✅ Payment intent created: ${paymentIntent.id}`);
+
+    res.json({
+      success: true,
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id
+    });
+
+  } catch (error) {
+    console.error('❌ Payment intent creation error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Stripe webhook handler for payment confirmations
+app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error('❌ Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  if (event.type === 'payment_intent.succeeded') {
+    const paymentIntent = event.data.object;
+    console.log(`💰 Payment succeeded: ${paymentIntent.id}`);
+
+    try {
+      // Find or create donor
+      const { data: existingDonor } = await supabase
+        .from('donors')
+        .select('id')
+        .eq('email', paymentIntent.metadata.donorEmail)
+        .single();
+
+      let donorId = existingDonor?.id;
+
+      if (!existingDonor) {
+        const [firstName, ...lastNameParts] = (paymentIntent.metadata.donorName || 'Anonymous').split(' ');
+        const { data: newDonor } = await supabase
+          .from('donors')
+          .insert({
+            email: paymentIntent.metadata.donorEmail,
+            first_name: firstName,
+            last_name: lastNameParts.join(' ') || ''
+          })
+          .select('id')
+          .single();
+        donorId = newDonor?.id;
+      }
+
+      // Create donation record
+      await supabase.from('donations').insert({
+        donor_id: donorId,
+        amount: paymentIntent.amount / 100,
+        currency: paymentIntent.currency.toUpperCase(),
+        payment_method: 'card',
+        payment_status: 'completed',
+        stripe_payment_intent_id: paymentIntent.id,
+        stripe_charge_id: paymentIntent.latest_charge,
+        receipt_url: paymentIntent.charges?.data[0]?.receipt_url,
+        designation: paymentIntent.metadata.designation,
+        is_anonymous: paymentIntent.metadata.isAnonymous === 'true',
+        message: paymentIntent.metadata.message,
+        processed_at: new Date().toISOString()
+      });
+
+      // Send thank you email
+      if (paymentIntent.metadata.donorEmail && paymentIntent.metadata.donorEmail !== 'anonymous') {
+        await resend.emails.send({
+          from: 'OCSLAA <onboarding@resend.dev>',
+          to: paymentIntent.metadata.donorEmail,
+          subject: 'Thank You for Your Donation!',
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <style>
+                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                  .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                  .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0; }
+                  .content { background: #f9fafb; padding: 30px; }
+                  .amount { font-size: 36px; font-weight: bold; color: #667eea; margin: 20px 0; }
+                  .footer { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <h1>Thank You! 💙</h1>
+                  </div>
+                  <div class="content">
+                    <p>Dear ${paymentIntent.metadata.donorName},</p>
+                    <p>Thank you for your generous donation to OCSLAA (Our Concern Sierra Leone Alliance)!</p>
+                    <div class="amount">$${(paymentIntent.amount / 100).toFixed(2)}</div>
+                    <p>Your contribution will help us continue our mission to support mental health awareness and provide resources for those in need in Sierra Leone.</p>
+                    ${paymentIntent.metadata.designation && paymentIntent.metadata.designation !== 'general' 
+                      ? `<p><strong>Designation:</strong> ${paymentIntent.metadata.designation}</p>` 
+                      : ''}
+                    <p><strong>Transaction ID:</strong> ${paymentIntent.id}</p>
+                    <p>This email serves as your receipt for tax purposes. Your donation is tax-deductible to the extent allowed by law.</p>
+                    <p>With gratitude,<br><strong>The OCSLAA Team</strong></p>
+                  </div>
+                  <div class="footer">
+                    <p>© ${new Date().getFullYear()} OCSLAA. All rights reserved.</p>
+                    <p>If you have any questions, please contact us at support@ocslaa.org</p>
+                  </div>
+                </div>
+              </body>
+            </html>
+          `
+        }).catch(err => console.error('Failed to send thank you email:', err));
+      }
+
+      console.log(`✅ Donation recorded successfully`);
+    } catch (error) {
+      console.error('❌ Error processing donation:', error);
+    }
+  }
+
+  res.json({ received: true });
+});
+
+// Get donation statistics
+app.get('/api/donations/stats', async (req, res) => {
+  try {
+    const { data: donations } = await supabase
+      .from('donations')
+      .select('amount, payment_status, created_at')
+      .eq('payment_status', 'completed');
+
+    const total = donations?.reduce((sum, d) => sum + parseFloat(d.amount), 0) || 0;
+    const count = donations?.length || 0;
+
+    res.json({
+      success: true,
+      stats: {
+        totalAmount: total,
+        donationCount: count,
+        averageDonation: count > 0 ? total / count : 0
+      }
+    });
+  } catch (error) {
+    console.error('❌ Error fetching donation stats:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ 
@@ -333,7 +519,10 @@ app.use((req, res) => {
       health: 'GET /health',
       sendEmail: 'POST /api/send-email',
       newsletterSubscribe: 'POST /api/newsletter/subscribe',
-      newsletterSend: 'POST /api/newsletter/send'
+      newsletterSend: 'POST /api/newsletter/send',
+      createPaymentIntent: 'POST /api/donations/create-payment-intent',
+      stripeWebhook: 'POST /api/webhooks/stripe',
+      donationStats: 'GET /api/donations/stats'
     }
   });
 });
