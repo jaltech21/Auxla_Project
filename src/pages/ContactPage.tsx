@@ -1,6 +1,9 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { FormError } from '@/components/ui/form-error';
 import { 
   Mail, 
   Phone, 
@@ -23,21 +27,38 @@ import {
 } from 'lucide-react';
 import { useSubmitContactForm } from '@/hooks/useContact';
 import { ContactForm, InquiryType } from '@/types/contact';
+import { contactFormSchema, ContactFormData } from '@/schemas/contactFormSchema';
+import { cn } from '@/lib/utils';
 
 const ContactPage = () => {
   const navigate = useNavigate();
   const { mutate: submitForm, isPending } = useSubmitContactForm();
 
-  const [formData, setFormData] = useState<Partial<ContactForm>>({
-    inquiryType: 'general',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-    organization: '',
+  // React Hook Form with Zod validation
+  const {
+    register,
+    handleSubmit: handleFormSubmit,
+    control,
+    watch,
+    formState: { errors, isValid, touchedFields },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    mode: 'onBlur', // Validate on blur
+    reValidateMode: 'onChange', // Re-validate on change after first error
+    defaultValues: {
+      inquiryType: 'general',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      subject: '',
+      message: '',
+      organization: '',
+    },
   });
+
+  // Watch inquiry type for conditional organization field
+  const inquiryType = watch('inquiryType');
 
   const inquiryTypes = [
     { value: 'general', label: 'General Inquiry', icon: MessageSquare },
@@ -76,29 +97,18 @@ const ContactPage = () => {
     { day: 'Sunday', hours: 'Closed', isOpen: false },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validate required fields
-    if (!formData.firstName || !formData.lastName || !formData.email || 
-        !formData.subject || !formData.message || !formData.inquiryType) {
-      return;
-    }
-
-    submitForm(formData as ContactForm, {
+  // Handle form submission with validation
+  const onSubmit = (data: ContactFormData) => {
+    submitForm(data as ContactForm, {
       onSuccess: (response) => {
-        navigate('/contact/success', { 
-          state: { 
+        navigate('/contact/success', {
+          state: {
             submissionId: response.submissionId,
-            inquiryType: formData.inquiryType 
-          } 
+            inquiryType: data.inquiryType,
+          },
         });
       },
     });
-  };
-
-  const handleInputChange = (field: keyof ContactForm, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -132,31 +142,40 @@ const ContactPage = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleFormSubmit(onSubmit)} className="space-y-6">
                     {/* Inquiry Type */}
                     <div className="space-y-2">
                       <Label htmlFor="inquiryType">What can we help you with? *</Label>
-                      <Select
-                        value={formData.inquiryType}
-                        onValueChange={(value) => handleInputChange('inquiryType', value as InquiryType)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select inquiry type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {inquiryTypes.map((type) => {
-                            const Icon = type.icon;
-                            return (
-                              <SelectItem key={type.value} value={type.value}>
-                                <div className="flex items-center gap-2">
-                                  <Icon className="h-4 w-4" />
-                                  {type.label}
-                                </div>
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectContent>
-                      </Select>
+                      <Controller
+                        name="inquiryType"
+                        control={control}
+                        render={({ field }) => (
+                          <>
+                            <Select
+                              value={field.value}
+                              onValueChange={field.onChange}
+                            >
+                              <SelectTrigger className={cn(errors.inquiryType && 'border-destructive')}>
+                                <SelectValue placeholder="Select inquiry type" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {inquiryTypes.map((type) => {
+                                  const Icon = type.icon;
+                                  return (
+                                    <SelectItem key={type.value} value={type.value}>
+                                      <div className="flex items-center gap-2">
+                                        <Icon className="h-4 w-4" />
+                                        {type.label}
+                                      </div>
+                                    </SelectItem>
+                                  );
+                                })}
+                              </SelectContent>
+                            </Select>
+                            <FormError message={errors.inquiryType?.message} />
+                          </>
+                        )}
+                      />
                     </div>
 
                     {/* Name Fields */}
@@ -165,19 +184,21 @@ const ContactPage = () => {
                         <Label htmlFor="firstName">First Name *</Label>
                         <Input
                           id="firstName"
-                          value={formData.firstName}
-                          onChange={(e) => handleInputChange('firstName', e.target.value)}
-                          required
+                          {...register('firstName')}
+                          className={cn(errors.firstName && 'border-destructive')}
+                          placeholder="John"
                         />
+                        <FormError message={errors.firstName?.message} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">Last Name *</Label>
                         <Input
                           id="lastName"
-                          value={formData.lastName}
-                          onChange={(e) => handleInputChange('lastName', e.target.value)}
-                          required
+                          {...register('lastName')}
+                          className={cn(errors.lastName && 'border-destructive')}
+                          placeholder="Doe"
                         />
+                        <FormError message={errors.lastName?.message} />
                       </div>
                     </div>
 
@@ -188,33 +209,50 @@ const ContactPage = () => {
                         <Input
                           id="email"
                           type="email"
-                          value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          required
+                          {...register('email')}
+                          className={cn(errors.email && 'border-destructive')}
+                          placeholder="john.doe@example.com"
                         />
+                        <FormError message={errors.email?.message} />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number (Optional)</Label>
-                        <Input
-                          id="phone"
-                          type="tel"
-                          value={formData.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                        <Controller
+                          name="phone"
+                          control={control}
+                          render={({ field }) => (
+                            <>
+                              <PhoneInput
+                                international
+                                defaultCountry="SL"
+                                value={field.value}
+                                onChange={field.onChange}
+                                className={cn(
+                                  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+                                  errors.phone && 'border-destructive'
+                                )}
+                                placeholder="+232 76 123 456"
+                              />
+                              <FormError message={errors.phone?.message} />
+                            </>
+                          )}
                         />
                       </div>
                     </div>
 
                     {/* Organization (conditional) */}
-                    {(formData.inquiryType === 'partnership' || formData.inquiryType === 'media') && (
+                    {(inquiryType === 'partnership' || inquiryType === 'media') && (
                       <div className="space-y-2">
                         <Label htmlFor="organization">
-                          {formData.inquiryType === 'partnership' ? 'Organization Name' : 'Media Outlet'}
+                          {inquiryType === 'partnership' ? 'Organization Name *' : 'Media Outlet *'}
                         </Label>
                         <Input
                           id="organization"
-                          value={formData.organization}
-                          onChange={(e) => handleInputChange('organization', e.target.value)}
+                          {...register('organization')}
+                          className={cn(errors.organization && 'border-destructive')}
+                          placeholder={inquiryType === 'partnership' ? 'Your organization' : 'News outlet name'}
                         />
+                        <FormError message={errors.organization?.message} />
                       </div>
                     )}
 
@@ -223,27 +261,38 @@ const ContactPage = () => {
                       <Label htmlFor="subject">Subject *</Label>
                       <Input
                         id="subject"
-                        value={formData.subject}
-                        onChange={(e) => handleInputChange('subject', e.target.value)}
-                        required
+                        {...register('subject')}
+                        className={cn(errors.subject && 'border-destructive')}
+                        placeholder="Brief description of your inquiry"
                       />
+                      <FormError message={errors.subject?.message} />
                     </div>
 
                     {/* Message */}
                     <div className="space-y-2">
-                      <Label htmlFor="message">Message *</Label>
+                      <Label htmlFor="message" className="flex items-center justify-between">
+                        <span>Message *</span>
+                        <span className="text-xs text-muted-foreground">
+                          {watch('message')?.length || 0} / 2000
+                        </span>
+                      </Label>
                       <Textarea
                         id="message"
-                        value={formData.message}
-                        onChange={(e) => handleInputChange('message', e.target.value)}
+                        {...register('message')}
+                        className={cn(errors.message && 'border-destructive')}
                         rows={6}
-                        required
-                        placeholder="Tell us more about your inquiry..."
+                        placeholder="Tell us more about your inquiry... (minimum 20 characters)"
                       />
+                      <FormError message={errors.message?.message} />
                     </div>
 
                     {/* Submit Button */}
-                    <Button type="submit" size="lg" className="w-full" disabled={isPending}>
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full" 
+                      disabled={isPending || !isValid}
+                    >
                       {isPending ? (
                         <>
                           <Loader2 className="mr-2 h-5 w-5 animate-spin" />

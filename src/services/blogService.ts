@@ -18,6 +18,7 @@ import {
   likeBlogPostInSanity,
   incrementViewCountInSanity,
 } from "./sanityBlogService";
+import { supabase } from "@/lib/supabase";
 
 // Simulated API delay
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -29,71 +30,86 @@ export const fetchBlogPosts = async (filters?: BlogFilters): Promise<{
   page: number;
   totalPages: number;
 }> => {
-  // Use Sanity if configured, otherwise use mock data
+  // Use Sanity if configured
   if (isUsingSanity) {
     return await fetchBlogPostsFromSanity(filters);
   }
 
-  await delay(300); // Simulate network delay
+  try {
+    // Build the query
+    let query = supabase
+      .from('blog_posts')
+      .select(`
+        *,
+        author:authors(id, name, slug, avatar_url, title),
+        category:categories(id, name, slug),
+        post_tags(tag:tags(id, name, slug))
+      `, { count: 'exact' })
+      .eq('status', 'published')
+      .order('published_at', { ascending: false });
 
-  let filteredPosts = [...mockBlogPosts];
+    // Apply search filter
+    if (filters?.search) {
+      query = query.or(`title.ilike.%${filters.search}%,excerpt.ilike.%${filters.search}%,content.ilike.%${filters.search}%`);
+    }
 
-  // Apply search filter
-  if (filters?.search) {
-    const searchLower = filters.search.toLowerCase();
-    filteredPosts = filteredPosts.filter(
-      (post) =>
-        post.title.toLowerCase().includes(searchLower) ||
-        post.excerpt.toLowerCase().includes(searchLower) ||
-        post.content.toLowerCase().includes(searchLower) ||
-        post.tags.some((tag) => tag.toLowerCase().includes(searchLower))
-    );
+    // Apply category filter
+    if (filters?.category) {
+      query = query.eq('category.slug', filters.category);
+    }
+
+    const { data, error, count } = await query;
+
+    if (error) throw error;
+
+    // Transform data to match BlogPost type
+    const posts: BlogPost[] = (data || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt || '',
+      content: post.content,
+      coverImage: post.cover_image || '/placeholder.svg',
+      category: post.category?.name || 'Uncategorized',
+      tags: post.post_tags?.map((pt: any) => pt.tag?.name).filter(Boolean) || [],
+      author: {
+        id: post.author?.id || '',
+        name: post.author?.name || 'Anonymous',
+        title: post.author?.title || 'Contributor',
+        avatar: post.author?.avatar_url || '/placeholder.svg',
+        bio: ''
+      },
+      publishedAt: post.published_at || post.created_at,
+      readTime: Math.ceil(post.content.split(' ').length / 200),
+      viewCount: 0,
+      likeCount: 0,
+      featured: false
+    }));
+
+    // Pagination
+    const page = 1;
+    const limit = 9;
+    const total = count || posts.length;
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      posts,
+      total,
+      page,
+      totalPages,
+    };
+  } catch (error) {
+    console.error('Error fetching blog posts from Supabase:', error);
+    // Fallback to mock data on error
+    await delay(300);
+    const filteredPosts = [...mockBlogPosts];
+    return {
+      posts: filteredPosts.slice(0, 9),
+      total: filteredPosts.length,
+      page: 1,
+      totalPages: Math.ceil(filteredPosts.length / 9),
+    };
   }
-
-  // Apply category filter
-  if (filters?.category) {
-    filteredPosts = filteredPosts.filter((post) => post.category === filters.category);
-  }
-
-  // Apply author filter
-  if (filters?.author) {
-    filteredPosts = filteredPosts.filter((post) => post.author.name === filters.author);
-  }
-
-  // Apply tag filter
-  if (filters?.tags && filters.tags.length > 0) {
-    filteredPosts = filteredPosts.filter((post) =>
-      filters.tags!.some((tag) => post.tags.includes(tag))
-    );
-  }
-
-  // Apply featured filter
-  if (filters?.featured !== undefined) {
-    filteredPosts = filteredPosts.filter((post) => post.featured === filters.featured);
-  }
-
-  // Sort posts - default to most recent first
-  filteredPosts.sort((a, b) => {
-    const dateA = new Date(a.publishedAt).getTime();
-    const dateB = new Date(b.publishedAt).getTime();
-    return dateB - dateA; // Most recent first
-  });
-
-  // Pagination
-  const page = 1;
-  const limit = 9;
-  const total = filteredPosts.length;
-  const totalPages = Math.ceil(total / limit);
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-  const paginatedPosts = filteredPosts.slice(startIndex, endIndex);
-
-  return {
-    posts: paginatedPosts,
-    total,
-    page,
-    totalPages,
-  };
 };
 
 // Fetch single blog post by slug
@@ -108,16 +124,61 @@ export const fetchBlogPostBySlug = async (slug: string): Promise<BlogPost | null
     return post;
   }
 
-  await delay(200);
+  try {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select(`
+        *,
+        author:authors(id, name, slug, avatar_url, title),
+        category:categories(id, name, slug),
+        post_tags(tag:tags(id, name, slug)),
+        post_views(id)
+      `)
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .single();
 
-  const post = mockBlogPosts.find((p) => p.slug === slug);
-  
-  if (post) {
-    // Increment view count (simulated)
-    post.viewCount += 1;
+    if (error) throw error;
+    if (!data) return null;
+
+    // Increment view count in background
+    supabase
+      .from('post_views')
+      .insert([{ post_id: data.id, viewer_ip: 'web' }])
+      .then(() => {});
+
+    // Transform to BlogPost type
+    const post: BlogPost = {
+      id: data.id,
+      title: data.title,
+      slug: data.slug,
+      excerpt: data.excerpt || '',
+      content: data.content,
+      coverImage: data.cover_image || '/placeholder.svg',
+      category: data.category?.name || 'Uncategorized',
+      tags: data.post_tags?.map((pt: any) => pt.tag?.name).filter(Boolean) || [],
+      author: {
+        id: data.author?.id || '',
+        name: data.author?.name || 'Anonymous',
+        title: data.author?.title || 'Contributor',
+        avatar: data.author?.avatar_url || '/placeholder.svg',
+        bio: ''
+      },
+      publishedAt: data.published_at || data.created_at,
+      readTime: Math.ceil(data.content.split(' ').length / 200),
+      viewCount: data.post_views?.length || 0,
+      likeCount: 0,
+      featured: false
+    };
+
+    return post;
+  } catch (error) {
+    console.error('Error fetching blog post by slug:', error);
+    // Fallback to mock data
+    await delay(200);
+    const post = mockBlogPosts.find((p) => p.slug === slug);
+    return post || null;
   }
-
-  return post || null;
 };
 
 // Fetch single blog post by ID
@@ -199,9 +260,50 @@ export const fetchFeaturedPosts = async (limit: number = 3): Promise<BlogPost[]>
     return await fetchFeaturedPostsFromSanity(limit);
   }
 
-  await delay(200);
+  try {
+    // For now, just return the most recent published posts
+    // You can add a 'featured' boolean column later if needed
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select(`
+        *,
+        author:authors(id, name, slug, avatar_url, title),
+        category:categories(id, name, slug),
+        post_tags(tag:tags(id, name, slug))
+      `)
+      .eq('status', 'published')
+      .order('published_at', { ascending: false })
+      .limit(limit);
 
-  return getFeaturedPosts().slice(0, limit);
+    if (error) throw error;
+
+    return (data || []).map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      slug: post.slug,
+      excerpt: post.excerpt || '',
+      content: post.content,
+      coverImage: post.cover_image || '/placeholder.svg',
+      category: post.category?.name || 'Uncategorized',
+      tags: post.post_tags?.map((pt: any) => pt.tag?.name).filter(Boolean) || [],
+      author: {
+        id: post.author?.id || '',
+        name: post.author?.name || 'Anonymous',
+        title: post.author?.title || 'Contributor',
+        avatar: post.author?.avatar_url || '/placeholder.svg',
+        bio: ''
+      },
+      publishedAt: post.published_at || post.created_at,
+      readTime: Math.ceil(post.content.split(' ').length / 200),
+      viewCount: 0,
+      likeCount: 0,
+      featured: true
+    }));
+  } catch (error) {
+    console.error('Error fetching featured posts:', error);
+    await delay(200);
+    return getFeaturedPosts().slice(0, limit);
+  }
 };
 
 // Fetch posts by category

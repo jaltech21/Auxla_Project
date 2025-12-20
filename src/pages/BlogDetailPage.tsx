@@ -191,13 +191,10 @@ const BlogDetailPage = () => {
               />
 
               {/* Article Content */}
-              <div className="prose prose-lg max-w-none mb-12">
-                {post.content.split("\n").map((paragraph, index) => (
-                  <p key={index} className="mb-4 text-foreground leading-relaxed">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
+              <div 
+                className="prose prose-lg max-w-none mb-12 blog-content"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b">

@@ -1,5 +1,6 @@
 import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 const Footer = () => {
   return (
@@ -104,7 +105,18 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Newsletter Signup */}
         <div className="mt-12 pt-8 border-t border-border">
+          <div className="max-w-2xl mx-auto text-center mb-8">
+            <h3 className="text-2xl font-bold text-foreground mb-2">Stay Informed</h3>
+            <p className="text-muted-foreground mb-6">
+              Get the latest mental health resources, tips, and updates delivered to your inbox.
+            </p>
+            <NewsletterSignup source="footer" />
+          </div>
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground text-center md:text-left">
               © {new Date().getFullYear()} OCSLAA - Our Concern Sierra Leone Alliance. All rights reserved.
