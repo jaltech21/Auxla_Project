@@ -54,7 +54,7 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+            <BrowserRouter basename="/Auxla_Project">
               <Routes>
                 {/* Admin Routes */}
                 <Route path="/admin/login" element={<AdminLoginPage />} />
