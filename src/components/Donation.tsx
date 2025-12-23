@@ -8,8 +8,20 @@ import { Heart, DollarSign, Users, BookOpen, Shield } from "lucide-react";
 const Donation = () => {
   const [customAmount, setCustomAmount] = useState("");
   const [selectedAmount, setSelectedAmount] = useState(50);
+  const [countryCode, setCountryCode] = useState("+1");
 
   const presetAmounts = [25, 50, 100, 250];
+
+  const countryCodes = [
+    { code: '+1', country: 'US/Canada', flag: '🇺🇸' },
+    { code: '+44', country: 'UK', flag: '🇬🇧' },
+    { code: '+232', country: 'Sierra Leone', flag: '🇸🇱' },
+    { code: '+234', country: 'Nigeria', flag: '🇳🇬' },
+    { code: '+233', country: 'Ghana', flag: '🇬🇭' },
+    { code: '+254', country: 'Kenya', flag: '🇰🇪' },
+    { code: '+27', country: 'South Africa', flag: '🇿🇦' },
+    { code: '+91', country: 'India', flag: '🇮🇳' },
+  ];
 
   const impact = [
     {
@@ -144,12 +156,36 @@ const Donation = () => {
               {/* Personal Info */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <Input id="name" placeholder="John Doe" className="h-11" />
+                  <Label htmlFor="name">Full Name *</Label>
+                  <Input id="name" placeholder="John Doe" className="h-11" required />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" className="h-11" />
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input id="email" type="email" placeholder="john@example.com" className="h-11" required />
+                  <p className="text-xs text-muted-foreground">We'll send your receipt to this email</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number (Optional)</Label>
+                  <div className="flex gap-2">
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="w-32 h-11 px-3 py-2 border rounded-md bg-background"
+                    >
+                      {countryCodes.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.flag} {country.code}
+                        </option>
+                      ))}
+                    </select>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      placeholder={countryCode === '+1' ? '(555) 123-4567' : '123456789'}
+                      className="h-11 flex-1"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">For donation follow-up (optional)</p>
                 </div>
               </div>
 
