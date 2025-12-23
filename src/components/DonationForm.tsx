@@ -59,6 +59,35 @@ const validateAmount = (amount: number): { valid: boolean; error?: string } => {
   return { valid: true };
 };
 
+const validatePhone = (phone: string, countryCode: string): { valid: boolean; error?: string } => {
+  if (!phone) return { valid: true }; // Phone is optional
+  
+  // Remove all non-digit characters for validation
+  const digits = phone.replace(/\D/g, '');
+  
+  // Different validation based on country
+  if (countryCode === '+1') { // US/Canada
+    if (digits.length !== 10) {
+      return { valid: false, error: 'US/Canada numbers must be 10 digits' };
+    }
+  } else if (countryCode === '+44') { // UK
+    if (digits.length < 10 || digits.length > 11) {
+      return { valid: false, error: 'UK numbers must be 10-11 digits' };
+    }
+  } else if (countryCode === '+232') { // Sierra Leone
+    if (digits.length !== 8) {
+      return { valid: false, error: 'Sierra Leone numbers must be 8 digits' };
+    }
+  } else {
+    // Generic validation for other countries
+    if (digits.length < 6 || digits.length > 15) {
+      return { valid: false, error: 'Phone number must be 6-15 digits' };
+    }
+  }
+  
+  return { valid: true };
+};
+
 const sanitizeInput = (input: string): string => {
   return input.trim().replace(/[<>]/g, '');
 };
@@ -71,6 +100,8 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
   const [customAmount, setCustomAmount] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('+1');
   const [designation, setDesignation] = useState('general');
   const [message, setMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -83,6 +114,7 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
     email?: string;
     name?: string;
     amount?: string;
+    phone?: string;
   }>({});
 
   const PRESET_AMOUNTS = ['25', '50', '100', '250', '500', 'custom'];
@@ -93,6 +125,19 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
     { value: 'crisis-support', label: 'Crisis Support' },
     { value: 'education', label: 'Education & Awareness' },
     { value: 'community-outreach', label: 'Community Outreach' },
+  ];
+
+  const COUNTRY_CODES = [
+    { code: '+1', country: 'US/Canada', flag: '🇺🇸' },
+    { code: '+44', country: 'UK', flag: '🇬🇧' },
+    { code: '+232', country: 'Sierra Leone', flag: '🇸🇱' },
+    { code: '+234', country: 'Nigeria', flag: '🇳🇬' },
+    { code: '+233', country: 'Ghana', flag: '🇬🇭' },
+    { code: '+254', country: 'Kenya', flag: '🇰🇪' },
+    { code: '+27', country: 'South Africa', flag: '🇿🇦' },
+    { code: '+91', country: 'India', flag: '🇮🇳' },
+    { code: '+86', country: 'China', flag: '🇨🇳' },
+    { code: '+81', country: 'Japan', flag: '🇯🇵' },
   ];
 
   const selectedAmount = amount === 'custom' ? customAmount : amount;
@@ -113,6 +158,14 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
     const amountValidation = validateAmount(donationAmount);
     if (!amountValidation.valid) {
       newErrors.amount = amountValidation.error;
+    }
+
+    // Validate phone if provided
+    if (phone) {
+      const phoneValidation = validatePhone(phone, countryCode);
+      if (!phoneValidation.valid) {
+        newErrors.phone = phoneValidation.error;
+      }
     }
 
     setErrors(newErrors);
@@ -176,6 +229,7 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
             currency: 'usd',
             donorEmail: sanitizedEmail,
             donorName: sanitizedName,
+            donorPhone: sanitizedPhone,
             designation,
             isAnonymous,
             message: sanitizedMessage,
@@ -235,6 +289,8 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
         // Reset form
         setEmail('');
         setName('');
+        setPhone('');
+        setCountryCode('+1');
         setMessage('');
         setAmount('50');
         setCustomAmount('');
@@ -295,6 +351,24 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
     } else {
       setErrors(prev => ({ ...prev, amount: undefined }));
     }
+  };
+
+  const handlePhoneBlur = () => {
+    if (phone) {
+      const phoneValidation = validatePhone(phone, countryCode);
+      if (!phoneValidation.valid) {
+        setErrors(prev => ({ ...prev, phone: phoneValidation.error }));
+      } else {
+        setErrors(prev => ({ ...prev, phone: undefined }));
+      }
+    } else {
+      setErrors(prev => ({ ...prev, phone: undefined }));
+    }
+  };
+
+  const formatPhoneInput = (value: string) => {
+    // Allow only digits, spaces, dashes, and parentheses
+    return value.replace(/[^\d\s\-()]/g, '');
   };
 
   return (
@@ -420,6 +494,40 @@ function DonationFormContent({ onSuccess }: DonationFormProps) {
           )}
           <p className="text-xs text-muted-foreground mt-1">
             Receipt will be sent to this email
+          </p>
+        </div>
+
+        <div>
+          <Label htmlFor="phone">Phone Number (Optional)</Label>
+          <div className="flex gap-2">
+            <select
+              value={countryCode}
+              onChange={(e) => setCountryCode(e.target.value)}
+              disabled={loading}
+              className="w-32 px-3 py-2 border rounded-md bg-background"
+            >
+              {COUNTRY_CODES.map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.flag} {country.code}
+                </option>
+              ))}
+            </select>
+            <Input
+              id="phone"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(formatPhoneInput(e.target.value))}
+              onBlur={handlePhoneBlur}
+              placeholder={countryCode === '+1' ? '(555) 123-4567' : '123456789'}
+              disabled={loading}
+              className={`flex-1 ${errors.phone ? 'border-red-500' : ''}`}
+            />
+          </div>
+          {errors.phone && (
+            <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
+          )}
+          <p className="text-xs text-muted-foreground mt-1">
+            For donation follow-up (optional)
           </p>
         </div>
 
