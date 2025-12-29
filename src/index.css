@@ -323,3 +323,50 @@ All colors MUST be HSL.
 .blog-content ul[data-type="taskList"] li input[type="checkbox"] {
   @apply mt-1;
 }
+/* Phone Input Styling - Professional Design */
+.PhoneInput {
+  @apply relative;
+}
+
+.PhoneInput .PhoneInputInput {
+  @apply w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200;
+}
+
+.PhoneInput .PhoneInputCountry {
+  @apply mr-2 border-r border-input pr-2;
+}
+
+.PhoneInput .PhoneInputCountrySelect {
+  @apply appearance-none bg-transparent border-0 outline-none cursor-pointer text-sm;
+}
+
+.PhoneInput .PhoneInputCountrySelectArrow {
+  @apply ml-1 opacity-50;
+}
+
+.PhoneInput .PhoneInputCountryIcon {
+  @apply inline-block w-5 h-4 mr-1;
+}
+
+.PhoneInput .PhoneInputCountryIconImg {
+  @apply w-full h-full object-cover rounded-sm;
+}
+
+/* Hover effect */
+.PhoneInput .PhoneInputInput:hover:not(:disabled):not(:focus) {
+  @apply border-accent-dark;
+}
+
+/* Focus effect with smooth transition */
+.PhoneInput .PhoneInputInput:focus {
+  @apply shadow-sm;
+}
+
+/* Dark mode adjustments */
+.dark .PhoneInput .PhoneInputInput {
+  @apply bg-background text-foreground;
+}
+
+.dark .PhoneInput .PhoneInputCountry {
+  @apply border-r-input;
+}

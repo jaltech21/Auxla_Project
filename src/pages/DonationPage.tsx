@@ -18,8 +18,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useCreatePaymentIntent, useConfirmDonation, useDonationStats } from '@/hooks/useDonation';
 import { DonationForm, DonationType, PaymentMethod } from '@/types/donation';
 import { submitBankTransfer } from '@/services/bankTransferService';
-import { Heart, Users, BookOpen, Shield, ArrowLeft, Loader2 } from 'lucide-react';
+import { Heart, Users, BookOpen, Shield, ArrowLeft, Loader2, Phone } from 'lucide-react';
 import { toast } from 'sonner';
+import PhoneInput from 'react-phone-number-input';
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import { cn } from '@/lib/utils';
 
 const DonationPage = () => {
   const navigate = useNavigate();
@@ -44,8 +48,7 @@ const DonationPage = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [countryCode, setCountryCode] = useState('+1');
+  const [phone, setPhone] = useState<string | undefined>('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [dedicatedTo, setDedicatedTo] = useState('');
   const [message, setMessage] = useState('');
@@ -53,52 +56,15 @@ const DonationPage = () => {
   const [coverFees, setCoverFees] = useState(false);
 
   const presetAmounts = [25, 50, 100, 250];
-
-  const countryCodes = [
-    { code: '+1', country: 'US/Canada', flag: '🇺🇸' },
-    { code: '+44', country: 'UK', flag: '🇬🇧' },
-    { code: '+232', country: 'Sierra Leone', flag: '🇸🇱' },
-    { code: '+234', country: 'Nigeria', flag: '🇳🇬' },
-    { code: '+233', country: 'Ghana', flag: '🇬🇭' },
-    { code: '+254', country: 'Kenya', flag: '🇰🇪' },
-    { code: '+27', country: 'South Africa', flag: '🇿🇦' },
-    { code: '+91', country: 'India', flag: '🇮🇳' },
-    { code: '+86', country: 'China', flag: '🇨🇳' },
-    { code: '+81', country: 'Japan', flag: '🇯🇵' },
-  ];
-
   // Validation functions
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validatePhone = (phoneNumber: string, countryCode: string): boolean => {
+  const validatePhoneNumber = (phoneNumber: string | undefined): boolean => {
     if (!phoneNumber) return true; // Optional field
-    const digitsOnly = phoneNumber.replace(/\D/g, '');
-    
-    switch (countryCode) {
-      case '+1': // US/Canada
-        return digitsOnly.length === 10;
-      case '+44': // UK
-        return digitsOnly.length >= 10 && digitsOnly.length <= 11;
-      case '+232': // Sierra Leone
-        return digitsOnly.length === 8;
-      case '+234': // Nigeria
-      case '+233': // Ghana
-      case '+254': // Kenya
-        return digitsOnly.length === 10;
-      case '+27': // South Africa
-        return digitsOnly.length === 9;
-      case '+91': // India
-        return digitsOnly.length === 10;
-      case '+86': // China
-        return digitsOnly.length === 11;
-      case '+81': // Japan
-        return digitsOnly.length === 10;
-      default:
-        return digitsOnly.length >= 8 && digitsOnly.length <= 15;
-    }
+    return isValidPhoneNumber(phoneNumber);
   };
 
   const validateName = (name: string): boolean => {
@@ -453,78 +419,70 @@ const DonationPage = () => {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="phone">Phone Number (Optional)</Label>
-                          <div className="flex gap-2">
-                            <select
-                              value={countryCode}
-                              onChange={(e) => {
-                                setCountryCode(e.target.value);
-                                if (phone && !validatePhone(phone, e.target.value)) {
-                                  setErrors(prev => ({ ...prev, phone: 'Invalid phone number for selected country' }));
-                                } else {
-                                  setErrors(prev => ({ ...prev, phone: undefined }));
-                                }
-                              }}
-                              className="w-[140px] px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                            >
-                              {countryCodes.map((country) => (
-                                <option key={country.code} value={country.code}>
-                                  {country.flag} {country.code}
-                                </option>
-                              ))}
-                            </select>
+                          <Label htmlFor="phone" className="flex items-center gap-2">
+                            <Phone className="h-4 w-4" />
+                            Phone Number (Optional)
+                          </Label>
+                          <PhoneInput
+                            international
+                            defaultCountry="SL"
+                            id="phone"
+                            value={phone}
+                            onChange={(value) => {
+                              setPhone(value);
+                              if (value && !isValidPhoneNumber(value)) {
+                                setErrors(prev => ({ ...prev, phone: 'Please enter a valid phone number' }));
+                              } else {
+                                setErrors(prev => ({ ...prev, phone: undefined }));
+                              }
+                            }}
+                            className={cn(
+                              'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors',
+                              errors.phone && 'border-destructive focus-visible:ring-destructive'
+                            )}
+                            placeholder="+232 76 123 456"
+                          />
+                          {errors.phone && (
+                            <p className="text-sm text-destructive flex items-center gap-1">
+                              <span className="inline-block w-1 h-1 rounded-full bg-destructive"></span>
+                              {errors.phone}
+                            </p>
+                          )}
+                          <p className="text-xs text-muted-foreground">
+                            We'll use this to send donation updates (optional)
+                          </p>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="dedicatedTo">Dedicate this donation (Optional)</Label>
                             <Input
-                              id="phone"
-                              type="tel"
-                              placeholder="Phone number"
-                              value={phone}
-                              onChange={(e) => {
-                                setPhone(e.target.value);
-                                if (e.target.value && !validatePhone(e.target.value, countryCode)) {
-                                  setErrors(prev => ({ ...prev, phone: 'Invalid phone number for selected country' }));
-                                } else {
-                                  setErrors(prev => ({ ...prev, phone: undefined }));
-                                }
-                              }}
-                              className={errors.phone ? 'border-red-500' : ''}
+                              id="dedicatedTo"
+                              placeholder="In memory/honor of..."
+                              value={dedicatedTo}
+                              onChange={(e) => setDedicatedTo(e.target.value)}
                             />
                           </div>
-                          {errors.phone && (
-                            <p className="text-sm text-red-500">{errors.phone}</p>
-                          )}
-                        </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="dedicatedTo">Dedicate this donation (Optional)</Label>
-                          <Input
-                            id="dedicatedTo"
-                            placeholder="In memory/honor of..."
-                            value={dedicatedTo}
-                            onChange={(e) => setDedicatedTo(e.target.value)}
-                          />
-                        </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="message">Message (Optional)</Label>
+                            <Textarea
+                              id="message"
+                              placeholder="Write a short message..."
+                              value={message}
+                              onChange={(e) => setMessage(e.target.value)}
+                            />
+                          </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="message">Message (Optional)</Label>
-                          <Textarea
-                            id="message"
-                            placeholder="Share why you're donating..."
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            rows={3}
-                          />
-                        </div>
-
-                        <div className="flex items-start space-x-2 bg-muted/50 p-4 rounded-lg">
-                          <Checkbox
-                            id="coverFees"
-                            checked={coverFees}
-                            onCheckedChange={(checked) => setCoverFees(checked as boolean)}
-                          />
-                          <Label htmlFor="coverFees" className="cursor-pointer text-sm">
-                            Add ${processingFee.toFixed(2)} to cover processing fees so 100% of my donation
-                            goes to OCSLAA
-                          </Label>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="coverFees"
+                              checked={coverFees}
+                              onCheckedChange={(checked) => setCoverFees(checked as boolean)}
+                            />
+                            <Label htmlFor="coverFees" className="cursor-pointer text-sm">
+                              Add ${processingFee.toFixed(2)} to cover processing fees so 100% of my donation
+                              goes to OCSLAA
+                            </Label>
+                          </div>
                         </div>
                       </div>
 
