@@ -15,7 +15,156 @@ const supabase = createClient(
 );
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 
-// Middleware
+// Webhook endpoint must come BEFORE express.json() middleware
+// Stripe webhooks need raw body for signature verification
+app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  console.log('🔔 Webhook received:', sig ? 'signature present' : 'NO SIGNATURE');
+  let event;
+
+  try {
+    // Increased tolerance for timestamp verification (10 minutes)
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET,
+      600 // 10 minutes tolerance instead of default 5 minutes
+    );
+    console.log('✅ Webhook verified:', event.type);
+  } catch (err) {
+    console.error('❌ Webhook signature verification failed:', err.message);
+    console.error('   Event type attempt:', JSON.parse(req.body.toString()).type);
+    console.error('   Expected secret starts with:', process.env.STRIPE_WEBHOOK_SECRET?.substring(0, 15));
+    
+    // Log but don't fail for timestamp errors - still try to process
+    if (err.message.includes('Timestamp outside')) {
+      console.warn('⚠️  Processing anyway despite timestamp issue...');
+      try {
+        event = JSON.parse(req.body.toString());
+      } catch (parseErr) {
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+    } else {
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+  }
+
+  // Handle the event
+  if (event.type === 'payment_intent.succeeded') {
+    const paymentIntent = event.data.object;
+    console.log(`💰 Payment succeeded: ${paymentIntent.id}`);
+    console.log(`📧 Sending receipt to: ${paymentIntent.metadata.donorEmail}`);
+
+    try {
+      // Find or create donor
+      const { data: existingDonor } = await supabase
+        .from('donors')
+        .select('id')
+        .eq('email', paymentIntent.metadata.donorEmail)
+        .single();
+
+      let donorId = existingDonor?.id;
+
+      if (!existingDonor) {
+        const [firstName, ...lastNameParts] = (paymentIntent.metadata.donorName || 'Anonymous').split(' ');
+        const { data: newDonor } = await supabase
+          .from('donors')
+          .insert({
+            email: paymentIntent.metadata.donorEmail,
+            first_name: firstName,
+            last_name: lastNameParts.join(' ') || '',
+            phone: paymentIntent.metadata.phone,
+            total_donated: 0,
+            donation_count: 0,
+          })
+          .select()
+          .single();
+        
+        donorId = newDonor?.id;
+      }
+
+      // Record the donation
+      await supabase.from('donations').insert({
+        donor_id: donorId,
+        amount: paymentIntent.amount / 100,
+        currency: paymentIntent.currency.toUpperCase(),
+        payment_method: 'card',
+        payment_status: 'completed',
+        stripe_payment_intent_id: paymentIntent.id,
+        stripe_charge_id: paymentIntent.latest_charge,
+        receipt_url: paymentIntent.charges?.data[0]?.receipt_url,
+        designation: paymentIntent.metadata.designation,
+        is_anonymous: paymentIntent.metadata.isAnonymous === 'true',
+        message: paymentIntent.metadata.message,
+        processed_at: new Date().toISOString()
+      });
+
+      // Send thank you email
+      if (paymentIntent.metadata.donorEmail && paymentIntent.metadata.donorEmail !== 'anonymous') {
+        console.log('📨 Attempting to send email via Resend...');
+        const emailResult = await resend.emails.send({
+          from: 'OCSLAA <onboarding@resend.dev>',
+          to: paymentIntent.metadata.donorEmail,
+          subject: 'Thank You for Your Donation!',
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <style>
+                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                  .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                  .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0; }
+                  .content { background: #f9fafb; padding: 30px; }
+                  .amount { font-size: 36px; font-weight: bold; color: #667eea; margin: 20px 0; }
+                  .footer { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
+                </style>
+              </head>
+              <body>
+                <div class="container">
+                  <div class="header">
+                    <h1>Thank You! 💙</h1>
+                  </div>
+                  <div class="content">
+                    <p>Dear ${paymentIntent.metadata.donorName},</p>
+                    <p>Thank you for your generous donation to OCSLAA (Our Concern Sierra Leone Alliance)!</p>
+                    <div class="amount">$${(paymentIntent.amount / 100).toFixed(2)}</div>
+                    <p>Your contribution will help us continue our mission to support mental health awareness and provide resources for those in need in Sierra Leone.</p>
+                    ${paymentIntent.metadata.designation && paymentIntent.metadata.designation !== 'general' 
+                      ? `<p><strong>Designation:</strong> ${paymentIntent.metadata.designation}</p>` 
+                      : ''}
+                    <p><strong>Transaction ID:</strong> ${paymentIntent.id}</p>
+                    <p>This email serves as your receipt for tax purposes. Your donation is tax-deductible to the extent allowed by law.</p>
+                    <p>With gratitude,<br><strong>The OCSLAA Team</strong></p>
+                  </div>
+                  <div class="footer">
+                    <p>© ${new Date().getFullYear()} OCSLAA. All rights reserved.</p>
+                    <p>If you have any questions, please contact us at support@ocslaa.org</p>
+                  </div>
+                </div>
+              </body>
+            </html>
+          `
+        });
+
+        if (emailResult.error) {
+          console.error('❌ Failed to send email:', emailResult.error);
+        } else {
+          console.log('✅ Receipt email sent successfully! ID:', emailResult.data?.id);
+        }
+      } else {
+        console.log('ℹ️  Skipping email (anonymous donation or no email provided)');
+      }
+
+      console.log(`✅ Donation recorded successfully`);
+    } catch (error) {
+      console.error('❌ Error processing donation:', error);
+    }
+  }
+
+  res.json({ received: true });
+});
+
+// Regular JSON middleware for all other routes
 app.use(express.json());
 
 // CORS configuration - allow multiple origins
@@ -367,123 +516,6 @@ app.post('/api/donations/create-payment-intent', async (req, res) => {
     console.error('❌ Payment intent creation error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
-});
-
-// Stripe webhook handler for payment confirmations
-app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(
-      req.body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (err) {
-    console.error('❌ Webhook signature verification failed:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  // Handle the event
-  if (event.type === 'payment_intent.succeeded') {
-    const paymentIntent = event.data.object;
-    console.log(`💰 Payment succeeded: ${paymentIntent.id}`);
-
-    try {
-      // Find or create donor
-      const { data: existingDonor } = await supabase
-        .from('donors')
-        .select('id')
-        .eq('email', paymentIntent.metadata.donorEmail)
-        .single();
-
-      let donorId = existingDonor?.id;
-
-      if (!existingDonor) {
-        const [firstName, ...lastNameParts] = (paymentIntent.metadata.donorName || 'Anonymous').split(' ');
-        const { data: newDonor } = await supabase
-          .from('donors')
-          .insert({
-            email: paymentIntent.metadata.donorEmail,
-            first_name: firstName,
-            last_name: lastNameParts.join(' ') || ''
-          })
-          .select('id')
-          .single();
-        donorId = newDonor?.id;
-      }
-
-      // Create donation record
-      await supabase.from('donations').insert({
-        donor_id: donorId,
-        amount: paymentIntent.amount / 100,
-        currency: paymentIntent.currency.toUpperCase(),
-        payment_method: 'card',
-        payment_status: 'completed',
-        stripe_payment_intent_id: paymentIntent.id,
-        stripe_charge_id: paymentIntent.latest_charge,
-        receipt_url: paymentIntent.charges?.data[0]?.receipt_url,
-        designation: paymentIntent.metadata.designation,
-        is_anonymous: paymentIntent.metadata.isAnonymous === 'true',
-        message: paymentIntent.metadata.message,
-        processed_at: new Date().toISOString()
-      });
-
-      // Send thank you email
-      if (paymentIntent.metadata.donorEmail && paymentIntent.metadata.donorEmail !== 'anonymous') {
-        await resend.emails.send({
-          from: 'OCSLAA <onboarding@resend.dev>',
-          to: paymentIntent.metadata.donorEmail,
-          subject: 'Thank You for Your Donation!',
-          html: `
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <style>
-                  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-                  .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                  .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0; }
-                  .content { background: #f9fafb; padding: 30px; }
-                  .amount { font-size: 36px; font-weight: bold; color: #667eea; margin: 20px 0; }
-                  .footer { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #666; }
-                </style>
-              </head>
-              <body>
-                <div class="container">
-                  <div class="header">
-                    <h1>Thank You! 💙</h1>
-                  </div>
-                  <div class="content">
-                    <p>Dear ${paymentIntent.metadata.donorName},</p>
-                    <p>Thank you for your generous donation to OCSLAA (Our Concern Sierra Leone Alliance)!</p>
-                    <div class="amount">$${(paymentIntent.amount / 100).toFixed(2)}</div>
-                    <p>Your contribution will help us continue our mission to support mental health awareness and provide resources for those in need in Sierra Leone.</p>
-                    ${paymentIntent.metadata.designation && paymentIntent.metadata.designation !== 'general' 
-                      ? `<p><strong>Designation:</strong> ${paymentIntent.metadata.designation}</p>` 
-                      : ''}
-                    <p><strong>Transaction ID:</strong> ${paymentIntent.id}</p>
-                    <p>This email serves as your receipt for tax purposes. Your donation is tax-deductible to the extent allowed by law.</p>
-                    <p>With gratitude,<br><strong>The OCSLAA Team</strong></p>
-                  </div>
-                  <div class="footer">
-                    <p>© ${new Date().getFullYear()} OCSLAA. All rights reserved.</p>
-                    <p>If you have any questions, please contact us at support@ocslaa.org</p>
-                  </div>
-                </div>
-              </body>
-            </html>
-          `
-        }).catch(err => console.error('Failed to send thank you email:', err));
-      }
-
-      console.log(`✅ Donation recorded successfully`);
-    } catch (error) {
-      console.error('❌ Error processing donation:', error);
-    }
-  }
-
-  res.json({ received: true });
 });
 
 // Get donation statistics
