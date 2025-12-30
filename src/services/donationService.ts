@@ -142,11 +142,11 @@ export async function getDonationStats(): Promise<DonationStats> {
     const data = await response.json();
     
     return {
-      totalRaised: data.total || 0,
-      totalDonors: data.count || 0,
-      averageDonation: data.count > 0 ? data.total / data.count : 0,
+      totalRaised: data.totalRaised || 0,
+      totalDonors: data.donorCount || 0,
+      averageDonation: data.donorCount > 0 ? data.totalRaised / data.donorCount : 0,
       monthlyRecurring: data.monthlyRecurring || 0,
-      goal: 50000,
+      goal: data.goal || 50000,
     };
   } catch (error) {
     console.error('Get donation stats error:', error);

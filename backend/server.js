@@ -56,48 +56,33 @@ app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), asyn
     console.log(`📧 Sending receipt to: ${paymentIntent.metadata.donorEmail}`);
 
     try {
-      // Find or create donor
-      const { data: existingDonor } = await supabase
-        .from('donors')
-        .select('id')
-        .eq('email', paymentIntent.metadata.donorEmail)
+      // Record the donation to database
+      const { data: donation, error: dbError } = await supabase
+        .from('donations')
+        .insert({
+          stripe_payment_intent_id: paymentIntent.id,
+          amount: paymentIntent.amount / 100,
+          currency: paymentIntent.currency.toUpperCase(),
+          donor_name: paymentIntent.metadata.donorName || 'Anonymous',
+          donor_email: paymentIntent.metadata.donorEmail || 'anonymous@ocslaa.org',
+          donor_phone: paymentIntent.metadata.phone || null,
+          is_anonymous: paymentIntent.metadata.isAnonymous === 'true',
+          cover_fees: paymentIntent.metadata.coverFees === 'true',
+          dedicated_to: paymentIntent.metadata.designation || null,
+          message: paymentIntent.metadata.message || null,
+          payment_method: 'stripe',
+          status: 'completed',
+          receipt_sent: false
+        })
+        .select()
         .single();
 
-      let donorId = existingDonor?.id;
-
-      if (!existingDonor) {
-        const [firstName, ...lastNameParts] = (paymentIntent.metadata.donorName || 'Anonymous').split(' ');
-        const { data: newDonor } = await supabase
-          .from('donors')
-          .insert({
-            email: paymentIntent.metadata.donorEmail,
-            first_name: firstName,
-            last_name: lastNameParts.join(' ') || '',
-            phone: paymentIntent.metadata.phone,
-            total_donated: 0,
-            donation_count: 0,
-          })
-          .select()
-          .single();
-        
-        donorId = newDonor?.id;
+      if (dbError) {
+        console.error('❌ Database error saving donation:', dbError);
+        throw dbError;
       }
 
-      // Record the donation
-      await supabase.from('donations').insert({
-        donor_id: donorId,
-        amount: paymentIntent.amount / 100,
-        currency: paymentIntent.currency.toUpperCase(),
-        payment_method: 'card',
-        payment_status: 'completed',
-        stripe_payment_intent_id: paymentIntent.id,
-        stripe_charge_id: paymentIntent.latest_charge,
-        receipt_url: paymentIntent.charges?.data[0]?.receipt_url,
-        designation: paymentIntent.metadata.designation,
-        is_anonymous: paymentIntent.metadata.isAnonymous === 'true',
-        message: paymentIntent.metadata.message,
-        processed_at: new Date().toISOString()
-      });
+      console.log('✅ Donation saved to database:', donation?.id);
 
       // Send thank you email
       if (paymentIntent.metadata.donorEmail && paymentIntent.metadata.donorEmail !== 'anonymous') {
@@ -479,7 +464,7 @@ app.post('/api/newsletter/send', async (req, res) => {
 // Create Stripe payment intent for donations
 app.post('/api/donations/create-payment-intent', async (req, res) => {
   try {
-    const { amount, currency, donorEmail, donorName, designation, isAnonymous, message } = req.body;
+    const { amount, currency, donorEmail, donorName, phone, designation, isAnonymous, message, coverFees } = req.body;
 
     if (!amount || amount < 1) {
       return res.status(400).json({ 
@@ -497,9 +482,11 @@ app.post('/api/donations/create-payment-intent', async (req, res) => {
       metadata: {
         donorEmail: donorEmail || 'anonymous',
         donorName: donorName || 'Anonymous',
+        phone: phone || '',
         designation: designation || 'general',
         isAnonymous: isAnonymous ? 'true' : 'false',
-        message: message || ''
+        message: message || '',
+        coverFees: coverFees ? 'true' : 'false'
       },
       receipt_email: donorEmail || undefined,
     });
@@ -521,25 +508,56 @@ app.post('/api/donations/create-payment-intent', async (req, res) => {
 // Get donation statistics
 app.get('/api/donations/stats', async (req, res) => {
   try {
-    const { data: donations } = await supabase
+    // Get all completed donations
+    const { data: donations, error } = await supabase
       .from('donations')
-      .select('amount, payment_status, created_at')
-      .eq('payment_status', 'completed');
+      .select('amount, donor_email, donor_name, created_at, is_anonymous')
+      .eq('status', 'completed')
+      .order('created_at', { ascending: false });
 
-    const total = donations?.reduce((sum, d) => sum + parseFloat(d.amount), 0) || 0;
-    const count = donations?.length || 0;
+    if (error) {
+      console.error('❌ Database error:', error);
+      throw error;
+    }
+
+    const totalRaised = donations?.reduce((sum, d) => sum + parseFloat(d.amount), 0) || 0;
+    
+    // Count unique donors by email
+    const uniqueEmails = new Set(donations?.map(d => d.donor_email) || []);
+    const donorCount = uniqueEmails.size;
+
+    // Get recent donations (top 5, excluding anonymous)
+    const recentDonations = donations
+      ?.filter(d => !d.is_anonymous)
+      .slice(0, 5)
+      .map(d => ({
+        id: d.id,
+        amount: parseFloat(d.amount),
+        donorName: d.donor_name || 'Anonymous',
+        date: d.created_at
+      })) || [];
+
+    const goal = 50000;
+
+    console.log(`📊 Stats: $${totalRaised.toFixed(2)} raised from ${donorCount} donors`);
 
     res.json({
-      success: true,
-      stats: {
-        totalAmount: total,
-        donationCount: count,
-        averageDonation: count > 0 ? total / count : 0
-      }
+      totalRaised: totalRaised,
+      donorCount: donorCount,
+      goal: goal,
+      progress: ((totalRaised / goal) * 100).toFixed(1),
+      recentDonations: recentDonations
     });
   } catch (error) {
     console.error('❌ Error fetching donation stats:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ 
+      totalRaised: 0,
+      donorCount: 0,
+      goal: 50000,
+      progress: 0,
+      recentDonations: [],
+      error: error.message 
+    });
   }
 });
 

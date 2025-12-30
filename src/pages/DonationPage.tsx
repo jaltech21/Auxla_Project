@@ -7,7 +7,6 @@ import { CheckoutForm } from '@/components/features/CheckoutForm';
 import { StepIndicator } from '@/components/features/StepIndicator';
 import PaymentMethodSelector from '@/components/features/PaymentMethodSelector';
 import BankTransferDetails from '@/components/features/BankTransferDetails';
-import PayPalButton from '@/components/features/PayPalButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -137,7 +136,7 @@ const DonationPage = () => {
         }
       });
     } else {
-      // For PayPal and Bank Transfer, go directly to payment step
+      // For Bank Transfer, go directly to payment step
       setStep('payment');
     }
   };
@@ -553,26 +552,6 @@ const DonationPage = () => {
                             }}
                           />
                         </Elements>
-                      )}
-
-                      {/* PayPal Payment */}
-                      {paymentMethod === 'paypal' && (
-                        <PayPalButton
-                          amount={totalAmount}
-                          donationData={{
-                            amount: selectedAmount,
-                            type,
-                            paymentMethod: 'paypal',
-                            firstName: isAnonymous ? undefined : firstName,
-                            lastName: isAnonymous ? undefined : lastName,
-                            email,
-                            phone,
-                            anonymous: isAnonymous,
-                            dedicatedTo: dedicatedTo || undefined,
-                            message: message || undefined,
-                            coverFees
-                          }}
-                        />
                       )}
 
                       {/* Bank Transfer */}

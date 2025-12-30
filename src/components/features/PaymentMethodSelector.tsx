@@ -30,14 +30,6 @@ export default function PaymentMethodSelector({ selected, onChange }: PaymentMet
       fees: '2.9% + $0.30'
     },
     {
-      value: 'paypal',
-      label: 'PayPal',
-      description: 'Pay securely with your PayPal account',
-      icon: <DollarSign className="h-6 w-6" />,
-      processingTime: 'Instant',
-      fees: '2.9% + $0.30'
-    },
-    {
       value: 'bank-transfer',
       label: 'Bank Transfer',
       description: 'Direct bank transfer (requires manual verification)',
