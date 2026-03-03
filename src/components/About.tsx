@@ -32,10 +32,10 @@ const About = () => {
 
 
   const milestones = [
-    { year: "2018", event: "OCSLAA Founded", description: "Started with a vision to make mental health care accessible in Sierra Leone" },
-    { year: "2019", event: "10K Lives Touched", description: "Reached our first major milestone of helping 10,000 people" },
-    { year: "2021", event: "National Recognition", description: "Awarded for excellence in community mental health services" },
-    { year: "2024", event: "50K+ Community", description: "Growing community with presence in 15 states" },
+    { year: "2023", event: "OCSLAA Founded", description: "Started with a vision to make mental health care accessible in Sierra Leone" },
+    { year: "2024", event: "10K Lives Touched", description: "Reached our first major milestone of helping 10,000 people" },
+    { year: "2025", event: "National Recognition", description: "Awarded for excellence in community mental health services" },
+    { year: "2026", event: "50K+ Community", description: "Growing community with presence in 15 states" },
   ];
 
   return (
