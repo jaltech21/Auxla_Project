@@ -45,7 +45,7 @@ const Hero = () => {
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-2">
-              <a href="#about">Learn More About Us</a>
+              <a href="/about">Learn More About Us</a>
             </Button>
           </div>
 
