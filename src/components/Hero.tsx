@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Heart, Users, BookOpen } from "lucide-react";
 import heroImage from "@/assets/hands-together.jpg";
+import About from "./About";
 
 const Hero = () => {
   return (
@@ -45,7 +46,7 @@ const Hero = () => {
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-2">
-              <a href="/about">Learn More About Us</a>
+              <a href="/About">Learn More About Us</a>
             </Button>
           </div>
 
