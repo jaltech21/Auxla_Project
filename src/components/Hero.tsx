@@ -47,7 +47,7 @@ const Hero = () => {
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-2">
-              <Link to="/About">Learn More About Us</Link>
+              <Link to="/about">Learn More About Us</Link>
             </Button>
           </div>
 
