@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Heart, Users, BookOpen } from "lucide-react";
 import heroImage from "@/assets/hands-together.jpg";
+import { Link } from "react-router-dom";
 import About from "./About";
 
 const Hero = () => {
@@ -46,7 +47,7 @@ const Hero = () => {
               </a>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-2">
-              <a href="/About">Learn More About Us</a>
+              <Link to="/About">Learn More About Us</Link>
             </Button>
           </div>
 
