@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Brain, Heart, Shield, Users, BookOpen, Phone, ExternalLink } from "lucide-react";
@@ -128,9 +129,11 @@ const Resources = () => {
                 "HELLO" to 741741
               </p>
             </div>
-            <Button variant="secondary" size="lg" className="flex-shrink-0">
-              Get Help Now
-            </Button>
+            <Link to="/contact">
+              <Button variant="secondary" size="lg" className="flex-shrink-0">
+                Get Help Now
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
