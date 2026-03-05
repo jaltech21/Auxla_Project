@@ -1,11 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, User, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Blog = () => {
   const posts = [
     {
       title: "5 Daily Habits for Better Mental Health",
+      slug: "5-daily-habits-better-mental-health",
       excerpt: "Discover simple yet effective practices that can significantly improve your mental wellness and emotional resilience.",
       author: "Dr. Sarah Johnson",
       date: "March 15, 2024",
@@ -15,6 +17,7 @@ const Blog = () => {
     },
     {
       title: "Understanding Anxiety: A Comprehensive Guide",
+      slug: "understanding-anxiety-comprehensive-guide",
       excerpt: "Learn about the different types of anxiety disorders, their symptoms, and evidence-based treatment approaches.",
       author: "Dr. Michael Chen",
       date: "March 12, 2024",
@@ -24,6 +27,7 @@ const Blog = () => {
     },
     {
       title: "The Power of Community in Mental Health Recovery",
+      slug: "power-community-mental-health-recovery",
       excerpt: "Explore how connection and support groups play a crucial role in healing and maintaining mental wellness.",
       author: "Emma Rodriguez",
       date: "March 10, 2024",
@@ -90,9 +94,11 @@ const Blog = () => {
                   </div>
                 </div>
 
-                <Button variant="link" className="p-0 h-auto group/link">
-                  Read Article
-                  <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
+                <Button variant="link" className="p-0 h-auto group/link" asChild>
+                  <Link to={`/blog/${post.slug}`}>
+                    Read Article
+                    <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -101,8 +107,10 @@ const Blog = () => {
 
         {/* View All Button */}
         <div className="text-center">
-          <Button variant="outline" size="lg">
-            View All Articles
+          <Button variant="outline" size="lg" asChild>
+            <Link to="/blog">
+              View All Articles
+            </Link>
           </Button>
         </div>
       </div>

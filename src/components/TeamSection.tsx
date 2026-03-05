@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { teamMembers } from "@/data/mockContent";
 import { Mail, Linkedin } from "lucide-react";
 
@@ -145,7 +146,7 @@ const TeamSection = () => {
             Want to join our mission? We're always looking for passionate mental health advocates.
           </p>
           <Button variant="outline" asChild>
-            <a href="/contact?type=volunteer">Join Our Team</a>
+            <Link to="/contact?type=volunteer">Join Our Team</Link>
           </Button>
         </div>
       </div>

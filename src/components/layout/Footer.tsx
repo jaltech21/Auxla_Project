@@ -1,5 +1,6 @@
 import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import NewsletterSignup from "@/components/NewsletterSignup";
 
 const Footer = () => {
@@ -41,16 +42,31 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-3">
-              {["Home", "About Us", "Resources", "Blog", "Events"].map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase().replace(" ", "-")}`}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Resources
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/support-finder" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Support Finder
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -58,16 +74,31 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-foreground mb-4">Resources</h3>
             <ul className="space-y-3">
-              {["Crisis Helpline", "Find a Therapist", "Support Groups", "Self-Help Tools", "FAQ"].map((link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase().replace(/ /g, "-")}`}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Link to="/services?category=crisis" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Crisis Helpline
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Find a Therapist
+                </Link>
+              </li>
+              <li>
+                <Link to="/support-finder" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Support Groups
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  Self-Help Tools
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -122,12 +153,12 @@ const Footer = () => {
               © {new Date().getFullYear()} OCSLAA - Our Concern Sierra Leone Alliance. All rights reserved.
             </p>
             <div className="flex gap-6">
-              <a href="#privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              </Link>
+              <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Terms of Service
-              </a>
+              </Link>
             </div>
           </div>
         </div>

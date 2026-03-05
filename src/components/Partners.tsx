@@ -5,6 +5,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { partners } from "@/data/mockContent";
 import { Building2, Heart, GraduationCap, Globe } from "lucide-react";
 
@@ -122,8 +123,8 @@ const Partners = () => {
             We're always looking to collaborate with organizations that share our commitment to
             mental health advocacy and support in Sierra Leone.
           </p>
-          <a
-            href="/contact?type=partnership"
+          <Link
+            to="/contact?type=partnership"
             className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
           >
             Explore Partnership Opportunities
@@ -140,7 +141,7 @@ const Partners = () => {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -2,10 +2,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Brain, Heart, Shield, Users, BookOpen, Phone, ExternalLink } from "lucide-react";
+import { Brain, Heart, Shield, Users, BookOpen, Phone, ExternalLink, Loader } from "lucide-react";
+import { useBlogPosts } from "@/hooks/useBlog";
 
 const Resources = () => {
   const [activeFilter, setActiveFilter] = useState("all");
+  
+  // Fetch blog posts from Sanity
+  const { data, isLoading } = useBlogPosts();
+  const allPosts = data?.posts || [];
 
   const filters = [
     { id: "all", label: "All Resources" },
@@ -15,53 +20,62 @@ const Resources = () => {
     { id: "support", label: "Support Groups" },
   ];
 
-  const resources = [
-    {
-      icon: Brain,
-      title: "Understanding Anxiety",
-      description: "Learn about anxiety disorders, symptoms, and coping strategies to manage your mental health.",
-      category: "anxiety",
-      link: "#",
-    },
-    {
-      icon: Heart,
-      title: "Depression Resources",
-      description: "Comprehensive guide to recognizing depression and finding effective treatment options.",
-      category: "depression",
-      link: "#",
-    },
-    {
-      icon: Shield,
-      title: "Stress Management",
-      description: "Practical techniques and tools to reduce stress and build resilience in daily life.",
-      category: "stress",
-      link: "#",
-    },
-    {
-      icon: Users,
-      title: "Support Groups",
-      description: "Connect with others who understand. Find local and online support groups near you.",
-      category: "support",
-      link: "#",
-    },
-    {
-      icon: BookOpen,
-      title: "Self-Help Resources",
-      description: "Evidence-based self-help materials, worksheets, and guided exercises for mental wellness.",
-      category: "all",
-      link: "#",
-    },
+  // Map category slugs to filter IDs
+  const categoryMap: { [key: string]: string } = {
+    "anxiety-disorders": "anxiety",
+    "depression": "depression",
+    "stress-management": "stress",
+    "support-groups": "support",
+    "mental-health": "all",
+    "wellness": "all",
+    "coping-strategies": "all",
+  };
+
+  // Convert blog posts to resource format
+  const resources = allPosts.slice(0, 6).map((post: any) => {
+    const categorySlug = post.category?.slug || "";
+    const filterCategory = categoryMap[categorySlug] || "all";
+    
+    // Select appropriate icon based on category
+    let icon = BookOpen;
+    if (filterCategory === "anxiety") icon = Brain;
+    else if (filterCategory === "depression") icon = Heart;
+    else if (filterCategory === "stress") icon = Shield;
+    else if (filterCategory === "support") icon = Users;
+
+    return {
+      icon,
+      title: post.title,
+      description: post.excerpt,
+      category: filterCategory,
+      slug: post.slug.current,
+      readTime: post.readTime || "5 min read",
+      author: post.author?.name || "Author",
+      isCommunity: false,
+      link: `/blog/${post.slug.current}`,
+    };
+  });
+
+  // Keep some hardcoded community resources that complement blog posts
+  const communityResources = [
     {
       icon: Phone,
       title: "Crisis Helpline",
       description: "24/7 crisis support and immediate help for those experiencing mental health emergencies.",
       category: "all",
-      link: "#",
+      slug: "crisis-helpline",
+      link: "/services?category=crisis",
+      isCommunity: true,
+      readTime: "",
+      author: "",
     },
   ];
 
+  const allResources = [...resources, ...communityResources];
   const filteredResources =
-    activeFilter === "all" ? resources : resources.filter((r) => r.category === activeFilter || r.category === "all");
+    activeFilter === "all" 
+      ? allResources 
+      : allResources.filter((r) => r.category === activeFilter || r.category === "all");
 
   return (
     <section id="resources" className="py-16 md:py-24 bg-gradient-soft">
@@ -90,28 +104,50 @@ const Resources = () => {
 
         {/* Resource Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredResources.map((resource, index) => (
-            <Card
-              key={index}
-              className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border"
-            >
-              <CardHeader>
-                <div className="p-3 bg-primary-light rounded-lg w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <resource.icon className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle className="text-xl">{resource.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <CardDescription className="text-muted-foreground">{resource.description}</CardDescription>
-                <Button variant="link" className="p-0 h-auto group/link" asChild>
-                  <a href={resource.link}>
-                    Learn More
-                    <ExternalLink className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
-                  </a>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+          {isLoading ? (
+            <div className="col-span-full flex items-center justify-center py-12">
+              <div className="flex flex-col items-center gap-2">
+                <Loader className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-muted-foreground">Loading resources...</p>
+              </div>
+            </div>
+          ) : filteredResources.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">No resources found for this category.</p>
+            </div>
+          ) : (
+            filteredResources.map((resource, index) => (
+              <Card
+                key={index}
+                className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border"
+              >
+                <CardHeader>
+                  <div className="p-3 bg-primary-light rounded-lg w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <resource.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-xl">{resource.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <CardDescription className="text-muted-foreground">{resource.description}</CardDescription>
+                  {resource.isCommunity ? (
+                    <Button variant="link" className="p-0 h-auto group/link" asChild>
+                      <a href={resource.link}>
+                        Learn More
+                        <ExternalLink className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
+                      </a>
+                    </Button>
+                  ) : (
+                    <Button variant="link" className="p-0 h-auto group/link" asChild>
+                      <Link to={`/blog/${resource.slug}`}>
+                        Learn More
+                        <ExternalLink className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
+                      </Link>
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
 
         {/* Emergency Banner */}

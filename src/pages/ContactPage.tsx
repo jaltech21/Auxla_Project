@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,6 +34,7 @@ import { cn } from '@/lib/utils';
 
 const ContactPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { mutate: submitForm, isPending } = useSubmitContactForm();
 
   // React Hook Form with Zod validation
@@ -40,6 +43,7 @@ const ContactPage = () => {
     handleSubmit: handleFormSubmit,
     control,
     watch,
+    setValue,
     formState: { errors, isValid, touchedFields },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -56,6 +60,14 @@ const ContactPage = () => {
       organization: '',
     },
   });
+
+  // Set inquiry type from URL query parameter
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type && ['general', 'support', 'volunteer', 'partnership', 'media'].includes(type)) {
+      setValue('inquiryType', type as any);
+    }
+  }, [searchParams, setValue]);
 
   // Watch inquiry type for conditional organization field
   const inquiryType = watch('inquiryType');

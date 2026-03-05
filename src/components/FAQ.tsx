@@ -3,12 +3,22 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 import { HelpCircle, Search, ThumbsUp, ThumbsDown, MessageSquare } from "lucide-react";
 
 const FAQ = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [votes, setVotes] = useState<Record<number, 'up' | 'down' | null>>({});
+  const [voteCounts, setVoteCounts] = useState<Record<number, { up: number; down: number }>>({
+    0: { up: 24, down: 3 },
+    1: { up: 18, down: 2 },
+    2: { up: 45, down: 1 },
+    3: { up: 32, down: 4 },
+    4: { up: 28, down: 2 },
+    5: { up: 19, down: 1 },
+    6: { up: 156, down: 5 },
+  });
 
   const categories = ['General', 'Services', 'Support', 'Crisis', 'Volunteering'];
 
@@ -66,11 +76,41 @@ const FAQ = () => {
   });
 
   const handleVote = (index: number, voteType: 'up' | 'down') => {
-    setVotes((prev) => ({
-      ...prev,
-      [index]: prev[index] === voteType ? null : voteType,
-    }));
-    // In production, this would send vote to backend
+    setVotes((prev) => {
+      const currentVote = prev[index];
+      const newVote = currentVote === voteType ? null : voteType;
+      
+      // Update vote counts
+      setVoteCounts((counts) => {
+        const updated = { ...counts };
+        if (!updated[index]) {
+          updated[index] = { up: 0, down: 0 };
+        }
+        
+        // Remove previous vote
+        if (currentVote === 'up') {
+          updated[index].up = Math.max(0, updated[index].up - 1);
+        } else if (currentVote === 'down') {
+          updated[index].down = Math.max(0, updated[index].down - 1);
+        }
+        
+        // Add new vote
+        if (newVote === 'up') {
+          updated[index].up += 1;
+        } else if (newVote === 'down') {
+          updated[index].down += 1;
+        }
+        
+        return updated;
+      });
+      
+      return {
+        ...prev,
+        [index]: newVote,
+      };
+    });
+    
+    // In production, send vote to backend/database
     console.log(`Voted ${voteType} on FAQ ${index}`);
   };
 
@@ -153,17 +193,21 @@ const FAQ = () => {
                           variant={votes[index] === 'up' ? 'default' : 'outline'}
                           size="sm"
                           onClick={() => handleVote(index, 'up')}
-                          className="h-8"
+                          className="h-8 gap-1"
+                          title={`${voteCounts[index]?.up || 0} people found this helpful`}
                         >
                           <ThumbsUp className="h-4 w-4" />
+                          <span className="text-xs">{voteCounts[index]?.up || 0}</span>
                         </Button>
                         <Button
                           variant={votes[index] === 'down' ? 'default' : 'outline'}
                           size="sm"
                           onClick={() => handleVote(index, 'down')}
-                          className="h-8"
+                          className="h-8 gap-1"
+                          title={`${voteCounts[index]?.down || 0} people found this unhelpful`}
                         >
                           <ThumbsDown className="h-4 w-4" />
+                          <span className="text-xs">{voteCounts[index]?.down || 0}</span>
                         </Button>
                       </div>
                     </div>
@@ -192,15 +236,16 @@ const FAQ = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild>
-                <a href="/contact">
+                <Link to="/contact">
                   <MessageSquare className="h-4 w-4 mr-2" />
                   Contact Us
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" asChild>
-                <a href="mailto:support@ocslaa.org">
+                <Link to="/contact?type=general">
+                  <MessageSquare className="h-4 w-4 mr-2" />
                   Email Support
-                </a>
+                </Link>
               </Button>
             </div>
           </div>
