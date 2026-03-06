@@ -156,12 +156,12 @@ const Resources = () => {
           <div className="flex flex-col md:flex-row items-center gap-6">
             <div className="flex-shrink-0">
               <div className="p-4 bg-secondary rounded-xl">
-                <Phone className="h-8 w-8 text-secondary-foreground" />
+                <Phone className="h-8 w-8 text-white" />
               </div>
             </div>
             <div className="flex-1 text-center md:text-left">
-              <h3 className="text-xl font-bold text-foreground mb-2">Need Immediate Help?</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Need Immediate Help?</h3>
+              <p className="text-gray-700">
                 If you're in crisis, call the National Suicide Prevention Lifeline at <strong>988</strong> or text
                 "HELLO" to 741741
               </p>
