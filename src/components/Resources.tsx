@@ -33,7 +33,8 @@ const Resources = () => {
 
   // Convert blog posts to resource format
   const resources = allPosts.slice(0, 6).map((post: any) => {
-    const categorySlug = post.category?.slug || "";
+    // post.category is already a string (the slug) from Sanity transformation
+    const categorySlug = post.category || "";
     const filterCategory = categoryMap[categorySlug] || "all";
     
     // Select appropriate icon based on category
@@ -48,11 +49,11 @@ const Resources = () => {
       title: post.title,
       description: post.excerpt,
       category: filterCategory,
-      slug: post.slug.current,
+      slug: post.slug,
       readTime: post.readTime || "5 min read",
       author: post.author?.name || "Author",
       isCommunity: false,
-      link: `/blog/${post.slug.current}`,
+      link: `/blog/${post.slug}`,
     };
   });
 

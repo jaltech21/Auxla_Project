@@ -4,6 +4,7 @@
  */
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { whyChooseReasons } from "@/data/mockContent";
 import {
   ShieldCheck,
@@ -75,8 +76,8 @@ const WhyChooseSection = () => {
           <p className="text-muted-foreground mb-4">
             Ready to take the first step towards better mental health?
           </p>
-          <a
-            href="/support-finder"
+          <Link
+            to="/support-finder"
             className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
           >
             Find Support Now
@@ -93,7 +94,7 @@ const WhyChooseSection = () => {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

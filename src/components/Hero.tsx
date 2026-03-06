@@ -41,10 +41,10 @@ const Hero = () => {
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Button variant="hero" size="lg" asChild>
-              <a href="/support-finder" className="group">
+              <Link to="/support-finder" className="group">
                 Find Support Now
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </a>
+              </Link>
             </Button>
             <Button variant="outline" size="lg" asChild className="border-2">
               <Link to="/about">Learn More About Us</Link>

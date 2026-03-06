@@ -4,6 +4,7 @@
  */
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { impactStats } from "@/data/mockContent";
 import {
   Users,
@@ -140,8 +141,8 @@ const ImpactStats = () => {
           <p className="text-muted-foreground mb-4">
             Every number represents a life touched, a stigma broken, and hope restored
           </p>
-          <a
-            href="#about"
+          <Link
+            to="/about"
             className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
           >
             Learn more about our work
@@ -158,7 +159,7 @@ const ImpactStats = () => {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
