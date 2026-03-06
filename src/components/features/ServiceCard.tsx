@@ -102,7 +102,7 @@ export const ServiceCard = ({ resource, className }: ResourceCardProps) => {
         </Badge>
 
         <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
-          <Link to={`/resources/${resource.id}`}>{resource.title}</Link>
+          <Link to={`/services/${resource.id}`}>{resource.title}</Link>
         </CardTitle>
       </CardHeader>
 
@@ -146,7 +146,7 @@ export const ServiceCard = ({ resource, className }: ResourceCardProps) => {
         {/* Action Buttons */}
         <div className="flex gap-2 pt-2">
           <Button variant="default" size="sm" asChild className="flex-1">
-            <Link to={`/resources/${resource.id}`}>
+            <Link to={`/services/${resource.id}`}>
               View Resource
               <ExternalLink className="h-4 w-4 ml-2" />
             </Link>
