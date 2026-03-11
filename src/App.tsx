@@ -18,6 +18,13 @@ import BlogPage from "./pages/BlogPage";
 import BlogDetailPage from "./pages/BlogDetailPage";
 import AuthorPage from "./pages/AuthorPage";
 import AboutPage from "./pages/AboutPage";
+import AboutLeadershipPage from "./pages/AboutLeadershipPage";
+import AdvocacyPolicyPage from "./pages/AdvocacyPolicyPage";
+import StrategicPlanPage from "./pages/StrategicPlanPage";
+import AnnualReviewsPage from "./pages/AnnualReviewsPage";
+import AccreditationPage from "./pages/AccreditationPage";
+import YouthServicesPage from "./pages/YouthServicesPage";
+import FamiliesCarersPage from "./pages/FamiliesCarersPage";
 import DonatePage from "./pages/DonatePage";
 import DonationPage from "./pages/DonationPage";
 import DonationSuccessPage from "./pages/DonationSuccessPage";
@@ -85,12 +92,19 @@ const App = () => (
                     <main className="flex-1">
                       <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/services/youth" element={<YouthServicesPage />} />
+                <Route path="/services/families" element={<FamiliesCarersPage />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/services/:id" element={<ServiceDetailPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogDetailPage />} />
                 <Route path="/blog/author/:authorId" element={<AuthorPage />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/about/leadership" element={<AboutLeadershipPage />} />
+                <Route path="/about/advocacy" element={<AdvocacyPolicyPage />} />
+                <Route path="/about/strategic-plan" element={<StrategicPlanPage />} />
+                <Route path="/about/annual-reviews" element={<AnnualReviewsPage />} />
+                <Route path="/about/accreditation" element={<AccreditationPage />} />
                 <Route path="/donate" element={<DonationPage />} />
                 <Route path="/donation/success" element={<DonationSuccessPage />} />
                 <Route path="/contact" element={<ContactPage />} />
