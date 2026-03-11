@@ -19,6 +19,7 @@ const Header = () => {
   ];
 
   const servicesDropdownItems = [
+    { name: "All Services & Resources", href: "/services" },
     { name: "Youth Services", href: "/services/youth" },
     { name: "Families and Carers", href: "/services/families" },
   ];
