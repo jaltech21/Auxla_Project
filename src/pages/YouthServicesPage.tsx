@@ -62,6 +62,17 @@ const YouthServicesPage = () => {
           }
         }
 
+        @keyframes pulse-glow {
+          0%, 100% {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+          }
+          50% {
+            opacity: 0.8;
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.5);
+          }
+        }
+
         .hero-title {
           animation: slideInDown 0.8s ease-out;
         }
@@ -69,20 +80,53 @@ const YouthServicesPage = () => {
         .hero-subtitle {
           animation: slideInUp 0.8s ease-out 0.2s both;
         }
+
+        .glow-badge {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
       `}</style>
 
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 md:py-32">
+        {/* Animated background elements */}
         <div className="absolute top-10 right-20 opacity-10">
           <Heart className="h-32 w-32 animate-pulse" fill="currentColor" />
+        </div>
+        <div className="absolute bottom-10 left-20 opacity-10">
+          <Users className="h-24 w-24 animate-pulse" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">Youth Services</h1>
-            <p className="text-xl text-primary-foreground/90 hero-subtitle">
-              Comprehensive mental health support designed specifically for young people aged 10-25.
+            {/* Badge with animation */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 mb-6 glow-badge w-fit">
+              <Heart className="h-4 w-4" fill="currentColor" />
+              <span className="text-sm font-medium">Youth Services</span>
+            </div>
+
+            {/* Animated title */}
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">
+              Support for
+              <br />
+              <span className="bg-gradient-to-r from-primary-foreground via-primary-foreground/90 to-primary-foreground/80 bg-clip-text text-transparent">
+                Young People
+              </span>
+            </h1>
+
+            {/* Animated subtitle */}
+            <p className="text-xl text-primary-foreground/90 mb-8 hero-subtitle leading-relaxed">
+              Comprehensive mental health services designed for ages 10-25, meeting you where you are.
             </p>
+
+            {/* CTA Button with animation */}
+            <div className="hero-subtitle" style={{ animationDelay: "0.4s" }}>
+              <Button variant="secondary" size="lg" asChild className="group">
+                <Link to="/contact">
+                  Access Services
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
