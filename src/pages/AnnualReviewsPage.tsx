@@ -14,6 +14,7 @@ const AnnualReviewsPage = () => {
         "Expanded reach to 12 new locations",
       ],
       icon: TrendingUp,
+      pdfPath: "/reports/OCSLAA-Annual-Review-2024-2025.pdf",
     },
     {
       year: "2023-2024",
@@ -25,6 +26,7 @@ const AnnualReviewsPage = () => {
         "Built partnerships with 25+ organizations",
       ],
       icon: Users,
+      pdfPath: "/reports/OCSLAA-Annual-Review-2023-2024.pdf",
     },
     {
       year: "2022-2023",
@@ -36,8 +38,18 @@ const AnnualReviewsPage = () => {
         "Gained accreditation from health authorities",
       ],
       icon: Award,
+      pdfPath: "/reports/OCSLAA-Annual-Review-2022-2023.pdf",
     },
   ];
+
+  const handleDownloadPDF = (pdfPath: string) => {
+    const link = document.createElement("a");
+    link.href = pdfPath;
+    link.download = pdfPath.split("/").pop() || "annual-review.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -71,21 +83,24 @@ const AnnualReviewsPage = () => {
               return (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 bg-primary-light rounded-lg flex-shrink-0">
-                          <IconComponent className="h-6 w-6 text-primary" />
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <div className="p-3 bg-primary-light rounded-lg flex-shrink-0">
+                            <IconComponent className="h-6 w-6 text-primary" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-2xl">{review.year}</CardTitle>
+                            <p className="text-sm text-muted-foreground">{review.period}</p>
+                          </div>
                         </div>
-                        <div>
-                          <CardTitle className="text-2xl">{review.year}</CardTitle>
-                          <p className="text-sm text-muted-foreground">{review.period}</p>
-                        </div>
+                        <button
+                          onClick={() => handleDownloadPDF(review.pdfPath)}
+                          className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
+                        >
+                          <Download className="h-4 w-4" />
+                          Download PDF
+                        </button>
                       </div>
-                      <Button variant="outline" size="sm" className="flex-shrink-0">
-                        <Download className="h-4 w-4 mr-2" />
-                        Download PDF
-                      </Button>
-                    </div>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
