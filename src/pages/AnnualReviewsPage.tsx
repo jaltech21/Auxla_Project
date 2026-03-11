@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, TrendingUp, Users, Award, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const AnnualReviewsPage = () => {
   const reviews = [
@@ -85,6 +86,17 @@ const AnnualReviewsPage = () => {
           }
         }
 
+        @keyframes pulse-glow {
+          0%, 100% {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+          }
+          50% {
+            opacity: 0.8;
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.5);
+          }
+        }
+
         .hero-title {
           animation: slideInDown 0.8s ease-out;
         }
@@ -92,21 +104,65 @@ const AnnualReviewsPage = () => {
         .hero-subtitle {
           animation: slideInUp 0.8s ease-out 0.2s both;
         }
+
+        .floating-heart {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .glow-badge {
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
       `}</style>
 
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 md:py-32">
-        {/* Animated background element */}
+        {/* Animated background elements */}
         <div className="absolute top-10 right-20 opacity-10">
-          <TrendingUp className="h-32 w-32 floating-heart animate-pulse" />
+          <TrendingUp className="h-32 w-32 floating-heart" />
+        </div>
+        <div className="absolute bottom-10 left-20 opacity-10">
+          <Award className="h-24 w-24 floating-heart" style={{ animationDelay: "0.5s" }} fill="currentColor" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">Annual Reviews</h1>
-            <p className="text-xl text-primary-foreground/90 hero-subtitle">
+            {/* Badge with animation */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 mb-6 glow-badge w-fit">
+              <TrendingUp className="h-4 w-4" />
+              <span className="text-sm font-medium">Annual Reviews</span>
+            </div>
+
+            {/* Animated title */}
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">
+              Our Impact
+              <br />
+              <span className="bg-gradient-to-r from-primary-foreground via-primary-foreground/90 to-primary-foreground/80 bg-clip-text text-transparent">
+                Journey
+              </span>
+            </h1>
+
+            {/* Animated subtitle */}
+            <p className="text-xl text-primary-foreground/90 mb-8 hero-subtitle leading-relaxed">
               Our commitment to transparency and accountability through annual reporting on impact and progress.
             </p>
+
+            {/* CTA Buttons with animation */}
+            <div className="flex flex-col sm:flex-row gap-4 hero-subtitle" style={{ animationDelay: "0.4s" }}>
+              <Button variant="secondary" size="lg" asChild className="group">
+                <Link to="/contact">
+                  Request Report
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                asChild
+                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <Link to="/support-finder">Learn More</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
