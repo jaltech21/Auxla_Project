@@ -33,12 +33,48 @@ const AdvocacyPolicyPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-soft">
+      <style>{`
+        @keyframes slideInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .hero-title {
+          animation: slideInDown 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+          animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+      `}</style>
+
       {/* Hero Section */}
-      <div className="bg-primary text-primary-foreground py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 md:py-32">
+        <div className="absolute top-10 right-20 opacity-10">
+          <Megaphone className="h-32 w-32 animate-pulse" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Advocacy and Policy</h1>
-            <p className="text-xl text-primary-foreground/90">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">Advocacy and Policy</h1>
+            <p className="text-xl text-primary-foreground/90 hero-subtitle">
               Driving systemic change through advocacy, policy engagement, and community empowerment.
             </p>
           </div>
@@ -58,22 +94,53 @@ const AdvocacyPolicyPage = () => {
 
           {/* Current Initiatives */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <style>{`
+              .initiative-card {
+                animation: slideInUp 0.6s ease-out forwards;
+                opacity: 0;
+              }
+
+              ${initiatives.map((_, i) => `
+                .initiative-card:nth-child(${i + 1}) {
+                  animation-delay: ${i * 0.15}s;
+                }
+              `).join('')}
+
+              .initiative-card-content {
+                transition: all 0.3s ease;
+              }
+
+              .initiative-card:hover .initiative-card-content {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+              }
+
+              .initiative-icon {
+                transition: all 0.3s ease;
+              }
+
+              .initiative-card:hover .initiative-icon {
+                transform: scale(1.15) rotate(5deg);
+              }
+            `}</style>
             {initiatives.map((initiative) => {
               const IconComponent = initiative.icon;
               return (
-                <Card key={initiative.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-primary-light rounded-lg flex-shrink-0">
-                        <IconComponent className="h-6 w-6 text-primary" />
+                <div key={initiative.id} className="initiative-card">
+                  <Card className="initiative-card-content hover:shadow-lg">
+                    <CardHeader>
+                      <div className="flex items-start gap-4">
+                        <div className="initiative-icon p-3 bg-primary-light rounded-lg flex-shrink-0">
+                          <IconComponent className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle className="text-lg">{initiative.title}</CardTitle>
                       </div>
-                      <CardTitle className="text-lg">{initiative.title}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-foreground text-sm leading-relaxed">{initiative.description}</p>
-                  </CardContent>
-                </Card>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-foreground text-sm leading-relaxed">{initiative.description}</p>
+                    </CardContent>
+                  </Card>
+                </div>
               );
             })}
           </div>

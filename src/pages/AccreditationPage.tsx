@@ -50,12 +50,48 @@ const AccreditationPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-soft">
+      <style>{`
+        @keyframes slideInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .hero-title {
+          animation: slideInDown 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+          animation: slideInUp 0.8s ease-out 0.2s both;
+        }
+      `}</style>
+
       {/* Hero Section */}
-      <div className="bg-primary text-primary-foreground py-16 md:py-24">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 md:py-32">
+        <div className="absolute top-10 right-20 opacity-10">
+          <Check className="h-32 w-32 animate-pulse" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Accreditation</h1>
-            <p className="text-xl text-primary-foreground/90">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">Accreditation</h1>
+            <p className="text-xl text-primary-foreground/90 hero-subtitle">
               Certified and committed to quality, safety, and excellence in mental health service delivery.
             </p>
           </div>
