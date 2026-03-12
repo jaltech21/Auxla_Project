@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Target, TrendingUp, Users, Lightbulb, Zap, BarChart3, Shield } from "lucide-react";
+import { ArrowRight, Target, TrendingUp, Users, Lightbulb, Zap, BarChart3, Shield, Heart } from "lucide-react";
 
 const StrategicPlanPage = () => {
   const goals = [
@@ -227,6 +227,43 @@ const StrategicPlanPage = () => {
             <p className="text-lg text-muted-foreground mb-8">
               From 2026 to 2029, OCSLAA will focus on expanding mental health services, building strategic partnerships, and creating sustainable solutions that transform lives and communities. This strategic plan guides our priorities and ensures accountability to our communities.
             </p>
+          </div>
+
+          {/* Our Vision Statement */}
+          <div className="mb-16">
+            <style>{`
+              .vision-section {
+                background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.02) 100%);
+                border: 2px solid rgba(16, 185, 129, 0.2);
+                animation: slideInUp 0.8s ease-out;
+              }
+
+              .vision-icon {
+                animation: float 3s ease-in-out infinite;
+              }
+            `}</style>
+            <div className="vision-section rounded-xl p-8 md:p-12 relative overflow-hidden">
+              <div className="absolute top-6 right-8 opacity-10">
+                <Heart className="h-24 w-24 vision-icon" fill="currentColor" />
+              </div>
+
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-primary rounded-lg">
+                    <Heart className="h-6 w-6 text-primary-foreground" fill="currentColor" />
+                  </div>
+                  <span className="text-sm font-semibold text-primary uppercase tracking-wide">Our Vision</span>
+                </div>
+
+                <h3 className="text-3xl md:text-4xl font-bold text-foreground leading-relaxed mb-4">
+                  Sierra Leonean communities where mental health is understood, openly discussed, and supported, and where people experiencing mental health challenges are treated with dignity, inclusion, and respect.
+                </h3>
+
+                <p className="text-lg text-muted-foreground mt-6">
+                  This vision guides everything we do at OCSLAA. Through our strategic goals and initiatives, we work toward creating a future where mental health is a valued part of overall wellbeing in our communities.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Strategic Pillars */}
