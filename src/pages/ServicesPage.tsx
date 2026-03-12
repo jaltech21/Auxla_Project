@@ -50,7 +50,7 @@ const ServicesPage = () => {
         @keyframes slideInDown {
           from {
             opacity: 0;
-            transform: translateY(-40px);
+            transform: translateY(-30px);
           }
           to {
             opacity: 1;
@@ -61,7 +61,7 @@ const ServicesPage = () => {
         @keyframes slideInUp {
           from {
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(30px);
           }
           to {
             opacity: 1;
@@ -69,37 +69,27 @@ const ServicesPage = () => {
           }
         }
 
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
         @keyframes pulse-glow {
           0%, 100% {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
             opacity: 1;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
           }
           50% {
-            box-shadow: 0 0 40px rgba(16, 185, 129, 0.6);
-            opacity: 0.85;
+            opacity: 0.8;
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.5);
           }
         }
 
         .hero-title {
-          animation: slideInDown 0.7s ease-out;
+          animation: slideInDown 0.8s ease-out;
         }
 
         .hero-subtitle {
-          animation: slideInUp 0.7s ease-out 0.3s both;
+          animation: slideInUp 0.8s ease-out 0.2s both;
         }
 
         .glow-badge {
-          animation: slideInDown 0.7s ease-out 0.1s both;
-          animation-fill-mode: both;
+          animation: pulse-glow 2s ease-in-out infinite;
         }
 
         .search-card {
@@ -108,10 +98,6 @@ const ServicesPage = () => {
 
         .crisis-banner {
           animation: slideInUp 0.7s ease-out 0.5s both;
-        }
-
-        .floating-icon {
-          animation: float 6s ease-in-out infinite;
         }
 
         .service-card {
@@ -126,38 +112,35 @@ const ServicesPage = () => {
         `).join('')}
       `}</style>
 
-      {/* Hero Section - Major Redesign */}
-      <div className="relative overflow-hidden py-20 md:py-40">
-        {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent"></div>
-        
-        {/* Animated decorative elements */}
-        <div className="absolute top-20 right-10 opacity-10 floating-icon hidden lg:block">
-          <BookOpen className="h-40 w-40 text-primary stroke-[0.5]" />
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-16 md:py-32">
+        {/* Animated background elements */}
+        <div className="absolute top-10 right-20 opacity-10">
+          <Heart className="h-32 w-32 animate-pulse" fill="currentColor" />
         </div>
-        <div className="absolute bottom-10 left-20 opacity-15 floating-icon hidden lg:block" style={{animationDelay: '2s'}}>
-          <Lightbulb className="h-32 w-32 text-primary stroke-[0.5]" />
+        <div className="absolute bottom-10 left-20 opacity-10">
+          <BookOpen className="h-24 w-24 animate-pulse" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary/10 border border-primary/30 mb-8 glow-badge group cursor-default">
-              <Zap className="h-4 w-4 text-primary group-hover:animate-spin" />
-              <span className="text-sm font-semibold text-primary">Explore Our Resources</span>
+          <div className="max-w-3xl">
+            {/* Badge with animation */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 border border-primary-foreground/20 mb-6 glow-badge w-fit">
+              <Heart className="h-4 w-4" fill="currentColor" />
+              <span className="text-sm font-medium">Mental Health Resources</span>
             </div>
 
-            {/* Main title with gradient */}
-            <h1 className="text-6xl md:text-7xl font-black mb-6 hero-title leading-tight">
+            {/* Animated title */}
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">
               Find the Support
               <br />
-              <span className="bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary-foreground via-primary-foreground/90 to-primary-foreground/80 bg-clip-text text-transparent">
                 You Need
               </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-muted-foreground mb-10 hero-subtitle max-w-2xl mx-auto leading-relaxed font-light">
+            {/* Animated subtitle */}
+            <p className="text-xl text-primary-foreground/90 mb-8 hero-subtitle leading-relaxed">
               Access our comprehensive range of mental health services, guides, and resources tailored to support your unique journey toward wellness and recovery.
             </p>
 
