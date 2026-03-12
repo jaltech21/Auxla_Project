@@ -216,47 +216,80 @@ const ServicesPage = () => {
         {/* Spacer */}
         <div className="h-24"></div>
 
-        {/* Crisis Alert Banner - Professional Redesign */}
-        <div className="max-w-5xl mx-auto mb-12 crisis-banner">
-          <Alert className="border-0 bg-gradient-to-r from-secondary/20 via-secondary/15 to-secondary/10 shadow-lg">
-            <div className="flex items-start gap-6 p-2">
-              <div className="hidden sm:flex p-4 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex-shrink-0">
-                <Phone className="h-6 w-6 text-white" />
+        {/* Crisis Alert Banner - Professional Design */}
+        <div className="max-w-5xl mx-auto mb-12">
+          <div className="bg-gradient-to-r from-secondary via-secondary/95 to-secondary/90 text-secondary-foreground rounded-lg p-8 md:p-12 relative overflow-hidden shadow-xl">
+            {/* Animated background element */}
+            <div className="absolute top-4 right-8 opacity-10">
+              <Phone className="h-20 w-20 floating-icon" fill="currentColor" />
+            </div>
+
+            <style>{`
+              .crisis-title {
+                animation: slideInDown 0.6s ease-out;
+              }
+
+              .crisis-subtitle {
+                animation: slideInUp 0.6s ease-out 0.2s both;
+              }
+
+              .crisis-content {
+                animation: slideInUp 0.6s ease-out 0.4s both;
+              }
+
+              .floating-icon {
+                animation: float 3s ease-in-out infinite;
+              }
+            `}</style>
+
+            <div className="relative z-10">
+              <div className="flex items-start gap-4 md:gap-6 mb-6">
+                <div className="flex p-3 bg-secondary-foreground/10 rounded-lg flex-shrink-0">
+                  <Phone className="h-6 w-6 text-secondary-foreground" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl md:text-3xl font-bold text-secondary-foreground crisis-title">
+                    Need Immediate Help?
+                  </h3>
+                  <p className="text-sm md:text-base text-secondary-foreground/90 mt-1 crisis-subtitle">
+                    If you're in crisis, reach out now — available 24/7
+                  </p>
+                </div>
               </div>
-              <div className="flex-1 py-2">
-                <AlertTitle className="text-xl md:text-2xl font-bold text-foreground mb-2">
-                  Need Immediate Help?
-                </AlertTitle>
-                <AlertDescription className="text-base text-foreground/80 leading-relaxed">
-                  <span className="block mb-3 font-semibold">If you're in crisis, reach out now:</span>
-                  <div className="flex flex-wrap gap-2 md:gap-4">
-                    <div>
-                      <span className="block text-sm text-muted-foreground mb-1">Suicide Prevention</span>
-                      <a 
-                        href={`tel:${CRISIS_HOTLINES.suicide.phone}`} 
-                        className="text-lg font-bold text-primary hover:text-primary/80 transition-colors"
-                      >
-                        {CRISIS_HOTLINES.suicide.phone}
-                      </a>
+
+              <div className="crisis-content">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                  <a 
+                    href={`tel:${CRISIS_HOTLINES.suicide.phone}`}
+                    className="bg-secondary-foreground/15 hover:bg-secondary-foreground/25 transition-colors rounded-lg p-4 md:p-5"
+                  >
+                    <div className="text-xs md:text-sm font-semibold text-secondary-foreground/80 mb-1">
+                      Suicide Prevention Lifeline
                     </div>
-                    <div className="hidden md:block w-px bg-foreground/20"></div>
-                    <div>
-                      <span className="block text-sm text-muted-foreground mb-1">Crisis Text Line</span>
-                      <a 
-                        href={`sms:${CRISIS_HOTLINES.crisis.phone}`} 
-                        className="text-lg font-bold text-primary hover:text-primary/80 transition-colors"
-                      >
-                        Text {CRISIS_HOTLINES.crisis.phone}
-                      </a>
+                    <div className="text-lg md:text-xl font-bold text-secondary-foreground">
+                      {CRISIS_HOTLINES.suicide.phone}
                     </div>
-                  </div>
-                  <span className="block text-xs text-muted-foreground mt-4 font-medium">
-                    Available 24/7 • Free & Confidential
-                  </span>
-                </AlertDescription>
+                  </a>
+
+                  <a 
+                    href={`sms:${CRISIS_HOTLINES.crisis.phone}`}
+                    className="bg-secondary-foreground/15 hover:bg-secondary-foreground/25 transition-colors rounded-lg p-4 md:p-5"
+                  >
+                    <div className="text-xs md:text-sm font-semibold text-secondary-foreground/80 mb-1">
+                      Crisis Text Line
+                    </div>
+                    <div className="text-lg md:text-xl font-bold text-secondary-foreground">
+                      Text {CRISIS_HOTLINES.crisis.phone}
+                    </div>
+                  </a>
+                </div>
+
+                <div className="text-xs md:text-sm text-secondary-foreground/80 font-medium">
+                  ✓ Free & Confidential • ✓ 24/7 Support • ✓ Trained Counselors
+                </div>
               </div>
             </div>
-          </Alert>
+          </div>
         </div>
 
         {/* Results Info */}
@@ -367,24 +400,6 @@ const ServicesPage = () => {
                     <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
-                    <span className="font-bold text-primary">{data.meta.totalPages}</span>
-                  </span>
-                </div>
-                <Button
-                  variant="outline"
-                  disabled={!data.meta.hasNextPage}
-                  onClick={() => setPage((p) => p + 1)}
-                  className="px-6"
-                >
-                  Next →
-                </Button>
               </div>
             )}
           </>
