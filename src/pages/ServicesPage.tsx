@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { BookOpen, Search, AlertCircle, Phone, Heart, ArrowRight, Zap, Users, Lightbulb, MessageCircle } from 'lucide-react';
 import { useServices } from '@/hooks/useServices';
 import { useDebounce } from '@/hooks/useDebounce';
-import { ServiceFilters as IServiceFilters } from '@/types';
+import { ResourceFilters } from '@/types';
 import { ServiceCard } from '@/components/features/ServiceCard';
 import { ServiceListSkeleton } from '@/components/features/ServiceCardSkeleton';
 import { ServiceFilters, ActiveFilters } from '@/components/features/ServiceFilters';
@@ -16,13 +16,13 @@ import { Link } from 'react-router-dom';
 const ServicesPage = () => {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState<IServiceFilters>({});
+  const [filters, setFilters] = useState<ResourceFilters>({});
 
   // Debounce search query
   const debouncedSearch = useDebounce(searchQuery, 500);
 
   // Build filters with search
-  const activeFilters: IServiceFilters = {
+  const activeFilters: ResourceFilters = {
     ...filters,
     ...(debouncedSearch && { search: debouncedSearch }),
   };
@@ -30,7 +30,7 @@ const ServicesPage = () => {
   // Fetch services
   const { data, isLoading, isError, error } = useServices(page, 12, activeFilters);
 
-  const handleRemoveFilter = (key: keyof IServiceFilters) => {
+  const handleRemoveFilter = (key: keyof ResourceFilters) => {
     setFilters((prev) => {
       const newFilters = { ...prev };
       delete newFilters[key];
@@ -39,7 +39,7 @@ const ServicesPage = () => {
     setPage(1);
   };
 
-  const handleFiltersChange = (newFilters: IServiceFilters) => {
+  const handleFiltersChange = (newFilters: ResourceFilters) => {
     setFilters(newFilters);
     setPage(1);
   };
