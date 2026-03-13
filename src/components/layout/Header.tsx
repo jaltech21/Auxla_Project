@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Menu, X, Heart } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { NavDropdown } from "@/components/NavDropdown";
+import ocslaaLogo from "@/assets/ocslaaLogo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,9 +44,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="p-2 bg-primary-light rounded-lg transition-transform duration-300 group-hover:scale-110">
-              <Heart className="h-6 w-6 text-primary" fill="currentColor" />
-            </div>
+            <img 
+              src={ocslaaLogo}
+              alt="OCSLAA Logo"
+              className="h-10 w-10 transition-transform duration-300 group-hover:scale-110"
+            />
             <div className="flex flex-col">
               <span className="text-xl font-bold text-foreground leading-tight">OCSLAA</span>
               <span className="text-[10px] text-muted-foreground leading-tight hidden md:block">Our Concern Sierra Leone Alliance</span>
