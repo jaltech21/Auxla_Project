@@ -1,31 +1,41 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, Target, Eye, Award } from "lucide-react";
+import { Heart, Users, Handshake, Shield, Scale, TrendingUp } from "lucide-react";
 import communityImage from "@/assets/awareness-campaign.jpg";
 import TeamSection from "./TeamSection";
 import Partners from "./Partners";
 import WhyChooseSection from "./WhyChooseSection";
 
 const About = () => {
-  const values = [
+  const coreValues = [
+    {
+      icon: Users,
+      title: "Radical Inclusion",
+      description: "Creating welcoming spaces where all voices are valued and represented",
+    },
+    {
+      icon: Handshake,
+      title: "Community Leadership",
+      description: "Centering the knowledge and leadership of the communities we serve",
+    },
     {
       icon: Heart,
-      title: "Compassion",
-      description: "We lead with empathy and understanding in everything we do",
+      title: "Cultural Respect",
+      description: "Honoring and integrating the cultural contexts and traditions of Sierra Leonean communities",
     },
     {
-      icon: Target,
-      title: "Accessibility",
-      description: "Mental health support should be available to everyone, everywhere",
+      icon: Scale,
+      title: "Integrity",
+      description: "Operating with honesty, transparency, and accountability in all our actions",
     },
     {
-      icon: Eye,
-      title: "Awareness",
-      description: "Breaking stigma through education and open dialogue",
+      icon: Handshake,
+      title: "Collaboration",
+      description: "Working together with partners, communities, and individuals toward shared goals",
     },
     {
-      icon: Award,
-      title: "Excellence",
-      description: "Evidence-based resources and professional guidance",
+      icon: TrendingUp,
+      title: "Accountability",
+      description: "Taking responsibility for our impact and commitment to continuous improvement",
     },
   ];
 
@@ -41,18 +51,15 @@ const About = () => {
   return (
     <section id="about" className="py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Mission Section */}
+        {/* Purpose Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
           <div className="space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">Our Mission</h2>
-            <p className="text-lg text-muted-foreground">
-              At OCSLAA (Our Concern Sierra Leone Alliance for Mental Health), we believe that mental health is just as important as physical health. Our mission is to
-              break down barriers, reduce stigma, and provide accessible resources to support everyone on their mental
-              health journey in Sierra Leone and beyond.
-            </p>
-            <p className="text-lg text-muted-foreground">
-              Through education, community support, and evidence-based resources, we're creating a world where seeking
-              help is a sign of strength, not weakness.
+            <div>
+              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">Our Purpose</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">Why OCSLAA Exists</h2>
+            </div>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              OCSLAA exists to reduce stigma, increase understanding, and improve access to mental health support for Sierra Leonean communities in Australia and Sierra Leone through education, advocacy, partnerships, and culturally appropriate services.
             </p>
             <div className="grid grid-cols-2 gap-6 pt-6">
               <div className="space-y-2">
@@ -75,24 +82,38 @@ const About = () => {
           </div>
         </div>
 
-        {/* Values */}
+        {/* Vision Section */}
+        <div className="mb-20 bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl p-8 md:p-12 border border-primary/20">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
+            <div>
+              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">Our Vision</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">A Better Future for Mental Health</h2>
+            </div>
+            <p className="text-xl text-muted-foreground leading-relaxed">
+              Sierra Leonean communities where mental health is understood, openly discussed, and supported, and where people experiencing mental health challenges are treated with dignity, inclusion, and respect.
+            </p>
+          </div>
+        </div>
+
+        {/* Core Values */}
         <div className="mb-20">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Core Values</h2>
+            <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">Our Foundation</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Core Values</h2>
             <p className="text-lg text-muted-foreground">
-              The principles that guide everything we do at OCSLAA
+              OCSLAA is guided by these six principles that define who we are and how we work
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 bg-card border-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {coreValues.map((value, index) => (
+              <Card key={index} className="hover:shadow-lg transition-all duration-300 bg-card border-border group">
                 <CardContent className="pt-8 pb-6 space-y-4">
-                  <div className="mx-auto p-4 bg-primary-light rounded-2xl w-fit">
+                  <div className="p-4 bg-primary-light rounded-2xl w-fit group-hover:scale-110 transition-transform duration-300">
                     <value.icon className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-semibold text-foreground">{value.title}</h3>
-                  <p className="text-sm text-muted-foreground">{value.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{value.description}</p>
                 </CardContent>
               </Card>
             ))}
