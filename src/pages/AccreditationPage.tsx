@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Check, Shield, ZoomIn, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,10 +7,83 @@ import { ArrowRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import australiaAccreditation from "@/assets/AustraliaAccreditation.jpg";
 
+/**
+ * Renders the certificate on a canvas with a tiled watermark burned into the
+ * pixel data, so any screenshot also captures the watermark.
+ */
+const ProtectedCertificate = ({ src, title }: { src: string; title: string }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1400;
+      const scale = img.naturalWidth > maxW ? maxW / img.naturalWidth : 1;
+      canvas.width = img.naturalWidth * scale;
+      canvas.height = img.naturalHeight * scale;
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      // Burn tiled diagonal watermark into the canvas pixels
+      const fontSize = Math.max(Math.floor(canvas.width / 16), 22);
+      ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      const text = "OCSLAA · FOR VIEWING ONLY";
+      const lineHeight = fontSize * 4;
+      const lineWidth = ctx.measureText(text).width * 2;
+
+      for (let row = -lineHeight * 2; row < canvas.height + lineHeight * 2; row += lineHeight) {
+        for (let col = -lineWidth; col < canvas.width + lineWidth; col += lineWidth) {
+          ctx.save();
+          ctx.translate(col, row);
+          ctx.rotate(-Math.PI / 6);
+          ctx.globalAlpha = 0.3;
+          ctx.fillStyle = "#000000";
+          ctx.shadowColor = "rgba(255,255,255,0.6)";
+          ctx.shadowBlur = 6;
+          ctx.fillText(text, 0, 0);
+          ctx.restore();
+        }
+      }
+    };
+    img.src = src;
+  }, [src]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-label={title}
+      onContextMenu={(e) => e.preventDefault()}
+      className="max-h-[75vh] max-w-full block"
+      style={{ userSelect: "none", cursor: "default" }}
+    />
+  );
+};
+
 const AccreditationPage = () => {
   const [viewingCert, setViewingCert] = useState<{ src: string; title: string } | null>(null);
 
   const blockInteraction = (e: React.MouseEvent | React.DragEvent) => e.preventDefault();
+
+  // Block Ctrl+S and Ctrl+P keyboard shortcuts while the certificate modal is open
+  useEffect(() => {
+    if (!viewingCert) return;
+    const blockKeys = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && ["s", "p", "shift+s"].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    document.addEventListener("keydown", blockKeys, { capture: true });
+    return () => document.removeEventListener("keydown", blockKeys, { capture: true });
+  }, [viewingCert]);
 
   const accreditations = [
     {
@@ -301,37 +374,14 @@ const AccreditationPage = () => {
             onContextMenu={blockInteraction}
           >
             <DialogTitle className="sr-only">{viewingCert.title}</DialogTitle>
-            {/* Protected image container */}
+            {/* Canvas renders the image with watermark burned into pixels */}
             <div
-              className="relative w-full flex items-center justify-center bg-neutral-950 min-h-[60vh]"
+              className="w-full flex items-center justify-center bg-neutral-950 p-4 overflow-auto"
               onContextMenu={blockInteraction}
               onDragStart={blockInteraction}
               style={{ userSelect: "none" }}
             >
-              {/* Watermark overlay */}
-              <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center rotate-[-30deg] opacity-10 select-none">
-                <span className="text-white text-5xl font-bold tracking-widest whitespace-nowrap">
-                  OCSLAA · OFFICIAL
-                </span>
-              </div>
-
-              {/* Transparent blocker — sits on top of the image to prevent right-click/drag */}
-              <div
-                className="absolute inset-0 z-20"
-                onContextMenu={blockInteraction}
-                onDragStart={blockInteraction}
-                style={{ cursor: "default" }}
-              />
-
-              <img
-                src={viewingCert.src}
-                alt={viewingCert.title}
-                draggable={false}
-                onContextMenu={blockInteraction}
-                onDragStart={blockInteraction}
-                className="max-h-[80vh] max-w-full object-contain p-6 select-none"
-                style={{ WebkitUserDrag: "none", pointerEvents: "none" } as React.CSSProperties}
-              />
+              <ProtectedCertificate src={viewingCert.src} title={viewingCert.title} />
             </div>
 
             {/* Footer bar */}
