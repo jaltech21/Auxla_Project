@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { BookOpen, Search, AlertCircle, Phone, Heart, ArrowRight, Zap, Users, Lightbulb, MessageCircle } from 'lucide-react';
+import { BookOpen, Search, AlertCircle, Phone, Heart, ArrowRight, Zap, Users, Lightbulb, MessageCircle, FileText } from 'lucide-react';
 import { useServices } from '@/hooks/useServices';
 import { useDebounce } from '@/hooks/useDebounce';
 import { ResourceFilters } from '@/types';
@@ -388,7 +388,44 @@ const ServicesPage = () => {
           </>
         )}
       </div>
-    </div>
+      {/* Research & Publications Section */}
+      <div className="bg-primary/5 border-t border-primary/10 py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold text-foreground mb-2">Research & Publications</h2>
+            <p className="text-muted-foreground">Downloadable reports and research papers from OCSLAA</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* PDF Resource Card */}
+            <div className="bg-white rounded-2xl border border-primary/15 shadow-sm hover:shadow-md transition-shadow p-6 flex gap-5">
+              <div className="flex-shrink-0 p-4 bg-primary/10 rounded-xl h-fit">
+                <FileText className="h-7 w-7 text-primary" />
+              </div>
+              <div className="flex flex-col gap-3">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">Research Paper</span>
+                  <h3 className="text-lg font-bold text-foreground mt-1 leading-snug">
+                    The Intergenerational Impact of War on Mental Health and Psychosocial Wellbeing
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                    An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations in Sierra Leone.
+                  </p>
+                </div>
+                <a
+                  href={`${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-fit"
+                >
+                  <FileText className="h-4 w-4" />
+                  Open PDF
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>    </div>
   );
 };
 
