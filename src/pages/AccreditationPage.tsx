@@ -1,11 +1,17 @@
-import { Check, Shield } from "lucide-react";
+import { useState } from "react";
+import { Check, Shield, ZoomIn, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import australiaAccreditation from "@/assets/AustraliaAccreditation.jpg";
 
 const AccreditationPage = () => {
+  const [viewingCert, setViewingCert] = useState<{ src: string; title: string } | null>(null);
+
+  const blockInteraction = (e: React.MouseEvent | React.DragEvent) => e.preventDefault();
+
   const accreditations = [
     {
       title: "Mental Health Organization Certification",
@@ -168,12 +174,31 @@ const AccreditationPage = () => {
                 accred.image ? (
                   <Card key={index} className="md:col-span-2 hover:shadow-xl transition-shadow overflow-hidden border-2 border-primary/20">
                     <div className="flex flex-col md:flex-row">
-                      <div className="md:w-1/2 bg-white flex items-center justify-center p-8 min-h-64">
+                      <div className="md:w-1/2 bg-white flex items-center justify-center p-8 min-h-64 relative group">
                         <img
                           src={accred.image}
                           alt={accred.title}
-                          className="max-h-64 w-full object-contain drop-shadow-md"
+                          draggable={false}
+                          onContextMenu={blockInteraction}
+                          onDragStart={blockInteraction}
+                          className="max-h-64 w-full object-contain drop-shadow-md select-none"
+                          style={{ WebkitUserDrag: "none" } as React.CSSProperties}
                         />
+                        {/* Transparent overlay blocks right-click and drag-to-save */}
+                        <div
+                          className="absolute inset-0 cursor-pointer"
+                          onContextMenu={blockInteraction}
+                          onDragStart={blockInteraction}
+                          onClick={() => setViewingCert({ src: accred.image!, title: accred.title })}
+                          title="Click to view full certificate"
+                        />
+                        <button
+                          onClick={() => setViewingCert({ src: accred.image!, title: accred.title })}
+                          className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-medium px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                        >
+                          <ZoomIn className="h-3.5 w-3.5" />
+                          View Certificate
+                        </button>
                       </div>
                       <div className="md:w-1/2 flex flex-col justify-center p-8 bg-gradient-to-br from-primary/5 to-primary/10">
                         <div className="flex items-center gap-3 mb-4">
@@ -188,6 +213,15 @@ const AccreditationPage = () => {
                         <p className="text-sm font-medium text-primary mb-1">{accred.issuer}</p>
                         <p className="text-xs text-muted-foreground mb-4">Certified {accred.year}</p>
                         <p className="text-foreground leading-relaxed">{accred.description}</p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="mt-6 w-fit gap-2"
+                          onClick={() => setViewingCert({ src: accred.image!, title: accred.title })}
+                        >
+                          <ZoomIn className="h-4 w-4" />
+                          View Full Certificate
+                        </Button>
                       </div>
                     </div>
                   </Card>
@@ -259,6 +293,60 @@ const AccreditationPage = () => {
           </div>
         </div>
       </div>
+      {/* Certificate Viewer Modal */}
+      {viewingCert && (
+        <Dialog open={!!viewingCert} onOpenChange={(open) => !open && setViewingCert(null)}>
+          <DialogContent
+            className="max-w-4xl w-full p-0 overflow-hidden bg-black border-0"
+            onContextMenu={blockInteraction}
+          >
+            <DialogTitle className="sr-only">{viewingCert.title}</DialogTitle>
+            {/* Protected image container */}
+            <div
+              className="relative w-full flex items-center justify-center bg-neutral-950 min-h-[60vh]"
+              onContextMenu={blockInteraction}
+              onDragStart={blockInteraction}
+              style={{ userSelect: "none" }}
+            >
+              {/* Watermark overlay */}
+              <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center rotate-[-30deg] opacity-10 select-none">
+                <span className="text-white text-5xl font-bold tracking-widest whitespace-nowrap">
+                  OCSLAA · OFFICIAL
+                </span>
+              </div>
+
+              {/* Transparent blocker — sits on top of the image to prevent right-click/drag */}
+              <div
+                className="absolute inset-0 z-20"
+                onContextMenu={blockInteraction}
+                onDragStart={blockInteraction}
+                style={{ cursor: "default" }}
+              />
+
+              <img
+                src={viewingCert.src}
+                alt={viewingCert.title}
+                draggable={false}
+                onContextMenu={blockInteraction}
+                onDragStart={blockInteraction}
+                className="max-h-[80vh] max-w-full object-contain p-6 select-none"
+                style={{ WebkitUserDrag: "none", pointerEvents: "none" } as React.CSSProperties}
+              />
+            </div>
+
+            {/* Footer bar */}
+            <div className="flex items-center justify-between px-6 py-3 bg-neutral-900 text-neutral-400 text-xs">
+              <span>This certificate is for viewing purposes only and may not be saved or reproduced.</span>
+              <button
+                onClick={() => setViewingCert(null)}
+                className="flex items-center gap-1 text-neutral-300 hover:text-white transition-colors"
+              >
+                <X className="h-4 w-4" /> Close
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
