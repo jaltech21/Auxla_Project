@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Heart, Users, Lightbulb, Shield, TrendingUp } from "lucide-react";
+import { ArrowRight, Heart, Users, Lightbulb, Shield, TrendingUp, FileText } from "lucide-react";
 
 const YouthServicesPage = () => {
   const features = [
@@ -241,6 +241,49 @@ const YouthServicesPage = () => {
                 <div>
                   <h3 className="font-semibold text-foreground">Ongoing Support</h3>
                   <p className="text-muted-foreground">Regular sessions and support tailored to your journey</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Research & Publications */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-2">Research & Publications</h2>
+            <p className="text-muted-foreground mb-8">Downloadable reports and research papers relevant to youth mental health</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white rounded-2xl border border-primary/15 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+                {/* PDF iframe preview */}
+                <div className="relative w-full h-64 bg-neutral-100 overflow-hidden border-b border-primary/10">
+                  <iframe
+                    src={`${import.meta.env.BASE_URL}youth/It%20is%20like%20smoking%20poisonSierra%20Leone%20youth%20battle.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                    className="w-full h-full pointer-events-none"
+                    title="PDF Preview"
+                    aria-hidden="true"
+                  />
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-2.5 py-1 rounded-full shadow">
+                    <FileText className="h-3.5 w-3.5" />
+                    Research Paper
+                  </div>
+                </div>
+
+                {/* Card content */}
+                <div className="p-6 flex flex-col gap-3 flex-1">
+                  <h3 className="text-lg font-bold text-foreground leading-snug">
+                    It Is Like Smoking Poison — Sierra Leone Youth Battle
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                    A compelling research paper exploring the mental health challenges faced by young people in Sierra Leone and the broader societal factors contributing to their struggle.
+                  </p>
+                  <a
+                    href={`${import.meta.env.BASE_URL}youth/It%20is%20like%20smoking%20poisonSierra%20Leone%20youth%20battle.pdf`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-fit mt-1"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Open PDF
+                  </a>
                 </div>
               </div>
             </div>
