@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import australiaAccreditation from "@/assets/AustraliaAccreditation.jpg";
 
 const AccreditationPage = () => {
   const accreditations = [
@@ -11,24 +12,35 @@ const AccreditationPage = () => {
       issuer: "National Mental Health Council",
       year: "2024",
       description: "Recognized for excellence in mental health service delivery and community impact.",
+      image: undefined as string | undefined,
     },
     {
       title: "Child Safety Accreditation",
       issuer: "Child Protection Authority",
       year: "2024",
       description: "Certified organization with comprehensive child safety policies and procedures.",
+      image: undefined as string | undefined,
     },
     {
       title: "Quality Service Standards",
       issuer: "Healthcare Excellence Commission",
       year: "2023",
       description: "Meets or exceeds all quality standards for community mental health services.",
+      image: undefined as string | undefined,
     },
     {
       title: "Non-Profit Excellence Award",
       issuer: "Civil Society Organization Network",
       year: "2023",
       description: "Recognized for organizational excellence, transparency, and community impact.",
+      image: undefined as string | undefined,
+    },
+    {
+      title: "Australian Accreditation",
+      issuer: "Australian Accreditation Authority",
+      year: "2025",
+      description: "Officially accredited by the Australian Accreditation Authority, affirming our commitment to internationally recognised standards in mental health service delivery.",
+      image: australiaAccreditation,
     },
   ];
 
@@ -154,6 +166,15 @@ const AccreditationPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {accreditations.map((accred, index) => (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
+                  {accred.image && (
+                    <div className="w-full h-48 overflow-hidden rounded-t-lg">
+                      <img
+                        src={accred.image}
+                        alt={accred.title}
+                        className="w-full h-full object-contain p-4 bg-white"
+                      />
+                    </div>
+                  )}
                   <CardHeader>
                     <div className="flex items-start gap-4">
                       <div className="p-2 bg-primary-light rounded-lg flex-shrink-0">
