@@ -51,7 +51,7 @@ const Header = () => {
             />
             <div className="flex flex-col">
               <span className="text-xl font-bold text-foreground leading-tight">OCSLAA</span>
-              <span className="text-[10px] text-muted-foreground leading-tight hidden md:block">Our Concern Sierra Leone Alliance</span>
+              <span className="text-[10px] text-muted-foreground leading-tight hidden md:block">Our Concern Sierra Leone Australian Alliance</span>
             </div>
           </Link>
 

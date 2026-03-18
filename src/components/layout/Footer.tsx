@@ -16,7 +16,7 @@ const Footer = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-foreground leading-tight">OCSLAA</span>
-                <span className="text-xs text-muted-foreground leading-tight">Our Concern Sierra Leone Alliance</span>
+                <span className="text-xs text-muted-foreground leading-tight">Our Concern Sierra Leone Australian Alliance</span>
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -150,7 +150,7 @@ const Footer = () => {
         <div className="mt-8 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground text-center md:text-left">
-              © {new Date().getFullYear()} OCSLAA - Our Concern Sierra Leone Alliance. All rights reserved.
+              © {new Date().getFullYear()} OCSLAA - Our Concern Sierra Leone Australian Alliance. All rights reserved.
             </p>
             <div className="flex gap-6">
               <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
