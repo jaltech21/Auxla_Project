@@ -102,20 +102,6 @@ const AccreditationPage = () => {
       image: undefined as string | undefined,
     },
     {
-      title: "Quality Service Standards",
-      issuer: "Healthcare Excellence Commission",
-      year: "2023",
-      description: "Meets or exceeds all quality standards for community mental health services.",
-      image: undefined as string | undefined,
-    },
-    {
-      title: "Non-Profit Excellence Award",
-      issuer: "Civil Society Organization Network",
-      year: "2023",
-      description: "Recognized for organizational excellence, transparency, and community impact.",
-      image: undefined as string | undefined,
-    },
-    {
       title: "Australian Accreditation",
       issuer: "Australian Accreditation Authority",
       year: "2025",
