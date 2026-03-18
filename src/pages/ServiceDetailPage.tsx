@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   ArrowLeft,
   ExternalLink,
+  Download,
   ThumbsUp,
   Eye,
   Clock,
@@ -162,6 +163,18 @@ const ServiceDetailPage = () => {
                 </p>
               </div>
 
+              {/* Full Content */}
+              {resource.content && (
+                <>
+                  <Separator />
+                  <div>
+                    <p className="text-foreground/90 leading-relaxed whitespace-pre-line">
+                      {resource.content}
+                    </p>
+                  </div>
+                </>
+              )}
+
               <Separator />
 
               {/* Tags */}
@@ -185,16 +198,31 @@ const ServiceDetailPage = () => {
 
               {/* Actions */}
               <div className="flex flex-wrap gap-4">
-                <Button asChild className="flex-1 sm:flex-none">
-                  <a
-                    href={resource.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    View Resource
-                  </a>
-                </Button>
+                {resource.url && (
+                  <Button asChild className="flex-1 sm:flex-none">
+                    <a
+                      href={resource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      View Resource
+                    </a>
+                  </Button>
+                )}
+
+                {resource.downloadUrl && (
+                  <Button asChild variant="outline" className="flex-1 sm:flex-none">
+                    <a
+                      href={resource.downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Download Resource
+                    </a>
+                  </Button>
+                )}
 
                 <Button
                   variant="outline"

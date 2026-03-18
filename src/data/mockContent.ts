@@ -3,6 +3,7 @@
  */
 
 import type { Testimonial, ImpactStat, TeamMember, Partner, WhyChooseReason } from "@/types/content";
+import abdulKarimKebe from "@/assets/AbdulaiKebeProf.jpg";
 
 // Testimonials from real community members
 export const testimonials: Testimonial[] = [
@@ -141,6 +142,16 @@ export const impactStats: ImpactStat[] = [
 // Team members
 export const teamMembers: TeamMember[] = [
   {
+    id: "0",
+    name: "Mr. Abdul Karim Kebe",
+    title: "Chief Executive Officer (CEO)",
+    credentials: "OCSLAA Executive Leadership",
+    bio: "Mr. Abdul Karim Kebe serves as the Chief Executive Officer of Our Concern Sierra Leone Australian Alliance (OCSLAA). He provides strategic leadership and vision to the organisation's mission of making mental health support accessible and culturally relevant across Sierra Leone and the broader community. His dedication to advocacy and community wellbeing drives OCSLAA's growth and impact.",
+    expertise: ["Executive Leadership", "Strategic Planning", "Community Advocacy", "Organisational Development"],
+    image: abdulKarimKebe,
+    profilePdf: "profile/Website Profile Abdul Kebe.pdf",
+  },
+  {
     id: "1",
     name: "Dr. Aminata Kamara",
     title: "Founder & Clinical Director",
@@ -183,28 +194,6 @@ export const teamMembers: TeamMember[] = [
     image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
     linkedin: "#",
     email: "mohamed.conteh@ocslaa.org",
-  },
-  {
-    id: "5",
-    name: "Isata Koroma",
-    title: "Operations Manager",
-    credentials: "MBA, MPH",
-    bio: "Isata oversees OCSLAA's day-to-day operations, ensuring programs run efficiently and reach those who need them most. With a background in healthcare administration and public health, she manages partnerships, coordinates logistics, and ensures the organization's sustainability. Her strategic approach helps OCSLAA maximize impact with available resources.",
-    expertise: ["Operations Management", "Strategic Planning", "Partnership Development", "Healthcare Administration"],
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80",
-    linkedin: "#",
-    email: "isata.koroma@ocslaa.org",
-  },
-  {
-    id: "6",
-    name: "Sahr Kamara",
-    title: "Digital Health Specialist",
-    credentials: "BSc Computer Science, Mental Health First Aid Certified",
-    bio: "Sahr bridges technology and mental health, developing OCSLAA's digital platforms and telehealth initiatives. He ensures that mental health resources are accessible online, particularly for rural communities with limited in-person services. His innovative approaches have expanded OCSLAA's reach across Sierra Leone and to the diaspora.",
-    expertise: ["Digital Health", "Technology Integration", "Online Community Building", "Data Analysis"],
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
-    linkedin: "#",
-    email: "sahr.kamara@ocslaa.org",
   },
 ];
 

@@ -433,6 +433,42 @@ const ServicesPage = () => {
                 </a>
               </div>
             </div>
+
+            {/* Kush in Sierra Leone PDF Card */}
+            <div className="bg-white rounded-2xl border border-primary/15 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+              {/* PDF iframe preview */}
+              <div className="relative w-full h-64 bg-neutral-100 overflow-hidden border-b border-primary/10">
+                <iframe
+                  src={`${import.meta.env.BASE_URL}resources/Kush%20in%20Sierra%20Leone.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                  className="w-full h-full pointer-events-none"
+                  title="PDF Preview"
+                  aria-hidden="true"
+                />
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-2.5 py-1 rounded-full shadow">
+                  <FileText className="h-3.5 w-3.5" />
+                  Research Paper
+                </div>
+              </div>
+
+              {/* Card content */}
+              <div className="p-6 flex flex-col gap-3 flex-1">
+                <h3 className="text-lg font-bold text-foreground leading-snug">
+                  Kush in Sierra Leone
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                  A research paper investigating the rise and impact of Kush — a synthetic drug — on the mental health and wellbeing of communities in Sierra Leone.
+                </p>
+                <a
+                  href={`${import.meta.env.BASE_URL}resources/Kush%20in%20Sierra%20Leone.pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-fit mt-1"
+                >
+                  <FileText className="h-4 w-4" />
+                  Open PDF
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>    </div>

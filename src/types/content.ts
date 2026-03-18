@@ -32,6 +32,7 @@ export interface TeamMember {
   image: string;
   linkedin?: string;
   email?: string;
+  profilePdf?: string;
 }
 
 export interface Partner {
