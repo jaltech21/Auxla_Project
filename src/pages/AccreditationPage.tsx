@@ -164,34 +164,53 @@ const AccreditationPage = () => {
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-8">Our Accreditations</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {accreditations.map((accred, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
-                  {accred.image && (
-                    <div className="w-full h-48 overflow-hidden rounded-t-lg">
-                      <img
-                        src={accred.image}
-                        alt={accred.title}
-                        className="w-full h-full object-contain p-4 bg-white"
-                      />
-                    </div>
-                  )}
-                  <CardHeader>
-                    <div className="flex items-start gap-4">
-                      <div className="p-2 bg-primary-light rounded-lg flex-shrink-0">
-                        <Check className="h-5 w-5 text-primary" />
+              {accreditations.map((accred, index) =>
+                accred.image ? (
+                  <Card key={index} className="md:col-span-2 hover:shadow-xl transition-shadow overflow-hidden border-2 border-primary/20">
+                    <div className="flex flex-col md:flex-row">
+                      <div className="md:w-1/2 bg-white flex items-center justify-center p-8 min-h-64">
+                        <img
+                          src={accred.image}
+                          alt={accred.title}
+                          className="max-h-64 w-full object-contain drop-shadow-md"
+                        />
                       </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-lg">{accred.title}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">{accred.issuer}</p>
-                        <p className="text-xs text-muted-foreground">Certified {accred.year}</p>
+                      <div className="md:w-1/2 flex flex-col justify-center p-8 bg-gradient-to-br from-primary/5 to-primary/10">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-2 bg-primary rounded-lg flex-shrink-0">
+                            <Check className="h-5 w-5 text-primary-foreground" />
+                          </div>
+                          <span className="text-xs font-semibold uppercase tracking-wider text-primary">
+                            Official Accreditation
+                          </span>
+                        </div>
+                        <h3 className="text-2xl font-bold text-foreground mb-2">{accred.title}</h3>
+                        <p className="text-sm font-medium text-primary mb-1">{accred.issuer}</p>
+                        <p className="text-xs text-muted-foreground mb-4">Certified {accred.year}</p>
+                        <p className="text-foreground leading-relaxed">{accred.description}</p>
                       </div>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-foreground text-sm">{accred.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+                  </Card>
+                ) : (
+                  <Card key={index} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <div className="flex items-start gap-4">
+                        <div className="p-2 bg-primary-light rounded-lg flex-shrink-0">
+                          <Check className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-lg">{accred.title}</CardTitle>
+                          <p className="text-sm text-muted-foreground mt-1">{accred.issuer}</p>
+                          <p className="text-xs text-muted-foreground">Certified {accred.year}</p>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-foreground text-sm">{accred.description}</p>
+                    </CardContent>
+                  </Card>
+                )
+              )}
             </div>
           </div>
 
