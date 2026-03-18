@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import australiaAccreditation from "@/assets/AustraliaAccreditation.jpg";
+import corporateAffairsCertificate from "@/assets/CorporateAffairsCertificate.jpg";
 
 /**
  * Renders the certificate on a canvas with a tiled watermark burned into the
@@ -120,6 +121,13 @@ const AccreditationPage = () => {
       year: "2025",
       description: "Officially accredited by the Australian Accreditation Authority, affirming our commitment to internationally recognised standards in mental health service delivery.",
       image: australiaAccreditation,
+    },
+    {
+      title: "Corporate Affairs Certificate",
+      issuer: "Corporate Affairs Commission",
+      year: "2025",
+      description: "Officially registered and certified by the Corporate Affairs Commission, confirming our legal standing and compliance with all corporate governance requirements.",
+      image: corporateAffairsCertificate,
     },
   ];
 
