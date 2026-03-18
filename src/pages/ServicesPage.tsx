@@ -398,25 +398,35 @@ const ServicesPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* PDF Resource Card */}
-            <div className="bg-white rounded-2xl border border-primary/15 shadow-sm hover:shadow-md transition-shadow p-6 flex gap-5">
-              <div className="flex-shrink-0 p-4 bg-primary/10 rounded-xl h-fit">
-                <FileText className="h-7 w-7 text-primary" />
-              </div>
-              <div className="flex flex-col gap-3">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-primary">Research Paper</span>
-                  <h3 className="text-lg font-bold text-foreground mt-1 leading-snug">
-                    The Intergenerational Impact of War on Mental Health and Psychosocial Wellbeing
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                    An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations in Sierra Leone.
-                  </p>
+            <div className="bg-white rounded-2xl border border-primary/15 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+              {/* PDF iframe preview */}
+              <div className="relative w-full h-64 bg-neutral-100 overflow-hidden border-b border-primary/10">
+                <iframe
+                  src={`${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                  className="w-full h-full pointer-events-none"
+                  title="PDF Preview"
+                  aria-hidden="true"
+                />
+                {/* Overlay label */}
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-2.5 py-1 rounded-full shadow">
+                  <FileText className="h-3.5 w-3.5" />
+                  Research Paper
                 </div>
+              </div>
+
+              {/* Card content */}
+              <div className="p-6 flex flex-col gap-3 flex-1">
+                <h3 className="text-lg font-bold text-foreground leading-snug">
+                  The Intergenerational Impact of War on Mental Health and Psychosocial Wellbeing
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                  An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations in Sierra Leone.
+                </p>
                 <a
                   href={`${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-fit"
+                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors w-fit mt-1"
                 >
                   <FileText className="h-4 w-4" />
                   Open PDF
