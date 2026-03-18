@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Brain, Heart, Shield, Users, BookOpen, Phone, ExternalLink, Loader } from "lucide-react";
+import { Brain, Heart, Shield, Users, BookOpen, Phone, ExternalLink, Loader, FileText } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
 
 const Resources = () => {
@@ -67,6 +67,19 @@ const Resources = () => {
       slug: "crisis-helpline",
       link: "/services?category=crisis",
       isCommunity: true,
+      isPdf: false,
+      readTime: "",
+      author: "",
+    },
+    {
+      icon: FileText,
+      title: "The Intergenerational Impact of War on Mental Health",
+      description: "An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations in Sierra Leone.",
+      category: "all",
+      slug: "intergenerational-impact-war-mental-health",
+      link: `${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf`,
+      isCommunity: true,
+      isPdf: true,
       readTime: "",
       author: "",
     },
@@ -131,12 +144,21 @@ const Resources = () => {
                 <CardContent className="space-y-4">
                   <CardDescription className="text-muted-foreground">{resource.description}</CardDescription>
                   {resource.isCommunity ? (
-                    <Button variant="link" className="p-0 h-auto group/link" asChild>
-                      <a href={resource.link}>
-                        Learn More
-                        <ExternalLink className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
-                      </a>
-                    </Button>
+                    resource.isPdf ? (
+                      <Button variant="default" size="sm" className="gap-2" asChild>
+                        <a href={resource.link} target="_blank" rel="noopener noreferrer">
+                          <FileText className="h-4 w-4" />
+                          Open PDF
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button variant="link" className="p-0 h-auto group/link" asChild>
+                        <a href={resource.link}>
+                          Learn More
+                          <ExternalLink className="h-4 w-4 ml-1 transition-transform group-hover/link:translate-x-1" />
+                        </a>
+                      </Button>
+                    )
                   ) : (
                     <Button variant="link" className="p-0 h-auto group/link" asChild>
                       <Link to={`/blog/${resource.slug}`}>
