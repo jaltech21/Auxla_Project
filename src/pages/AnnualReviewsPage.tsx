@@ -7,7 +7,7 @@ const AnnualReviewsPage = () => {
   const reviews = [
     {
       year: "2024-2025",
-      period: "April 2024 - March 2025",
+      period: "July 2024 - June 2025",
       highlights: [
         "Served 2,500+ individuals across community",
         "Launched 8 new mental health support programs",
@@ -19,7 +19,7 @@ const AnnualReviewsPage = () => {
     },
     {
       year: "2023-2024",
-      period: "April 2023 - March 2024",
+      period: "July 2023 - June 2024",
       highlights: [
         "Established foundation for youth services",
         "Developed family support framework",
@@ -31,7 +31,7 @@ const AnnualReviewsPage = () => {
     },
     {
       year: "2022-2023",
-      period: "April 2022 - March 2023",
+      period: "July 2022 - June 2023",
       highlights: [
         "OCSLAA founding year",
         "Launched core mental health programs",
