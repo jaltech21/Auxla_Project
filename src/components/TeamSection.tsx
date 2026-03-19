@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { teamMembers } from "@/data/mockContent";
-import { Mail, Linkedin, FileText } from "lucide-react";
+import { Mail, Linkedin } from "lucide-react";
 
 const TeamSection = () => {
   return (
@@ -111,18 +111,7 @@ const TeamSection = () => {
                             </a>
                           </Button>
                         )}
-                        {member.profilePdf && (
-                          <Button variant="outline" size="sm" asChild>
-                            <a
-                              href={`${import.meta.env.BASE_URL}${member.profilePdf}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <FileText className="h-4 w-4 mr-2" />
-                              View Full Profile
-                            </a>
-                          </Button>
-                        )}
+
                       </div>
                     </div>
                   </div>

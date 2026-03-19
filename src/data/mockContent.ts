@@ -149,7 +149,7 @@ export const teamMembers: TeamMember[] = [
     bio: "Mr. Abdul Karim Kebe is a registered mental health nurse and the founding Chief Executive Officer of Our Concern Sierra Leone Australia Alliance (OCSLAA) Mental Health. His career spans three continents — beginning in Sierra Leone, progressing as a Licensed Practical Nurse (LPN) in the United States, and advancing in Australia since 2013, where he built extensive expertise across aged care, community health, and mental health nursing.\n\nA personal lived experience with mental health deepened his commitment to the field and inspired him to pursue advanced academic qualifications: a Bachelor of Nursing (2018) and a Master's in Mental Health (2022). He now practises across both public and private mental health sectors in Australia.\n\nAs CEO of OCSLAA, Mr. Kebe leads the organisation's mission to provide culturally responsive mental health support and international advocacy for the Sierra Leonean community — bridging global professional experience with grassroots compassion.",
     expertise: ["Mental Health Nursing", "Executive Leadership", "Community Advocacy", "Aged & Community Care"],
     image: abdulKarimKebe,
-    profilePdf: "profile/Website Profile Abdul Kebe.pdf",
+    email: "abdulnanah@gmail.com",
   },
   {
     id: "1",
