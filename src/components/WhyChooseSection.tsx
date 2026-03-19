@@ -13,6 +13,7 @@ import {
   Map,
   HeartHandshake,
   Clock,
+  FileText,
   type LucideIcon,
 } from "lucide-react";
 
@@ -65,6 +66,19 @@ const WhyChooseSection = () => {
                       {reason.description}
                     </p>
                   </div>
+
+                  {/* Our Inspiration button — Nationwide Reach card only */}
+                  {reason.id === "4" && (
+                    <a
+                      href={`${import.meta.env.BASE_URL}resources/Dr.%20Nahim.pdf`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-2 px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+                    >
+                      <FileText className="h-4 w-4" />
+                      Our Inspiration
+                    </a>
+                  )}
                 </CardContent>
               </Card>
             );
