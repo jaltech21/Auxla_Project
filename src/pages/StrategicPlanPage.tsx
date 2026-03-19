@@ -193,7 +193,7 @@ const StrategicPlanPage = () => {
 
             {/* Animated title */}
             <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-title leading-tight">
-              Our Vision for 2026-2029
+              Our Vision for 2026-2028
               <br />
               <span className="bg-gradient-to-r from-primary-foreground via-primary-foreground/90 to-primary-foreground/80 bg-clip-text text-transparent">
                 Transform Mental Health
@@ -225,7 +225,7 @@ const StrategicPlanPage = () => {
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-6">Our Vision Forward</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              From 2026 to 2029, OCSLAA will focus on expanding mental health services, building strategic partnerships, and creating sustainable solutions that transform lives and communities. This strategic plan guides our priorities and ensures accountability to our communities.
+              From 2026 to 2028, OCSLAA will focus on expanding mental health services, building strategic partnerships, and creating sustainable solutions that transform lives and communities. This strategic plan guides our priorities and ensures accountability to our communities.
             </p>
           </div>
 
@@ -362,7 +362,7 @@ const StrategicPlanPage = () => {
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-6">Six Interconnected Goal Areas</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              OCSLAA has identified six interconnected goal areas that work together to strengthen our impact, credibility, and sustainability across the 2026-2029 period.
+              OCSLAA has identified six interconnected goal areas that work together to strengthen our impact, credibility, and sustainability across the 2026-2028 period.
             </p>
 
             <style>{`

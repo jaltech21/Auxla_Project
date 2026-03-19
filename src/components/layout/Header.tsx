@@ -14,7 +14,7 @@ const Header = () => {
     { name: "Our Vision, Purpose and Values", href: "/about" },
     { name: "Our Leadership", href: "/about/leadership" },
     { name: "Advocacy and Policy", href: "/about/advocacy" },
-    { name: "Strategic Plan 2026 – 2029", href: "/about/strategic-plan" },
+    { name: "Strategic Plan 2026 – 2028", href: "/about/strategic-plan" },
     { name: "Annual Reviews", href: "/about/annual-reviews" },
     { name: "Accreditation", href: "/about/accreditation" },
   ];
