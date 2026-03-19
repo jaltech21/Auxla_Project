@@ -242,13 +242,7 @@ const AnnualReviewsPage = () => {
                               <p className="text-sm text-muted-foreground">{review.period}</p>
                             </div>
                           </div>
-                          <button
-                            onClick={() => handleDownloadPDF(review.pdfPath)}
-                            className="download-btn flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary border border-primary rounded-lg hover:bg-primary/5 transition-colors"
-                          >
-                            <Download className="h-4 w-4" />
-                            Download PDF
-                          </button>
+
                         </div>
                     </CardHeader>
                     <CardContent>
