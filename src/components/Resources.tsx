@@ -117,7 +117,7 @@ const Resources = () => {
         </div>
 
         {/* Resource Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {isLoading ? (
             <div className="col-span-full flex items-center justify-center py-12">
               <div className="flex flex-col items-center gap-2">
@@ -133,16 +133,16 @@ const Resources = () => {
             filteredResources.map((resource, index) => (
               <Card
                 key={index}
-                className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border"
+                className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-card border-border flex flex-col h-full"
               >
                 <CardHeader>
                   <div className="p-3 bg-primary-light rounded-lg w-fit mb-4 group-hover:scale-110 transition-transform duration-300">
                     <resource.icon className="h-6 w-6 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">{resource.title}</CardTitle>
+                  <CardTitle className="text-xl line-clamp-3">{resource.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <CardDescription className="text-muted-foreground">{resource.description}</CardDescription>
+                <CardContent className="flex flex-col flex-1 gap-4">
+                  <CardDescription className="text-muted-foreground line-clamp-3 flex-1">{resource.description}</CardDescription>
                   {resource.isCommunity ? (
                     resource.isPdf ? (
                       <Button variant="default" size="sm" className="gap-2" asChild>

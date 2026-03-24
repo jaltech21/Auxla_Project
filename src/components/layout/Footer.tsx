@@ -127,9 +127,9 @@ const Footer = () => {
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-muted-foreground">
-                  123 Wellness St<br />
-                  Suite 100<br />
-                  City, State 12345
+                  Unit 144/18 Bronzewing Street<br />
+                  Redbank Plains<br />
+                  Queensland, 4301
                 </p>
               </li>
             </ul>
