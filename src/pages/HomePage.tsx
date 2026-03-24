@@ -13,10 +13,10 @@ const HomePage = () => {
   return (
     <div className="w-full">
       <Helmet>
-        <title>OCSLAA - Mental Health Support in Sierra Leone</title>
+        <title>OCSLAA - Mental Health Support within the Sierra Leonean community</title>
         <meta
           name="description"
-          content="Breaking mental health stigma in Sierra Leone. Access resources, support, and expert guidance for your mental wellness journey."
+          content="Breaking mental health stigma within the Sierra Leonean community. Access resources, support, and expert guidance for your mental wellness journey."
         />
       </Helmet>
       <Hero />

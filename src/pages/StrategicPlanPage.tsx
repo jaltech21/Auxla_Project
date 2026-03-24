@@ -52,11 +52,11 @@ const StrategicPlanPage = () => {
       id: 1,
       title: "Activities and Programs",
       icon: Zap,
-      overview: "OCSLAA will design and deliver culturally appropriate, evidence-informed mental health activities that respond to community needs in Sierra Leone and the diaspora.",
+      overview: "OCSLAA will design and deliver culturally appropriate, evidence-informed mental health activities that respond to community needs within the Sierra Leonean community and the diaspora.",
       byEnd2028: "OCSLAA will have established a small but credible suite of core programs, including community education and stigma reduction activities, outreach into schools, pilot telehealth support pathways using diaspora professionals, and practical case support models adapted to the Sierra Leonean context.",
       keyActions: [
         "Prioritise education and awareness activities in the first year",
-        "Pilot outreach programs in Sierra Leone in partnership with local actors",
+        "Pilot outreach programs within the Sierra Leonean community in partnership with local actors",
         "Progressively formalise program models so they can be evaluated, refined, and funded"
       ]
     },
@@ -77,7 +77,7 @@ const StrategicPlanPage = () => {
       title: "Communications and Engagement",
       icon: Lightbulb,
       overview: "OCSLAA will be visible, accessible, and trusted by its communities and stakeholders.",
-      byEnd2028: "By 2028, OCSLAA's website and social media platforms will be active, current, and widely used as trusted sources of information about mental health in Sierra Leonean communities.",
+      byEnd2028: "By 2028, OCSLAA's website and social media platforms will be active, current, and widely used as trusted sources of information about mental health within the Sierra Leonean communityan communities.",
       keyActions: [
         "Normalise conversations about mental health and challenge stigma",
         "Showcase lived experience while remaining culturally sensitive and strengths based",
@@ -102,7 +102,7 @@ const StrategicPlanPage = () => {
       title: "Finances and Funding",
       icon: BarChart3,
       overview: "OCSLAA will move from reliance on member contributions to a diversified and sustainable funding base.",
-      byEnd2028: "OCSLAA aims to have stable baseline funding to cover core operating costs, including registration, compliance, communications, and a functional presence in Sierra Leone.",
+      byEnd2028: "OCSLAA aims to have stable baseline funding to cover core operating costs, including registration, compliance, communications, and a functional presence within the Sierra Leonean community.",
       keyActions: [
         "Develop diversified funding strategies including crowdfunding, donations, and annual fundraising events",
         "Pursue targeted grants and sponsorship opportunities",

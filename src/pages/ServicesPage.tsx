@@ -420,7 +420,7 @@ const ServicesPage = () => {
                   The Intergenerational Impact of War on Mental Health and Psychosocial Wellbeing
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                  An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations in Sierra Leone.
+                  An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations within the Sierra Leonean community.
                 </p>
                 <a
                   href={`${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf`}
@@ -434,7 +434,7 @@ const ServicesPage = () => {
               </div>
             </div>
 
-            {/* Kush in Sierra Leone PDF Card */}
+            {/* Kush within the Sierra Leonean community PDF Card */}
             <div className="bg-white rounded-2xl border border-primary/15 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
               {/* PDF iframe preview */}
               <div className="relative w-full h-64 bg-neutral-100 overflow-hidden border-b border-primary/10">
@@ -453,10 +453,10 @@ const ServicesPage = () => {
               {/* Card content */}
               <div className="p-6 flex flex-col gap-3 flex-1">
                 <h3 className="text-lg font-bold text-foreground leading-snug">
-                  Kush in Sierra Leone
+                  Kush within the Sierra Leonean community
                 </h3>
                 <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                  A research paper investigating the rise and impact of Kush — a synthetic drug — on the mental health and wellbeing of communities in Sierra Leone.
+                  A research paper investigating the rise and impact of Kush — a synthetic drug — on the mental health and wellbeing of communities within the Sierra Leonean community.
                 </p>
                 <a
                   href={`${import.meta.env.BASE_URL}resources/Kush%20in%20Sierra%20Leone.pdf`}

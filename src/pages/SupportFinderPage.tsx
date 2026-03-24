@@ -129,7 +129,7 @@ const SupportFinderPage = () => {
         <title>Find Support - OCSLAA</title>
         <meta
           name="description"
-          content="Find therapists, counselors, and support groups near you. Connect with mental health professionals in Sierra Leone."
+          content="Find therapists, counselors, and support groups near you. Connect with mental health professionals within the Sierra Leonean community."
         />
       </Helmet>
 

@@ -224,7 +224,7 @@ const DonationPage = () => {
         <title>Make a Donation - OCSLAA</title>
         <meta
           name="description"
-          content="Support mental health services in Sierra Leone. Your donation helps provide vital resources and support to those in need."
+          content="Support mental health services within the Sierra Leonean community. Your donation helps provide vital resources and support to those in need."
         />
       </Helmet>
 

@@ -6,7 +6,7 @@ export const blogAuthors: Author[] = [
     id: "1",
     name: "Dr. Aminata Kamara",
     title: "Clinical Psychologist",
-    bio: "Specializing in trauma-informed care and community mental health in Sierra Leone with over 15 years of experience.",
+    bio: "Specializing in trauma-informed care and community mental health within the Sierra Leonean community with over 15 years of experience.",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80",
     credentials: ["PhD in Clinical Psychology", "Licensed Therapist"],
     socialLinks: {
@@ -18,7 +18,7 @@ export const blogAuthors: Author[] = [
     id: "2",
     name: "Ibrahim Sesay",
     title: "Mental Health Advocate",
-    bio: "Community organizer and lived experience advocate working to reduce stigma around mental health in Sierra Leone.",
+    bio: "Community organizer and lived experience advocate working to reduce stigma around mental health within the Sierra Leonean community.",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
     credentials: ["Peer Support Specialist", "Community Health Worker"],
     socialLinks: {
@@ -50,12 +50,12 @@ export const blogAuthors: Author[] = [
 export const mockBlogPosts: BlogPost[] = [
   {
     id: "1",
-    title: "Understanding Depression in Sierra Leone: Breaking the Silence",
+    title: "Understanding Depression within the Sierra Leonean community: Breaking the Silence",
     slug: "understanding-depression-sierra-leone",
     excerpt: "Depression affects millions across Sierra Leone, yet stigma keeps many from seeking help. Learn about the signs, cultural perspectives, and pathways to healing.",
-    content: `# Understanding Depression in Sierra Leone: Breaking the Silence
+    content: `# Understanding Depression within the Sierra Leonean community: Breaking the Silence
 
-Depression is one of the most common mental health conditions affecting people in Sierra Leone, yet it remains widely misunderstood and stigmatized. Many in our communities still view depression as a personal weakness or spiritual problem rather than a treatable medical condition.
+Depression is one of the most common mental health conditions affecting people within the Sierra Leonean community, yet it remains widely misunderstood and stigmatized. Many in our communities still view depression as a personal weakness or spiritual problem rather than a treatable medical condition.
 
 ## What is Depression?
 
@@ -69,9 +69,9 @@ Depression is more than just feeling sad. It's a serious mental health condition
 - Changes in appetite
 - Thoughts of death or suicide
 
-## Cultural Context in Sierra Leone
+## Cultural Context within the Sierra Leonean community
 
-In Sierra Leone, mental health challenges are often attributed to spiritual causes or seen as signs of weakness. This cultural context can make it difficult for people to recognize depression and seek appropriate help.
+Within the Sierra Leonean community, mental health challenges are often attributed to spiritual causes or seen as signs of weakness. This cultural context can make it difficult for people to recognize depression and seek appropriate help.
 
 ## Finding Help
 
@@ -141,10 +141,10 @@ Start with one practice and gradually add others. Small, consistent actions crea
     id: "3",
     title: "Anxiety in Young Adults: Recognition and Support",
     slug: "anxiety-young-adults-support",
-    excerpt: "Anxiety disorders are increasingly common among young people in Sierra Leone. Learn how to recognize the signs and access support.",
+    excerpt: "Anxiety disorders are increasingly common among young people within the Sierra Leonean community. Learn how to recognize the signs and access support.",
     content: `# Anxiety in Young Adults: Recognition and Support
 
-Anxiety disorders are among the most common mental health challenges facing young adults in Sierra Leone today. Understanding anxiety and knowing where to find help can make all the difference.
+Anxiety disorders are among the most common mental health challenges facing young adults within the Sierra Leonean community today. Understanding anxiety and knowing where to find help can make all the difference.
 
 ## What Does Anxiety Look Like?
 
@@ -199,12 +199,12 @@ Remember: you're not alone, and help is available.`,
     id: "4",
     title: "My Journey Through PTSD: A Personal Story of Hope",
     slug: "ptsd-personal-story-hope",
-    excerpt: "One survivor's journey through post-traumatic stress disorder and the path to healing. A story of resilience and recovery in Sierra Leone.",
+    excerpt: "One survivor's journey through post-traumatic stress disorder and the path to healing. A story of resilience and recovery within the Sierra Leonean community.",
     content: `# My Journey Through PTSD: A Personal Story of Hope
 
 *By Ibrahim Sesay*
 
-For years, I carried the weight of trauma silently. Like many in Sierra Leone, I thought my struggles were something I had to endure alone. Today, I'm sharing my story to let others know that healing is possible.
+For years, I carried the weight of trauma silently. Like many within the Sierra Leonean community, I thought my struggles were something I had to endure alone. Today, I'm sharing my story to let others know that healing is possible.
 
 ## The Beginning
 
@@ -409,10 +409,10 @@ OCSLAA's wellness programs integrate physical and mental health support to help 
     id: "7",
     title: "Understanding Grief and Loss in Our Communities",
     slug: "understanding-grief-loss-communities",
-    excerpt: "Grief is a natural response to loss, but in Sierra Leone, cultural expectations can complicate the grieving process. Learn about healthy mourning and healing.",
+    excerpt: "Grief is a natural response to loss, but within the Sierra Leonean community, cultural expectations can complicate the grieving process. Learn about healthy mourning and healing.",
     content: `# Understanding Grief and Loss in Our Communities
 
-Grief is a universal human experience, yet how we grieve is deeply influenced by our culture and community. In Sierra Leone, understanding both traditional and mental health perspectives on grief can support healing.
+Grief is a universal human experience, yet how we grieve is deeply influenced by our culture and community. Within the Sierra Leonean community, understanding both traditional and mental health perspectives on grief can support healing.
 
 ## What is Grief?
 
@@ -425,7 +425,7 @@ Grief is the natural response to loss - whether that's the death of a loved one,
 - Cognitive: difficulty concentrating, confusion
 - Behavioral: withdrawal, restlessness, crying
 
-## Cultural Aspects of Grief in Sierra Leone
+## Cultural Aspects of Grief within the Sierra Leonean community
 
 Our communities have rich traditions for honoring the dead and supporting the bereaved. These practices provide comfort and connection. However, some cultural expectations can complicate grief:
 
@@ -523,7 +523,7 @@ This approach emphasizes that mental illness is something a person has, not who 
 
 ## Impact in Our Communities
 
-In Sierra Leone, stigmatizing language is often reinforced by:
+Within the Sierra Leonean community, stigmatizing language is often reinforced by:
 - Lack of mental health education
 - Cultural beliefs about mental illness
 - Fear and misunderstanding
@@ -698,7 +698,7 @@ Remember: quality sleep is not a luxury - it's essential for mental health. Prio
     excerpt: "Resilience is the ability to bounce back from adversity. Learn practical strategies to build resilience and thrive through difficult times.",
     content: `# Building Resilience: Thriving Through Life's Challenges
 
-Resilience isn't something you're born with - it's a set of skills you can develop. In Sierra Leone, where many have faced significant adversity, building resilience is essential for mental health and well-being.
+Resilience isn't something you're born with - it's a set of skills you can develop. Within the Sierra Leonean community, where many have faced significant adversity, building resilience is essential for mental health and well-being.
 
 ## What is Resilience?
 
@@ -766,7 +766,7 @@ Resilience is the ability to:
 - Celebrate progress along the way
 - Be patient with yourself
 
-## Resilience in Sierra Leone Context
+## Resilience within the Sierra Leonean community Context
 
 Our communities have demonstrated remarkable resilience through:
 - Civil war recovery
@@ -910,7 +910,7 @@ Treatment options include:
 - Medication (when appropriate)
 - Treating underlying conditions
 
-## Cultural Considerations in Sierra Leone
+## Cultural Considerations within the Sierra Leonean community
 
 Traditional practices that may support sleep:
 - Evening family time and storytelling
@@ -980,7 +980,7 @@ Mindfulness means paying attention to the present moment without judgment. It's 
 - Greater self-awareness
 - Enhanced decision-making
 
-## Mindfulness in Sierra Leone Culture
+## Mindfulness within the Sierra Leonean community Culture
 
 Traditional practices that align with mindfulness:
 - Morning prayers and reflection
@@ -1231,7 +1231,7 @@ Proper diagnosis requires:
 - Connect with others who understand
 - Have crisis contacts readily available
 
-## In Sierra Leone Context
+## Within the Sierra Leonean community Context
 
 Challenges may include:
 - Limited access to specialists
@@ -1399,7 +1399,7 @@ Effective, loving discipline:
 
 ## Supporting Children Through Trauma
 
-In Sierra Leone, many families have experienced:
+Within the Sierra Leonean community, many families have experienced:
 - Civil war effects
 - Ebola outbreak
 - Loss of loved ones
@@ -1580,13 +1580,13 @@ Substance abuse can:
 - Crash can cause severe depression
 - Long-term cognitive effects
 
-**Khat (common in Sierra Leone):**
+**Khat (common within the Sierra Leonean community):**
 - Stimulant effects
 - Can cause anxiety and insomnia
 - May lead to dependence
 - Possible psychotic symptoms with heavy use
 
-## Cultural Context in Sierra Leone
+## Cultural Context within the Sierra Leonean community
 
 **Considerations:**
 - Alcohol use in social settings
@@ -1778,7 +1778,7 @@ Grief can follow many types of loss:
 - Miscarriage or infertility
 - Loss of dreams or expectations
 
-## Cultural Grieving in Sierra Leone
+## Cultural Grieving within the Sierra Leonean community
 
 Traditional practices that support grieving:
 - Community gathering and support
@@ -2004,7 +2004,7 @@ Every 20 minutes, look at something 20 feet away for 20 seconds.
 - Create tech-free family time
 - Monitor content and interactions
 
-## In Sierra Leone Context
+## Within the Sierra Leonean community Context
 
 **Unique Considerations:**
 - Mobile phones as primary internet access
@@ -2112,12 +2112,12 @@ Balance is key. Technology is a tool - use it to enhance your life, not replace 
   },
   {
     id: "18",
-    title: "Work-Life Balance and Mental Health in Sierra Leone",
+    title: "Work-Life Balance and Mental Health within the Sierra Leonean community",
     slug: "work-life-balance-mental-health",
     excerpt: "Balancing work demands with personal life is crucial for mental wellness. Learn strategies for achieving better balance.",
-    content: `# Work-Life Balance and Mental Health in Sierra Leone
+    content: `# Work-Life Balance and Mental Health within the Sierra Leonean community
 
-In Sierra Leone's evolving economy, many people face challenges balancing work demands with personal life. Finding this balance is essential for mental health and overall well-being.
+Within the Sierra Leonean community's evolving economy, many people face challenges balancing work demands with personal life. Finding this balance is essential for mental health and overall well-being.
 
 ## Why Work-Life Balance Matters
 
@@ -2147,7 +2147,7 @@ In Sierra Leone's evolving economy, many people face challenges balancing work d
 - Guilt when not working
 - No boundaries between work and personal time
 
-## Challenges in Sierra Leone
+## Challenges within the Sierra Leonean community
 
 **Common Obstacles:**
 - Economic pressure to work long hours
@@ -2250,7 +2250,7 @@ Balancing work and family:
 
 ## Cultural Considerations
 
-In Sierra Leone:
+Within the Sierra Leonean community:
 - Extended family obligations
 - Community expectations
 - Religious and social commitments
@@ -2437,7 +2437,7 @@ Proper diagnosis requires:
 - Be patient with recovery process
 - Take care of your own mental health
 
-## OCD in Sierra Leone Context
+## OCD within the Sierra Leonean community Context
 
 **Challenges:**
 - Limited access to specialized treatment
@@ -2920,7 +2920,7 @@ All types benefit mental health. Choose what you enjoy!
 - Remind yourself of benefits
 - Schedule it like an appointment
 
-## Exercise in Sierra Leone Context
+## Exercise within the Sierra Leonean community Context
 
 **Accessible Activities:**
 - Walking (morning or evening when cooler)
@@ -3220,7 +3220,7 @@ Seek immediate help if they:
 - Don't judge
 - Maintain the friendship
 
-## In Sierra Leone Context
+## Within the Sierra Leonean community Context
 
 **Cultural Considerations:**
 - Extended family involvement
@@ -3502,7 +3502,7 @@ Asking about suicide doesn't cause it. It opens conversation and shows you care.
 - Avoid judgment
 - Educate yourself
 
-## Crisis Resources in Sierra Leone
+## Crisis Resources within the Sierra Leonean community
 
 **Professional Help:**
 - OCSLAA Crisis Services
@@ -3552,7 +3552,7 @@ OCSLAA offers Mental Health First Aid training. Contact us to learn more.
 
 ## Cultural Sensitivity
 
-In Sierra Leone context:
+Within the Sierra Leonean community context:
 - Respect spiritual beliefs
 - Involve family appropriately
 - Consider cultural expressions of distress
@@ -3751,7 +3751,7 @@ Write them down. Add to the list regularly.
 - Making a difference matters
 - Connection boosts confidence
 
-## Cultural Considerations in Sierra Leone
+## Cultural Considerations within the Sierra Leonean community
 
 **Traditional Strengths:**
 - Community support and belonging
@@ -3930,12 +3930,12 @@ Begin now. Your relationship with yourself is the most important one you'll ever
   },
   {
     id: "25",
-    title: "Mental Health Stigma in Sierra Leone: Breaking Barriers",
+    title: "Mental Health Stigma within the Sierra Leonean community: Breaking Barriers",
     slug: "mental-health-stigma-sierra-leone",
-    excerpt: "Addressing the stigma surrounding mental health in Sierra Leone and how we can create a more accepting society.",
-    content: `# Mental Health Stigma in Sierra Leone: Breaking Barriers
+    excerpt: "Addressing the stigma surrounding mental health within the Sierra Leonean community and how we can create a more accepting society.",
+    content: `# Mental Health Stigma within the Sierra Leonean community: Breaking Barriers
 
-Mental health stigma remains one of the biggest obstacles to people seeking help in Sierra Leone. Understanding and addressing this stigma is crucial for creating a society where everyone can access mental health support without shame or fear.
+Mental health stigma remains one of the biggest obstacles to people seeking help within the Sierra Leonean community. Understanding and addressing this stigma is crucial for creating a society where everyone can access mental health support without shame or fear.
 
 ## What is Mental Health Stigma?
 
@@ -3968,7 +3968,7 @@ Systemic barriers
 - Discrimination in employment
 - Inadequate legal protections
 
-## Mental Health Stigma in Sierra Leone
+## Mental Health Stigma within the Sierra Leonean community
 
 **Common Beliefs:**
 - Mental illness is caused by witchcraft or curses
@@ -4131,7 +4131,7 @@ Many Sierra Leoneans value both traditional and modern medicine. It's possible t
 ## Advocacy and Systemic Change
 
 **We Need:**
-- More mental health professionals in Sierra Leone
+- More mental health professionals within the Sierra Leonean community
 - Integration of mental health in primary care
 - Mental health education in schools
 - Public awareness campaigns

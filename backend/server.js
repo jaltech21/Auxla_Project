@@ -113,7 +113,7 @@ app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), asyn
                     <p>Dear ${paymentIntent.metadata.donorName},</p>
                     <p>Thank you for your generous donation to OCSLAA (Our Concern Sierra Leone Australia Alliance)!</p>
                     <div class="amount">$${(paymentIntent.amount / 100).toFixed(2)}</div>
-                    <p>Your contribution will help us continue our mission to support mental health awareness and provide resources for those in need in Sierra Leone.</p>
+                    <p>Your contribution will help us continue our mission to support mental health awareness and provide resources for those in need within the Sierra Leonean community.</p>
                     ${paymentIntent.metadata.designation && paymentIntent.metadata.designation !== 'general' 
                       ? `<p><strong>Designation:</strong> ${paymentIntent.metadata.designation}</p>` 
                       : ''}

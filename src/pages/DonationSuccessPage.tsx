@@ -28,7 +28,7 @@ const DonationSuccessPage = () => {
     if (navigator.share) {
       navigator.share({
         title: 'I just donated to OCSLAA',
-        text: 'Join me in supporting mental health services in Sierra Leone!',
+        text: 'Join me in supporting mental health services within the Sierra Leonean community!',
         url: window.location.origin,
       });
     }

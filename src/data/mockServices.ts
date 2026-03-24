@@ -6,7 +6,7 @@ export const mockServices: Resource[] = [
     id: '1',
     title: 'Understanding Anxiety Disorders',
     description: 'A comprehensive guide to recognizing different types of anxiety disorders, their symptoms, and evidence-based treatment approaches.',
-    content: `Anxiety disorders are among the most common mental health conditions worldwide, and they are increasingly recognised in Sierra Leone and across West Africa. An anxiety disorder is more than ordinary nervousness — it is a persistent, often overwhelming sense of fear or worry that interferes with daily life.
+    content: `Anxiety disorders are among the most common mental health conditions worldwide, and they are increasingly recognised within the Sierra Leonean community and across West Africa. An anxiety disorder is more than ordinary nervousness — it is a persistent, often overwhelming sense of fear or worry that interferes with daily life.
 
 There are several types of anxiety disorders:
 
@@ -110,7 +110,7 @@ Remember: self-monitoring is a skill that improves with practice. Be patient and
     id: '4',
     title: 'Recognizing Depression: Signs and Symptoms',
     description: 'Learn to identify the warning signs of depression and understand when to seek professional help.',
-    content: `Depression is more than just feeling sad. It is a serious but treatable mental health condition that affects how a person thinks, feels, and functions in daily life. In Sierra Leone, depression often goes unrecognised because its symptoms can be mistaken for physical illness, spiritual crisis, or personal weakness — none of which are accurate.
+    content: `Depression is more than just feeling sad. It is a serious but treatable mental health condition that affects how a person thinks, feels, and functions in daily life. Within the Sierra Leonean community, depression often goes unrecognised because its symptoms can be mistaken for physical illness, spiritual crisis, or personal weakness — none of which are accurate.
 
 Common signs and symptoms of depression include:
 
@@ -136,7 +136,7 @@ Cognitive symptoms:
 When to seek help:
 If you or someone you know experiences five or more of these symptoms most of the day, nearly every day, for at least two weeks, it is time to seek professional support. Depression is highly treatable — early intervention leads to better outcomes.
 
-Please contact our team or visit our Support Finder page to connect with a mental health professional in Sierra Leone.`,
+Please contact our team or visit our Support Finder page to connect with a mental health professional within the Sierra Leonean community.`,
     category: 'depression',
     type: 'article',
     tags: ['depression', 'symptoms', 'mental health', 'awareness'],
@@ -203,7 +203,7 @@ What this resource covers:
 
 • Accounts from family members and caregivers who supported a loved one through depression, sharing what they wish they had known.
 
-• Reflections on cultural and social factors — including stigma, community support, and faith — and how these intersect with mental health in Sierra Leone.
+• Reflections on cultural and social factors — including stigma, community support, and faith — and how these intersect with mental health within the Sierra Leonean community.
 
 • Practical lessons drawn from each story — small actionable insights that others have found helpful.
 
@@ -313,7 +313,7 @@ Work through it at your own pace. You do not need to implement everything at onc
     content: `Work-life balance is not about splitting your time perfectly between work and personal life — it is about creating a sustainable rhythm that allows you to be effective at work while also nurturing your health, relationships, and wellbeing.
 
 Why it matters:
-Poor work-life balance is a leading contributor to burnout, anxiety, depression, relationship breakdown, and physical health problems. In Sierra Leone, where economic pressures and job insecurity are real challenges, setting boundaries can feel difficult — but the cost of not doing so is far higher.
+Poor work-life balance is a leading contributor to burnout, anxiety, depression, relationship breakdown, and physical health problems. Within the Sierra Leonean community, where economic pressures and job insecurity are real challenges, setting boundaries can feel difficult — but the cost of not doing so is far higher.
 
 Practical strategies:
 
@@ -378,7 +378,7 @@ What to expect at your first meeting:
 • It may feel uncomfortable at first. Give it at least 2–3 sessions before deciding if it is right for you.
 • You may find the experience immediately relieving — hearing others voice feelings you have never been able to articulate can be deeply validating.
 
-To find a support group near you in Sierra Leone, visit our Support Finder page or contact our team.`,
+To find a support group near you within the Sierra Leonean community, visit our Support Finder page or contact our team.`,
     category: 'support',
     type: 'article',
     tags: ['support groups', 'community', 'recovery', 'peer support'],
@@ -393,7 +393,7 @@ To find a support group near you in Sierra Leone, visit our Support Finder page 
     id: '11',
     title: 'Online Support Group Directory',
     description: 'A curated list of virtual support groups for various mental health conditions, available 24/7.',
-    content: `This directory provides a curated list of online support groups and communities accessible to people in Sierra Leone and the wider diaspora. Online groups remove barriers of transport, geography, and stigma — you can participate from wherever you feel safe.
+    content: `This directory provides a curated list of online support groups and communities accessible to people within the Sierra Leonean community and the wider diaspora. Online groups remove barriers of transport, geography, and stigma — you can participate from wherever you feel safe.
 
 How to use this directory:
 • Browse by category (anxiety, depression, grief, trauma, substance use, family support, etc.)
@@ -410,7 +410,7 @@ Depression & Low Mood:
 Peer support spaces for those navigating depression, with optional professional facilitation.
 
 Grief & Loss:
-Groups for those who have experienced bereavement, including loss related to conflict, illness, or displacement — experiences common in Sierra Leone.
+Groups for those who have experienced bereavement, including loss related to conflict, illness, or displacement — experiences common within the Sierra Leonean community.
 
 Trauma Recovery:
 Spaces supporting survivors of trauma, facilitated by trained professionals with experience in conflict-affected communities.
@@ -460,7 +460,7 @@ For those supporting someone in crisis:
 After a crisis:
 A crisis often signals that something needs to change. Follow up with a mental health professional to develop a crisis safety plan — a personalised document outlining warning signs, coping strategies, and who to call.
 
-Contact our team to connect with mental health support in Sierra Leone. You are not a burden — reaching out is an act of courage.`,
+Contact our team to connect with mental health support within the Sierra Leonean community. You are not a burden — reaching out is an act of courage.`,
     category: 'crisis',
     type: 'helpline',
     tags: ['crisis', 'emergency', 'hotline', 'immediate help'],
@@ -475,7 +475,7 @@ Contact our team to connect with mental health support in Sierra Leone. You are 
     id: '13',
     title: 'Suicide Prevention Resources',
     description: 'Critical resources for suicide prevention, including warning signs, how to help someone in crisis, and immediate support options.',
-    content: `Suicide is a serious public health concern globally and in Sierra Leone. It is preventable. With the right support at the right time, lives can be saved.
+    content: `Suicide is a serious public health concern globally and within the Sierra Leonean community. It is preventable. With the right support at the right time, lives can be saved.
 
 Warning signs that someone may be at risk:
 • Talking about wanting to die, feeling like a burden, or having no reason to live
@@ -543,7 +543,7 @@ How to choose:
 • Speak with a mental health professional about what is available locally and what they recommend for your specific concerns
 • The quality of the relationship with your therapist often matters more than the specific modality
 
-Contact us to find a qualified therapist in Sierra Leone.`,
+Contact us to find a qualified therapist within the Sierra Leonean community.`,
     category: 'therapy',
     type: 'guide',
     tags: ['therapy', 'counseling', 'treatment', 'mental health'],
@@ -580,7 +580,7 @@ After the session:
 • Reflect on whether you felt comfortable with the therapist. A good fit matters — if something felt wrong, it is okay to discuss this or try a different practitioner.
 • Therapy works best with consistent attendance and engagement between sessions.
 
-Contact us if you would like help finding a therapist suitable for your needs in Sierra Leone.`,
+Contact us if you would like help finding a therapist suitable for your needs within the Sierra Leonean community.`,
     category: 'therapy',
     type: 'article',
     tags: ['therapy', 'first session', 'counseling', 'preparation'],
@@ -667,7 +667,7 @@ Social self-care:
 
 Spiritual self-care (broadly defined):
 • Connect with what gives your life meaning and purpose — this may be faith, community, nature, creativity, or service to others.
-• In Sierra Leonean culture, community and spiritual practices are powerful sources of resilience. These are genuine forms of self-care.
+• Within the Sierra Leonean communityan culture, community and spiritual practices are powerful sources of resilience. These are genuine forms of self-care.
 
 Creating a self-care plan:
 Choose one small practice from each area and commit to it for two weeks. Notice how you feel. Build from there — sustainable self-care is built gradually, not all at once.`,
@@ -685,7 +685,7 @@ Choose one small practice from each area and commit to it for two weeks. Notice 
     id: '18',
     title: 'Building Resilience: A Practical Guide',
     description: 'Develop mental resilience with proven strategies to bounce back from adversity and maintain emotional wellbeing.',
-    content: `Resilience is the ability to adapt and recover in the face of adversity, trauma, tragedy, or significant stress. It is not a fixed trait — it is a capacity that can be developed. In Sierra Leone, where many communities have navigated the aftermath of conflict, displacement, and economic hardship, resilience is already deeply embedded in cultural identity. This guide builds on that foundation with practical, evidence-based tools.
+    content: `Resilience is the ability to adapt and recover in the face of adversity, trauma, tragedy, or significant stress. It is not a fixed trait — it is a capacity that can be developed. Within the Sierra Leonean community, where many communities have navigated the aftermath of conflict, displacement, and economic hardship, resilience is already deeply embedded in cultural identity. This guide builds on that foundation with practical, evidence-based tools.
 
 What resilience is NOT:
 • It is not the absence of pain or difficulty.
@@ -710,7 +710,7 @@ Break overwhelming problems into manageable steps. Identify what is within your 
 In times of uncertainty, routines anchor us. They provide structure and a sense of normalcy. Prioritise sleep, meals, and gentle daily movement.
 
 6. Draw on cultural and spiritual resources
-In Sierra Leonean communities, collective resilience, storytelling, prayer, and ubuntu philosophy ("I am because we are") are powerful sources of strength. These are not separate from mental health — they are central to it.
+Within the Sierra Leonean communityan communities, collective resilience, storytelling, prayer, and ubuntu philosophy ("I am because we are") are powerful sources of strength. These are not separate from mental health — they are central to it.
 
 7. Seek help when needed
 Recognising when you need support and reaching out is itself a resilience skill. Resilience is not built alone.`,
@@ -750,13 +750,13 @@ Common mental health conditions:
 
 All of these are recognised medical conditions with evidence-based treatments. They are NOT signs of weakness, spiritual failure, or character flaws.
 
-Stigma in Sierra Leone:
+Stigma within the Sierra Leonean community:
 Mental health stigma remains a significant barrier to care. People with mental health conditions may face discrimination, social exclusion, or pressure to hide their struggles. OCSLAA is committed to changing this — mental health is health, and seeking support is an act of courage and wisdom.
 
 How to seek help:
 1. Talk to a trusted person — a family member, friend, religious leader, or community elder.
 2. Visit a healthcare provider — GPs and nurses can provide initial assessment and referral.
-3. Contact a mental health service or counsellor — see our Support Finder for options in Sierra Leone.
+3. Contact a mental health service or counsellor — see our Support Finder for options within the Sierra Leonean community.
 4. Reach out to OCSLAA — we can help connect you with appropriate support.
 
 How to support others:
@@ -780,7 +780,7 @@ How to support others:
     id: '20',
     title: 'Breaking Mental Health Stigma',
     description: 'Understanding and combating the stigma surrounding mental health conditions in our communities.',
-    content: `Stigma is one of the greatest barriers to mental health care globally — and in Sierra Leone, it is particularly significant. Stigma occurs when people with mental health conditions are viewed negatively, stereotyped, discriminated against, or excluded from their communities. It causes enormous suffering and prevents people from seeking the help they need.
+    content: `Stigma is one of the greatest barriers to mental health care globally — and within the Sierra Leonean community, it is particularly significant. Stigma occurs when people with mental health conditions are viewed negatively, stereotyped, discriminated against, or excluded from their communities. It causes enormous suffering and prevents people from seeking the help they need.
 
 Types of stigma:
 
@@ -797,7 +797,7 @@ How stigma damages lives:
 • Reduced self-worth and identity
 • Worsening of the mental health condition itself
 
-The roots of stigma in Sierra Leone:
+The roots of stigma within the Sierra Leonean community:
 In many communities, mental health conditions are attributed to spiritual causes (witchcraft, curses, divine punishment) or personal weakness. While these beliefs are deeply held and culturally meaningful, they can delay access to effective treatment. OCSLAA works to create dialogue — not to dismiss culture, but to expand understanding.
 
 What each of us can do:

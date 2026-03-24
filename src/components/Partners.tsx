@@ -121,7 +121,7 @@ const Partners = () => {
           </h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
             We're always looking to collaborate with organizations that share our commitment to
-            mental health advocacy and support in Sierra Leone.
+            mental health advocacy and support within the Sierra Leonean community.
           </p>
           <Link
             to="/contact?type=partnership"

@@ -74,7 +74,7 @@ const Resources = () => {
     {
       icon: FileText,
       title: "The Intergenerational Impact of War on Mental Health",
-      description: "An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations in Sierra Leone.",
+      description: "An in-depth research paper examining the lasting psychosocial effects of war on mental health and wellbeing across generations within the Sierra Leonean community.",
       category: "all",
       slug: "intergenerational-impact-war-mental-health",
       link: `${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf`,

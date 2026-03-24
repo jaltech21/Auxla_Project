@@ -273,7 +273,7 @@ const YouthServicesPage = () => {
                     It Is Like Smoking Poison — Sierra Leone Youth Battle
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                    A compelling research paper exploring the mental health challenges faced by young people in Sierra Leone and the broader societal factors contributing to their struggle.
+                    A compelling research paper exploring the mental health challenges faced by young people within the Sierra Leonean community and the broader societal factors contributing to their struggle.
                   </p>
                   <a
                     href={`${import.meta.env.BASE_URL}youth/It%20is%20like%20smoking%20poisonSierra%20Leone%20youth%20battle.pdf`}

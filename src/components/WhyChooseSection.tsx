@@ -37,7 +37,7 @@ const WhyChooseSection = () => {
             Why Choose OCSLAA?
           </h2>
           <p className="text-lg text-muted-foreground">
-            What makes us different in our approach to mental health support in Sierra Leone
+            What makes us different in our approach to mental health support within the Sierra Leonean community
           </p>
         </div>
 

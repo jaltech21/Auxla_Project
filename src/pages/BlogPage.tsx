@@ -31,7 +31,7 @@ const BlogPage = () => {
         <title>Blog - OCSLAA | Mental Health Articles & Resources</title>
         <meta
           name="description"
-          content="Read the latest articles on mental health, wellness tips, personal stories, and community support from OCSLAA's mental health professionals in Sierra Leone."
+          content="Read the latest articles on mental health, wellness tips, personal stories, and community support from OCSLAA's mental health professionals within the Sierra Leonean community."
         />
         <meta property="og:title" content="Blog - OCSLAA | Mental Health Articles & Resources" />
         <meta
@@ -54,7 +54,7 @@ const BlogPage = () => {
                 Mental Health Insights & Stories
               </h1>
               <p className="text-lg text-muted-foreground">
-                Expert advice, personal experiences, and community support for mental wellness in Sierra Leone.
+                Expert advice, personal experiences, and community support for mental wellness within the Sierra Leonean community.
               </p>
             </div>
           </div>

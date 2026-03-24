@@ -20,7 +20,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Supporting mental health awareness in Sierra Leone and providing resources for those in need. You're not alone.
+              Supporting mental health awareness within the Sierra Leonean community and providing resources for those in need. You're not alone.
             </p>
             <div className="flex gap-3">
               <Button variant="ghost" size="icon" className="hover:text-primary">
