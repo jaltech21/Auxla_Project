@@ -7,42 +7,47 @@ const StrategicPlanPage = () => {
   const goals = [
     {
       year: "2026",
-      title: "Foundation & Expansion",
+      phase: "Year 1",
+      title: "Consolidate",
+      theme: "Strengthen organisational foundations, including governance, roles, systems and communications.",
       objectives: [
-        "Establish comprehensive youth mental health programs across 5 communities",
-        "Launch digital mental health resource platform",
-        "Build strategic partnerships with 10+ community organizations",
-        "Develop family support training programs",
+        "Confirm governance arrangements, Board calendar, and decision-making processes",
+        "Finalise role descriptions and individual volunteer work plans",
+        "Strengthen financial systems, including bookkeeping and financial reporting support",
+        "Activate and maintain website and communications platforms",
+        "Hold formal launch of OCSLAA",
+        "Formalise priority partnerships with government, NGOs, and community leaders",
+        "Deliver community mental health education and stigma reduction activities",
+        "Fundraise to cover core operating costs and part-time coordination support",
       ],
     },
     {
       year: "2027",
-      title: "Scale & Innovation",
+      phase: "Year 2",
+      title: "Pilot",
+      theme: "Pilot targeted programs informed by community need, capability and partnerships.",
       objectives: [
-        "Expand services to reach 1,000+ beneficiaries",
-        "Implement peer-led support groups in 15 locations",
-        "Launch innovation lab for new mental health interventions",
-        "Develop crisis response protocols",
+        "Pilot school-based mental health education and awareness initiatives",
+        "Test culturally appropriate psychosocial support and referral pathways",
+        "Trial diaspora-supported advisory or telehealth models where appropriate",
+        "Strengthen monitoring, evaluation, and learning systems for all pilot activities",
+        "Deepen partnerships with Sierra Leone government agencies and NGOs",
+        "Secure project-based funding aligned to pilot initiatives",
+        "Review volunteer capacity and workload to inform resourcing decisions",
       ],
     },
     {
       year: "2028",
-      title: "Sustainability & Impact",
+      phase: "Year 3",
+      title: "Scale Selectively",
+      theme: "Selectively scale initiatives with proven outcomes, cultural fit and sustainable resourcing.",
       objectives: [
-        "Establish endowment fund for long-term sustainability",
-        "Achieve 50% increase in service accessibility metrics",
-        "Integrate services with government health systems",
-        "Launch comprehensive mental health literacy campaign",
-      ],
-    },
-    {
-      year: "2029",
-      title: "Leadership & Legacy",
-      objectives: [
-        "Position OCSLAA as leading mental health advocacy organization",
-        "Achieve measurable impact on mental health outcomes in target communities",
-        "Establish permanent training and resource center",
-        "Build sustainable funding model for continued growth",
+        "Scale or replicate pilot initiatives that demonstrate strong outcomes and cultural fit",
+        "Discontinue or redesign initiatives that do not demonstrate sufficient impact",
+        "Expand advocacy and system-strengthening engagement based on evidence",
+        "Secure multi-year funding to support sustained delivery and coordination",
+        "Strengthen internal systems to support expanded partnerships and reporting",
+        "Review governance, risk, and organisational capacity to support next phase planning",
       ],
     },
   ];
@@ -224,9 +229,15 @@ const StrategicPlanPage = () => {
           {/* Strategic Overview */}
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-6">Our Vision Forward</h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-4">
               From 2026 to 2028, OCSLAA will focus on expanding mental health services, building strategic partnerships, and creating sustainable solutions that transform lives and communities. This strategic plan guides our priorities and ensures accountability to our communities.
             </p>
+            <div className="p-6 bg-primary/5 border border-primary/20 rounded-xl">
+              <p className="text-sm font-semibold text-primary uppercase tracking-wide mb-2">Our Purpose</p>
+              <p className="text-foreground leading-relaxed">
+                OCSLAA exists to reduce stigma, increase understanding, and improve access to mental health support for Sierra Leonean communities in Australia and Sierra Leone through education, advocacy, partnerships, and culturally appropriate services.
+              </p>
+            </div>
           </div>
 
           {/* Our Vision Statement */}
@@ -333,18 +344,25 @@ const StrategicPlanPage = () => {
             </Card>
           </div>
 
-          {/* Year-by-Year Goals */}
+          {/* 3-Year Implementation Plan */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-8">Year-by-Year Goals</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">3-Year Implementation Plan</h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Our plan unfolds across three phases — each building on the last — to ensure disciplined, sustainable, and community-centred growth.
+            </p>
             <div className="space-y-8">
               {goals.map((goal, index) => (
                 <div key={index} className="bg-accent rounded-lg p-6 md:p-8">
-                  <div className="flex items-start gap-4 mb-6">
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <div className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-semibold">
+                      {goal.phase}
+                    </div>
                     <div className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-bold">
                       {goal.year}
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground pt-1">{goal.title}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">{goal.title}</h3>
                   </div>
+                  <p className="text-muted-foreground italic mb-5">{goal.theme}</p>
                   <ul className="space-y-3">
                     {goal.objectives.map((objective, idx) => (
                       <li key={idx} className="flex items-start gap-3 text-foreground">

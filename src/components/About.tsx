@@ -101,7 +101,7 @@ const About = () => {
             <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">Our Foundation</span>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Core Values</h2>
             <p className="text-lg text-muted-foreground">
-              OCSLAA is guided by these six principles that define who we are and how we work
+              OCSLAA is guided by radical inclusion, community leadership, cultural respect, integrity, collaboration, and accountability. The organisation values lived experience, shared responsibility, and a strong commitment to translating human rights and mental health principles into practical action.
             </p>
           </div>
 
