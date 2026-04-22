@@ -246,7 +246,7 @@ export const whyChooseReasons: WhyChooseReason[] = [
     id: "4",
     icon: "map",
     title: "Nationwide Reach",
-    description: "From Freetown to rural communities, we're present in all 15 districts, bringing mental health support to wherever you are.",
+    description: "From Freetown to rural communities, we're present in all 15 districts, bringing mental health support to wherever you are. Click below to learn about the first Sierra Leonean mental health advocate who inspired our mission and continues to inspire us today.",
   },
   {
     id: "5",

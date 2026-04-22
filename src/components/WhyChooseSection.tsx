@@ -68,7 +68,6 @@ const WhyChooseSection = () => {
                   </div>
 
                   {/* Our Inspiration button — Nationwide Reach card only */}
-                  Click below to learn about the first Sierra Leonean mental health advocate who inspired our mission and continues to inspire us today.
                   {reason.id === "4" && (
                     <a
                       href={`${import.meta.env.BASE_URL}resources/Dr.%20Nahim.pdf`}
