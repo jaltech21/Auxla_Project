@@ -3,9 +3,7 @@
 # OCSLAA Phase 1 Automated Testing Script
 # Tests all core functionality without manual interaction
 
-set -e
-
-BASE_URL="http://localhost:8080/Auxla_Project"
+BASE_URL="http://localhost:8080/Auxla_Project/"
 RESULTS_FILE="phase1-test-results.txt"
 PASSED=0
 FAILED=0

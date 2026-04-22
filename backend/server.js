@@ -578,6 +578,79 @@ app.use((req, res) => {
   });
 });
 
+// Send email to team member
+app.post('/api/email/send-to-team-member', async (req, res) => {
+  try {
+    const { recipientEmail, recipientName, subject, message } = req.body;
+
+    // Validate required fields
+    if (!recipientEmail || !subject || !message) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: recipientEmail, subject, message',
+      });
+    }
+
+    console.log(`📧 Sending email to team member: ${recipientName} (${recipientEmail})`);
+    console.log(`   Subject: ${subject}`);
+
+    // Create email HTML
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #333; margin-top: 0;">New Message from OCSLAA Website</h2>
+          
+          <div style="background-color: #fff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="color: #0891b2; margin-top: 0;">${subject}</h3>
+            
+            <div style="color: #555; line-height: 1.6; white-space: pre-wrap;">
+${message}
+            </div>
+          </div>
+
+          <div style="color: #888; font-size: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <p style="margin: 5px 0;">This message was sent via the OCSLAA website.</p>
+            <p style="margin: 5px 0;">If you have questions, please reply to this email.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Send email via Resend
+    const result = await resend.emails.send({
+      from: 'OCSLAA Website <onboarding@resend.dev>',
+      to: recipientEmail,
+      subject: `${subject} - From OCSLAA Website`,
+      html: emailHtml,
+      replyTo: 'info@ocslaa.org',
+    });
+
+    // Check for errors
+    if (result.error) {
+      console.error('❌ Resend API error:', result.error);
+      return res.status(500).json({
+        success: false,
+        error: result.error.message || 'Failed to send email',
+      });
+    }
+
+    console.log(`✅ Email sent successfully to ${recipientName}. ID: ${result.data?.id}`);
+
+    // Success
+    return res.status(200).json({
+      success: true,
+      messageId: result.data?.id,
+      message: 'Email sent successfully',
+    });
+  } catch (error) {
+    console.error('❌ Email sending error:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Unknown error occurred',
+    });
+  }
+});
+
 // Error handler
 app.use((err, req, res, next) => {
   console.error('Server error:', err);

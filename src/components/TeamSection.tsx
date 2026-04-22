@@ -14,11 +14,83 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { teamMembers } from "@/data/mockContent";
-import { Mail, Linkedin } from "lucide-react";
+import { Mail, Linkedin, Loader2, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 const TeamSection = () => {
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<typeof teamMembers[0] | null>(null);
+  const [emailForm, setEmailForm] = useState({ subject: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+
+  const handleEmailClick = (member: typeof teamMembers[0]) => {
+    setSelectedMember(member);
+    setEmailDialogOpen(true);
+    setEmailSent(false);
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedMember || !emailForm.subject || !emailForm.message) {
+      toast({
+        title: 'Validation Error',
+        description: 'Please fill in all fields',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Send email via backend
+      const response = await fetch(
+        import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/email/send-to-team-member` : '/api/email/send-to-team-member',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            recipientEmail: selectedMember.email,
+            recipientName: selectedMember.name,
+            subject: emailForm.subject,
+            message: emailForm.message,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      setEmailSent(true);
+      toast({
+        title: 'Email Sent!',
+        description: `Your message has been sent to ${selectedMember.name}`,
+      });
+
+      setTimeout(() => {
+        setEmailDialogOpen(false);
+        setEmailForm({ subject: '', message: '' });
+        setEmailSent(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send email. Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,11 +164,13 @@ const TeamSection = () => {
                       {/* Contact Links */}
                       <div className="flex flex-wrap gap-3 mt-4">
                         {member.email && (
-                          <Button variant="outline" size="sm" asChild>
-                            <a href={`mailto:${member.email}`}>
-                              <Mail className="h-4 w-4 mr-2" />
-                              Email
-                            </a>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleEmailClick(member)}
+                          >
+                            <Mail className="h-4 w-4 mr-2" />
+                            Email
                           </Button>
                         )}
                         {member.linkedin && (
@@ -151,6 +225,101 @@ const TeamSection = () => {
           </Button>
         </div>
       </div>
+
+      {/* Email Dialog */}
+      <Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>
+              {emailSent ? 'Email Sent!' : `Send Email to ${selectedMember?.name}`}
+            </DialogTitle>
+            <DialogDescription>
+              {emailSent 
+                ? 'Your message has been successfully sent.' 
+                : 'Fill out the form below to send an email to this team member.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          {emailSent ? (
+            <div className="flex flex-col items-center justify-center py-6">
+              <div className="mb-4 p-4 rounded-full bg-green-100">
+                <CheckCircle className="h-8 w-8 text-green-600" />
+              </div>
+              <p className="text-center text-muted-foreground mb-4">
+                {selectedMember?.name} will receive your message at<br />
+                <span className="font-mono text-sm">{selectedMember?.email}</span>
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleEmailSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="to-email">To</Label>
+                <Input
+                  id="to-email"
+                  type="email"
+                  value={selectedMember?.email || ''}
+                  disabled
+                  className="bg-muted"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subject">Subject *</Label>
+                <Input
+                  id="subject"
+                  type="text"
+                  placeholder="Email subject"
+                  value={emailForm.subject}
+                  onChange={(e) => setEmailForm({ ...emailForm, subject: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="message">Message *</Label>
+                <Textarea
+                  id="message"
+                  placeholder="Write your message here..."
+                  value={emailForm.message}
+                  onChange={(e) => setEmailForm({ ...emailForm, message: e.target.value })}
+                  required
+                  disabled={isSubmitting}
+                  rows={5}
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEmailDialogOpen(false)}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="mr-2 h-4 w-4" />
+                      Send Email
+                    </>
+                  )}
+                </Button>
+              </div>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

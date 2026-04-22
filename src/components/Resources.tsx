@@ -67,7 +67,6 @@ const Resources = () => {
       slug: "crisis-helpline",
       link: "/services?category=crisis",
       isCommunity: true,
-      isPdf: false,
       readTime: "",
       author: "",
     },
@@ -79,7 +78,6 @@ const Resources = () => {
       slug: "intergenerational-impact-war-mental-health",
       link: `${import.meta.env.BASE_URL}resources/The%20intergenerational%20impact%20of%20war%20on%20mental%20health%20and%20psychosocial%20wellbeing-SL.pdf`,
       isCommunity: true,
-      isPdf: true,
       readTime: "",
       author: "",
     },
@@ -144,7 +142,7 @@ const Resources = () => {
                 <CardContent className="flex flex-col flex-1 gap-4">
                   <CardDescription className="text-muted-foreground line-clamp-3 flex-1">{resource.description}</CardDescription>
                   {resource.isCommunity ? (
-                    resource.isPdf ? (
+                    resource.link.endsWith('.pdf') ? (
                       <Button variant="default" size="sm" className="gap-2" asChild>
                         <a href={resource.link} target="_blank" rel="noopener noreferrer">
                           <FileText className="h-4 w-4" />
