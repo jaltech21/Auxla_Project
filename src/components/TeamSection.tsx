@@ -62,8 +62,10 @@ const TeamSection = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send email');
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Failed to send email');
       }
 
       setEmailSent(true);
@@ -79,9 +81,10 @@ const TeamSection = () => {
       }, 2000);
     } catch (error) {
       console.error('Error sending email:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send email. Please try again.';
       toast({
         title: 'Error',
-        description: 'Failed to send email. Please try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
