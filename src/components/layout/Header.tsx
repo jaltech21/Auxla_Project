@@ -50,7 +50,7 @@ const Header = () => {
               className="h-10 w-10 transition-transform duration-300 group-hover:scale-110"
             />
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-foreground leading-tight">OCSLAA</span>
+              <span className="text-xl font-bold text-foreground leading-tight">(OCSLAA) - Mental Health</span>
               <span className="text-[10px] text-muted-foreground leading-tight hidden md:block">Our Concern Sierra Leone Australia Alliance</span>
             </div>
           </Link>

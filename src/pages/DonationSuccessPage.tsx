@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -203,7 +204,7 @@ const DonationSuccessPage = () => {
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" asChild>
-              <a href="/">Return to Homepage</a>
+              <Link to="/">Return to Homepage</Link>
             </Button>
             <Button variant="outline" size="lg" onClick={handleShare}>
               <Share2 className="h-4 w-4 mr-2" />
