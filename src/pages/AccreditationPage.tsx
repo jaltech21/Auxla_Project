@@ -111,7 +111,7 @@ const AccreditationPage = () => {
     {
       title: "Ministry of Planning and Economic Development Accreditation",
       issuer: "Minstry of Planning and Economic Development (MoPED)",
-      year: "2025",
+      year: "2024",
       description: "Officially registered and certified by the Corporate Affairs Commission, confirming our legal standing and compliance with all corporate governance requirements.",
       image: MoPedCertificate,
     },
