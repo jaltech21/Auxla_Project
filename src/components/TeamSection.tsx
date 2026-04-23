@@ -50,19 +50,17 @@ const TeamSection = () => {
     setIsSubmitting(true);
     try {
       // Send email via backend
-      const response = await fetch(
-        import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/email/send-to-team-member` : '/api/email/send-to-team-member',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            recipientEmail: selectedMember.email,
-            recipientName: selectedMember.name,
-            subject: emailForm.subject,
-            message: emailForm.message,
-          }),
-        }
-      );
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const response = await fetch(`${apiUrl}/api/email/send-to-team-member`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          recipientEmail: selectedMember.email,
+          recipientName: selectedMember.name,
+          subject: emailForm.subject,
+          message: emailForm.message,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error('Failed to send email');

@@ -562,22 +562,6 @@ app.get('/api/donations/stats', async (req, res) => {
   }
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ 
-    error: 'Not found',
-    availableEndpoints: {
-      health: 'GET /health',
-      sendEmail: 'POST /api/send-email',
-      newsletterSubscribe: 'POST /api/newsletter/subscribe',
-      newsletterSend: 'POST /api/newsletter/send',
-      createPaymentIntent: 'POST /api/donations/create-payment-intent',
-      stripeWebhook: 'POST /api/webhooks/stripe',
-      donationStats: 'GET /api/donations/stats'
-    }
-  });
-});
-
 // Send email to team member
 app.post('/api/email/send-to-team-member', async (req, res) => {
   try {
@@ -649,6 +633,23 @@ ${message}
       error: error.message || 'Unknown error occurred',
     });
   }
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ 
+    error: 'Not found',
+    availableEndpoints: {
+      health: 'GET /health',
+      sendEmail: 'POST /api/send-email',
+      newsletterSubscribe: 'POST /api/newsletter/subscribe',
+      newsletterSend: 'POST /api/newsletter/send',
+      sendToTeamMember: 'POST /api/email/send-to-team-member',
+      createPaymentIntent: 'POST /api/donations/create-payment-intent',
+      stripeWebhook: 'POST /api/webhooks/stripe',
+      donationStats: 'GET /api/donations/stats'
+    }
+  });
 });
 
 // Error handler
