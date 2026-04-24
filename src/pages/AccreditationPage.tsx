@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import australiaAccreditation from "@/assets/AustraliaAccreditation.jpg";
-import corporateAffairsCertificate from "@/assets/CorporateAffairsCertificate.jpg";
+import MoPedCertificate from "@/assets/MoPedCertificate.jpg";
 
 /**
  * Renders the certificate on a canvas with a tiled watermark burned into the
@@ -109,11 +109,11 @@ const AccreditationPage = () => {
       image: australiaAccreditation,
     },
     {
-      title: "Corporate Affairs Certificate",
-      issuer: "Corporate Affairs Commission",
+      title: "Ministry of Planning and Economic Development Accreditation",
+      issuer: "Minstry of Planning and Economic Development (MoPED)",
       year: "2025",
       description: "Officially registered and certified by the Corporate Affairs Commission, confirming our legal standing and compliance with all corporate governance requirements.",
-      image: corporateAffairsCertificate,
+      image: MoPedCertificate,
     },
   ];
 
