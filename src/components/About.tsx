@@ -42,10 +42,11 @@ const About = () => {
 
 
   const milestones = [
-    { year: "2023", event: "OCSLAA Founded", description: "Started with a vision to make mental health care accessible within the Sierra Leonean community" },
-    { year: "2024", event: "10K Lives Touched", description: "Reached our first major milestone of helping 10,000 people" },
-    { year: "2025", event: "National Recognition", description: "Awarded for excellence in community mental health services" },
-    { year: "2026", event: "50K+ Community", description: "Growing community with presence in 15 states" },
+    { year: "2022", event: "OCSLAA Founded and Certified", description: "Started with a vision to make mental health care accessible within the Sierra Leonean community and gained accreditation from Corporate Affairs Commission" },
+    { year: "2023", event: "10K Lives Touched", description: "Reached our first major milestone of helping 10,000 people" },
+    { year: "2024", event: "National Recognition in Sierra Leone", description: "Registered with the Ministry of Planning and Economic Development in Sierra Leone" },
+    { year: "2025", event: "Gained Recognition in Australia", description: "Registered in Queensland, Australia" },
+    { year: "2026", event: "OCSLAA website built", description: "OCSLAA official website built and launched" },
   ];
 
   return (
