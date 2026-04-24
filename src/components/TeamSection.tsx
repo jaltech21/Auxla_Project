@@ -115,7 +115,7 @@ const TeamSection = () => {
                       <img
                         src={member.image}
                         alt={member.name}
-                        className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-72 object-contain transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                       
